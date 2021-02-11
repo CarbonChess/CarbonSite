@@ -8,6 +8,7 @@
 table {
 	margin: auto; /* centering */
 	border-collapse: collapse;
+	user-select: none;
 }
 
 td {
@@ -25,7 +26,7 @@ table tr:nth-child(even) td:nth-child(odd) {
 
 /* Pieces */
 
-img { /* hack */
+img {
 	image-rendering: pixelated; /* chrome, edge */
 	image-rendering: crisp-edges; /* firefox */
 	object-fit: cover;
@@ -50,3 +51,19 @@ img.black.queen {object-position: calc(10*-32px) center;}
 img.black.king {object-position: calc(11*-32px) center;}
 
 .selected {background: rgb(124, 192, 214) !important;}
+
+/* Log */
+
+#log {
+	margin-top: 1em;
+	text-align: center;
+}
+
+#log span {
+	padding: 1px 4px;
+}
+
+#log .black {
+	background: black;
+	color: white;
+}

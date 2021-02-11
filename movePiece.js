@@ -1,15 +1,24 @@
+/* Console IDs
+ * S = selected
+ * T = type
+ * M = move
+ * I = invalid
+*/
+
 let selectedCell;
 
 function hasClicked(cell) {
 
 	const selectPiece = function (cell) {
 		selectedCell = cell;
-		document.getElementById(selectedCell) ?.classList.add('selected');
+		let $cell = document.getElementById(selectedCell);
+		$cell ?.classList.add('selected');
 		console.log('S ' + selectedCell);
 	}
 
 	if (cell == selectedCell) { // double click
 		// cancel
+		document.getElementById(selectedCell).classList.remove('selected');
 		selectedCell = null;
 		console.log('X ' + cell);
 	}
@@ -39,17 +48,31 @@ function hasClicked(cell) {
 
 			if (isSameColour) {
 				// replace selected piece
+
 				selectPiece(cell);
 				console.log('T ' + startingClasses.join(' '));
+
 			} else {
 				// move piece
-				let [colour, type] = startingClasses;
+
+				let [colour, piece] = startingClasses;
+				let originalPiece = piece;
+
+				let canPromote = (
+					piece === 'pawn'
+					&&
+					(endingCell.includes('1') || endingCell.includes('8'))
+				);
+				if (canPromote) piece = 'queen';
+
 				$startingCell.innerHTML = startingCell;
 				$endingCell.innerHTML = '';
-				$endingCell.appendChild(createPiece(type, colour, endingCell));
+				$endingCell.appendChild(createPiece(piece, colour, endingCell));
 
 				console.log('M ' + startingCell + ' -> ' + endingCell);
+				log(colour, originalPiece, endingCell, { taken: !!endingClasses[0], promoted: canPromote });
 				selectedCell = null;
+
 			}
 
 		}
@@ -66,4 +89,15 @@ function hasClicked(cell) {
 		// empty square clicked without piece being selected first
 		console.log('I ' + cell);
 	}
+}
+
+function log(colour, piece, endCell, { taken, promoted }) {
+	let box = document.getElementById('log');
+	let pieceID
+	switch (piece) {
+		case 'pawn': pieceID = ''; break;
+		case 'knight': pieceID = 'n'; break;
+		default: pieceID = piece[0];
+	}
+	box.innerHTML += `<span class="${colour}">` + pieceID.toUpperCase() + (taken ? 'x' : '') + endCell.toLowerCase() + (promoted ? '=Q' : '') + '</span>';
 }

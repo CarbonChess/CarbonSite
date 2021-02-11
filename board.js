@@ -1,4 +1,4 @@
-function gridmaking(l, k) {
+function createGrid(l, k) {
 	let table = document.createElement('table');
 	for (i = 1; i <= l; i++) {
 		let tr = document.createElement("tr");
@@ -50,6 +50,13 @@ function createPiece(name, colour, cell) {
 	return piece;
 }
 
+function createLogBox() {
+	let box = document.createElement('div');
+	box.setAttribute('id', 'log');
+	document.body.appendChild(box);
+}
+
 function run() {
-	gridmaking(8, 8);
+	createGrid(8, 8);
+	createLogBox();
 }
