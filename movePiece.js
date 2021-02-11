@@ -70,7 +70,7 @@ function hasClicked(cell) {
 				$endingCell.appendChild(createPiece(piece, colour, endingCell));
 
 				console.log('M ' + startingCell + ' -> ' + endingCell);
-				log(colour, originalPiece, endingCell, { taken: !!endingClasses[0], promoted: canPromote });
+				log(colour, originalPiece, startingCell, endingCell, { taken: endingClasses[0], promoted: canPromote });
 				selectedCell = null;
 
 			}
@@ -91,7 +91,7 @@ function hasClicked(cell) {
 	}
 }
 
-function log(colour, piece, endCell, { taken, promoted }) {
+function log(colour, piece, startCell, endCell, { taken, promoted }) {
 	let box = document.getElementById('log');
 	let pieceID
 	switch (piece) {
@@ -99,5 +99,13 @@ function log(colour, piece, endCell, { taken, promoted }) {
 		case 'knight': pieceID = 'n'; break;
 		default: pieceID = piece[0];
 	}
-	box.innerHTML += `<span class="${colour}">` + pieceID.toUpperCase() + (taken ? 'x' : '') + endCell.toLowerCase() + (promoted ? '=Q' : '') + '</span>';
+	box.innerHTML += (
+		`<span class="${colour}">`
+		+ pieceID.toUpperCase()
+		+ (taken && piece === 'pawn' ? startCell[0].toLowerCase() : '')
+		+ (taken ? 'x' : '')
+		+ endCell.toLowerCase()
+		+ (promoted ? '=Q' : '')
+		+ '</span>'
+	);
 }
