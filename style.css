@@ -1,6 +1,6 @@
 /* Chess board */
 
-:root {
+:root { /* Variables */
 	--light-color: #ebecd0;
 	--dark-color: #779556;
 }
@@ -31,6 +31,7 @@ img {
 	image-rendering: crisp-edges; /* firefox */
 	object-fit: cover;
 	width: 32px;
+	height: 32px;
 	position: absolute;
     margin-left: -16px;
     margin-top: -16px;
@@ -55,15 +56,29 @@ img.black.king {object-position: calc(11*-32px) center;}
 /* Log */
 
 #log {
-	margin-top: 1em;
+	width: 50%;
+	margin: 1em auto;
+	overflow-wrap: break-word;
 	text-align: center;
 }
 
 #log span {
-	padding: 1px 4px;
+	padding: 1px 2px;
 }
 
-#log .black {
-	background: black;
-	color: white;
+/* Buttons */
+button {
+	display: inline-block;
+	width: 60px;
+	padding: 4px 6px;
+	border: 1px solid #0004;
+	text-align: center;
+	border-radius: 2px;
+	font-size: 16px;
+	
 }
+
+button.enabled {background: rgb(48, 170, 48);}
+button.enabled::after {content: 'Yes';}
+button.disabled {background: rgb(168, 62, 80);}
+button.disabled::after {content: 'No';}

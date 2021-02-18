@@ -1,28 +1,25 @@
 function createGrid(l, k) {
 	let table = document.createElement('table');
 	for (i = 1; i <= l; i++) {
-		let tr = document.createElement("tr");
-		tr.setAttribute('id', 'r' + i);
-		table.appendChild(tr);
 
+		let tr = document.createElement('tr');
+		tr.id = 'r' + i;
+		table.appendChild(tr);
 
 		for (j = 1; j <= k; j++) {
 
 			let column = String.fromCharCode(j + 64);
 			let cellName = column + (9 - i);
-			let td = document.createElement("td");
+			let td = document.createElement('td');
 
-			td.setAttribute('id', cellName);
-			td.setAttribute('onclick', `hasClicked("${cellName}")`);
+			td.id = cellName;
+			td.setAttribute('onclick', `hasClicked('${cellName}')`);
 
 			// Add pieces
 			let pieceName, pieceColour;
 			pieceColour = (i < l / 2) ? 'black' : 'white';
 
-			if (i === 2 || i === l - 1) {
-				pieceName = 'pawn';
-			}
-			else if (i === 1 || i === l) {
+			if (i === 1 || i === l) { // first rows
 				const cell = n => j === n || j === k - n + 1;
 				if (cell(1)) pieceName = 'rook';
 				else if (cell(2)) pieceName = 'knight';
@@ -30,12 +27,21 @@ function createGrid(l, k) {
 				else if (j === 4) pieceName = 'queen';
 				else if (j === k - 3) pieceName = 'king';
 			}
-			else td.innerHTML = cellName;
+			else if (i === 2 || i === l - 1) { // second rows
+				pieceName = 'pawn';
+			}
+			else { // no pieces
+				td.innerHTML = cellName;
+			}
 
 			// Add piece to board
+			if (pieceName) {
+				let piece = createPiece(pieceName, pieceColour, cellName);
+				td.appendChild(piece);
+			}
 			tr.appendChild(td);
-			if (pieceName) td.appendChild(createPiece(pieceName, pieceColour, cellName));
 		}
+
 	}
 	document.body.appendChild(table);
 }
@@ -44,19 +50,35 @@ function createPiece(name, colour, cell) {
 	if (!name) return;
 	let piece = document.createElement('img');
 	piece.src = 'chesspieces.png';
-	piece.setAttribute('height', '32px');
-	piece.setAttribute('class', colour + ' ' + name);
-	piece.setAttribute('id', "piece" + cell);
+	piece.classList.add(colour);
+	piece.classList.add(name);
+	piece.id = 'piece' + cell;
 	return piece;
 }
 
 function createLogBox() {
 	let box = document.createElement('div');
-	box.setAttribute('id', 'log');
+	box.id = 'log';
 	document.body.appendChild(box);
+}
+
+window.hasRules = true;
+function toggleRules(button) {
+	hasRules = !hasRules;
+	button.classList.toggle("enabled");
+	button.classList.toggle("disabled");
+}
+
+function createToggles() {
+	let toggles = document.createElement('div');
+	toggles.id = 'toggles';
+	let button = `Rules: <button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>`;
+	toggles.innerHTML += button;
+	document.body.appendChild(toggles)
 }
 
 function run() {
 	createGrid(8, 8);
 	createLogBox();
+	createToggles();
 }
