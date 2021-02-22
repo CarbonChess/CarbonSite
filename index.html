@@ -6,11 +6,19 @@
 	<meta name="viewport" content="width=device-width">
 	<title>Chess</title>
 	<link href="style.css" rel="stylesheet">
-	<script src="board.js"></script>
-	<script src="movePiece.js"></script>
+	<script src="board.js">
+	</script>
+	<script src="movePiece.js">
+	</script>
 </head>
 
 <body onload="run()">
+	<table></table>
+	<div id="log"></div>
+	<div id="toggles">
+		<span>Rules:</span>
+		<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+	</div>
 </body>
 
 </html>

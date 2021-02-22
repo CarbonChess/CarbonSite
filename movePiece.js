@@ -1,12 +1,5 @@
-/* Console IDs
- * S = selected
- * T = type
- * M = move
- * I = invalid
- * X = victory
-*/
-
 let selectedCell;
+let promotionPiece;
 let totalMoves = 0;
 let currentTurn = 'white';
 
@@ -19,140 +12,165 @@ function selectPiece(cell) {
 
 function hasClicked(cell) {
 
-	let startingCell = selectedCell;
-	let endingCell = cell;
-
-	let $startingCell = document.getElementById(selectedCell);
-	let $endingCell = document.getElementById(endingCell);
-	let $startingPiece = document.getElementById('piece' + selectedCell);
-	let $endingPiece = document.getElementById('piece' + endingCell);
-
-	let startingClasses = Array.from($startingPiece ?.classList || []);
-	let endingClasses = Array.from($endingPiece ?.classList || []);
+	const $cell = document.getElementById('piece' + cell);
 
 	// Cancel a move
 	if (cell == selectedCell) {
 		// double click: cancel
-		document.getElementById(selectedCell).classList.remove('selected');
+		$startCell.classList.remove('selected');
 		selectedCell = null;
-		console.log('X ' + cell);
+		console.log('X', cell);
 	}
 
 	// Move piece
-	else if (selectedCell) {
+	else if (cell && selectedCell) {
 		// a cell has already been selected
 		// move the piece
 
-		$startingCell.classList.remove('selected');
+		let startCell = selectedCell;
+		let endCell = cell;
 
-		if (startingClasses) { // only go if the cell has metadata
+		let $startCell = document.getElementById(selectedCell);
+		let $endCell = document.getElementById(endCell);
+		let $startPiece = document.getElementById('piece' + selectedCell);
+		let $endPiece = document.getElementById('piece' + endCell);
+
+		let startClasses = Array.from($startPiece ?.classList || []);
+		let endClasses = Array.from($endPiece ?.classList || []);
+
+		$startCell.classList.remove('selected');
+
+		if (startClasses) {
+			// only go if the cell has metadata
 			// is a piece: move it
 
 			let isSameColour = (
-				(startingClasses.includes('white') && endingClasses.includes('white'))
+				(startClasses.includes('white') && endClasses.includes('white'))
 				||
-				(startingClasses.includes('black') && endingClasses.includes('black'))
+				(startClasses.includes('black') && endClasses.includes('black'))
 			);
 
 			if (isSameColour) {
 				// replace selected piece
 				selectPiece(cell);
-				console.log('T ' + startingClasses.join(' '));
-			} else if (endingClasses.includes('king') && hasRules) {
+				console.log('T', ...startClasses);
+			}
+			/*
+			else if (endClasses.includes('king') && hasRules) {
 				// end game
 				document.getElementById(selectedCell).classList.remove('selected');
 				selectedCell = null;
-				console.log('X ' + cell);
+				console.log('X', cell);
 			}
+			*/
 			else {
 				// move piece
 
-				let [colour, piece] = startingClasses;
+				let [colour, piece] = startClasses;
 				const originalPiece = piece;
 
-				const valid = validateMove(piece, startingCell, endingCell);
+				// only move if able
+				const valid = validateMove(colour, piece, startCell, endCell);
 				if (!valid && hasRules) {
-					$startingCell.classList.add('selected');
-					console.log('I ' + startingCell + ' -> ' + endingCell);
+					$startCell.classList.add('selected');
+					console.log('I', startCell, '->', endCell);
 					return;
 				}
 
-				const canPromote = (
-					piece === 'pawn'
-					&& ['1', '8'].includes(endingCell[1])
-				);
-				if (canPromote) piece = 'queen';
+				// special moves
+				const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
+				if (canPromote) {
+					let promote = prompt('Select piece'); // TODO better
+					promotionPiece = promote;
+					if (!['pawn', 'bishop', 'knight', 'rook'].includes(promote)) piece = 'queen';
+				}
 
-				$startingCell.innerHTML = startingCell;
-				$endingCell.innerHTML = '';
-				$endingCell.appendChild(createPiece(piece, colour, endingCell));
+				// move the piece
+				$startCell.innerHTML = startCell;
+				$endCell.innerHTML = '';
+				$endCell.appendChild(createPiece(piece, colour, endCell));
 
-				console.log('M ' + startingCell + ' -> ' + endingCell);
-				log(colour, originalPiece, [startingCell, endingCell], totalMoves++, { taken: endingClasses[0], promoted: canPromote });
+				// log the move
+				console.log('M', startCell, '->', endCell);
+				log(colour, originalPiece, startCell, endCell, totalMoves++, { taken: endClasses[0], promoted: canPromote });
 				selectedCell = null;
 
-				if (currentTurn === 'white') {
-					currentTurn = 'black';
-				} else {
-					currentTurn = 'white'
-				}
+				// switch turn
+				currentTurn = currentTurn === 'white' ? 'black' : 'white';
 			}
 
 		}
 	}
 
 	// Select piece
-	else if (endingClasses.includes(currentTurn) || !hasRules) {
-		// the selected piece is one of the current player's
+	else if ($cell && ($cell.getAttribute('class').includes(currentTurn) || !hasRules)) {
+		// the piece is selectable
 		// mark this piece as being in process of moving
 		selectPiece(cell);
-		console.log('T ' + document.getElementById('piece' + cell).getAttribute('class'));
+		console.log('T', $cell.getAttribute('class'));
 	}
 
 	// Invalid
 	else {
 		// empty square clicked without piece being selected first
-		console.log('I ' + cell);
+		console.log('I', cell);
 	}
 }
 
-function validateMove(piece, startCell, endCell) {
+function validateMove(colour, piece, startCell, endCell) {
+	const startNumber = parseInt(startCell[1]);
+	const endNumber = parseInt(endCell[1]);
 	const deltaLetter = Math.abs(endCell.charCodeAt(0) - startCell.charCodeAt(0));
-	const deltaNumber = Math.abs(parseInt(endCell[1]) - parseInt(startCell[1]));
+	const deltaNum = Math.abs(endNumber - startNumber);
 
-	if (piece === 'rook') {
-		return deltaLetter === 0 || deltaNumber === 0;
-	}
-	else if (piece === 'knight') {
-		return (
-			deltaNumber + deltaLetter == 3
-			&& (deltaLetter !== 0 || deltaNumber !== 0)
-		);
-	}
-	else if (piece === 'king') {
-		return deltaLetter <= 1 && deltaNumber <= 1;
-	}
-	else if (piece === 'bishop') {
-		return deltaLetter === deltaNumber;
-	}
-	else if (piece === 'queen') {
-		return (
-			(deltaLetter === 0 || deltaNumber === 0)
-			|| deltaLetter === deltaNumber
-		);
-	}
-	else if (piece === 'pawn') {
-		return (
-			deltaLetter === 0
-			&& (
-				deltaNumber === 1
-				|| (deltaNumber === 2 && ['2', '7'].includes(startCell[1]))
-			)
-		);
+	// only move if path is free
+	const pieceInWay = (function () {
+		switch (piece) {
+			case 'pawn':
+				let invalidMove;
+				if (colour === 'white') {
+					invalidMove = pieceInCell(startCell[0] + (startNumber + 1));
+					if (deltaNum === 2 && !invalidMove) {
+						invalidMove = pieceInCell(startCell[0] + (startNumber + 2));
+					}
+				}
+				else {
+					invalidMove = pieceInCell(startCell[0] + (startNumber - 1));
+					if (deltaNum === 2 && !invalidMove) {
+						invalidMove = pieceInCell(startCell[0] + (startNumber - 2));
+					}
+				}
+				return invalidMove;
+		}
+	})();
+	if (pieceInWay) return false; // TODO allow killing for pawn
+
+	// validate movement pattern
+	switch (piece) {
+		case 'rook':
+			return deltaLetter === 0 || deltaNum === 0;
+		case 'knight':
+			return deltaNum + deltaLetter == 3 && deltaLetter !== 0 && deltaNum !== 0;
+		case 'king':
+			return deltaLetter <= 1 && deltaNum <= 1;
+		case 'bishop':
+			return deltaLetter === deltaNum;
+		case 'queen':
+			return deltaLetter === 0 || deltaNum === 0 || deltaLetter === deltaNum;
+		case 'pawn':
+			const sameLetter = deltaLetter === 0;
+			const takingPiece = deltaLetter === 1 && deltaNum === 1 && pieceInCell(endCell);
+			const pawnMove = deltaNum === 1 || (deltaNum === 2 && ['2', '7'].includes(startCell[1]));
+			const forward = colour === 'white' ? endNumber > startNumber : endNumber < startNumber;
+			return (sameLetter || takingPiece) && pawnMove && forward;
 	}
 }
 
-function log(colour, piece, [startCell, endCell], count, { taken, promoted }) {
+function pieceInCell(cell) {
+	return document.getElementById('piece' + cell) ?.classList.length > 0;
+}
+
+function log(colour, piece, startCell, endCell, count, { taken, promoted }) {
 	let pieceID;
 	switch (piece) {
 		case 'pawn': pieceID = ''; break;
@@ -167,7 +185,15 @@ function log(colour, piece, [startCell, endCell], count, { taken, promoted }) {
 		+ (taken && piece === 'pawn' ? startCell[0].toLowerCase() : '')
 		+ (taken ? 'x' : '')
 		+ endCell.toLowerCase()
-		+ (promoted ? '=Q' : '')
+		+ (promoted ? '=' + promotionPiece[0].toUpperCase() : '')
 		+ '</span>'
 	);
 }
+
+/* Console IDs
+ * S = selected
+ * T = type
+ * M = move
+ * I = invalid
+ * X = victory
+*/

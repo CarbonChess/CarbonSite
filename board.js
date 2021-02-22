@@ -1,5 +1,7 @@
+let hasRules = true;
+
 function createGrid(l, k) {
-	let table = document.createElement('table');
+	let table = document.querySelector('table');
 	for (i = 1; i <= l; i++) {
 
 		let tr = document.createElement('tr');
@@ -43,7 +45,6 @@ function createGrid(l, k) {
 		}
 
 	}
-	document.body.appendChild(table);
 }
 
 function createPiece(name, colour, cell) {
@@ -56,29 +57,13 @@ function createPiece(name, colour, cell) {
 	return piece;
 }
 
-function createLogBox() {
-	let box = document.createElement('div');
-	box.id = 'log';
-	document.body.appendChild(box);
-}
-
-window.hasRules = true;
 function toggleRules(button) {
 	hasRules = !hasRules;
 	button.classList.toggle("enabled");
 	button.classList.toggle("disabled");
-}
-
-function createToggles() {
-	let toggles = document.createElement('div');
-	toggles.id = 'toggles';
-	let button = `Rules: <button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>`;
-	toggles.innerHTML += button;
-	document.body.appendChild(toggles)
+	currentTurn = currentTurn === 'white' ? 'black' : 'white';
 }
 
 function run() {
 	createGrid(8, 8);
-	createLogBox();
-	createToggles();
 }

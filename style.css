@@ -19,8 +19,8 @@ td {
 	cursor: pointer;
 }
 
-table tr:nth-child(odd) td:nth-child(even),
-table tr:nth-child(even) td:nth-child(odd) {
+tr:nth-child(odd) td:nth-child(even),
+tr:nth-child(even) td:nth-child(odd) {
   background: var(--dark-color);
 }
 
@@ -33,8 +33,8 @@ img {
 	width: 32px;
 	height: 32px;
 	position: absolute;
-    margin-left: -16px;
-    margin-top: -16px;
+	margin-left: -16px;
+	margin-top: -16px;
 }
 
 img.white.pawn {object-position: calc(0*-32px) center;}
