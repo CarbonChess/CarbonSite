@@ -1,3 +1,5 @@
+// Variables
+
 let selectedCell;
 let promotionPiece;
 let totalMoves = 0;
@@ -17,7 +19,7 @@ function hasClicked(cell) {
 	// Cancel a move
 	if (cell == selectedCell) {
 		// double click: cancel
-		$startCell.classList.remove('selected');
+		document.getElementById(selectedCell).classList.remove('selected');
 		selectedCell = null;
 		console.log('X', cell);
 	}
@@ -97,6 +99,7 @@ function hasClicked(cell) {
 
 				// switch turn
 				currentTurn = currentTurn === 'white' ? 'black' : 'white';
+				if (autoflip && hasRules) flipBoard();
 			}
 
 		}
@@ -120,14 +123,26 @@ function hasClicked(cell) {
 function validateMove(colour, piece, startCell, endCell) {
 	const startNumber = parseInt(startCell[1]);
 	const endNumber = parseInt(endCell[1]);
-	const deltaLetter = Math.abs(endCell.charCodeAt(0) - startCell.charCodeAt(0));
+	const startLetter = startCell.charCodeAt(0);
+	const endLetter = endCell.charCodeAt(0);
+	const deltaLetter = Math.abs(endLetter - startLetter);
 	const deltaNum = Math.abs(endNumber - startNumber);
 
 	// only move if path is free
 	const pieceInWay = (function () {
+		let invalidMove;
+		let direction = {};
+		
+		// determine direction
+		if (endLetter > startLetter) direction.l = 1;
+		else if (endLetter < startLetter) direction.l = -1;
+		else direction.l = 0;
+		if (endNumber > startNumber) direction.n = 1;
+		else if (endNumber < startNumber) direction.n = -1;
+		else direction.n = 0;
+
 		switch (piece) {
 			case 'pawn':
-				let invalidMove;
 				if (colour === 'white') {
 					invalidMove = pieceInCell(startCell[0] + (startNumber + 1));
 					if (deltaNum === 2 && !invalidMove) {
@@ -140,10 +155,13 @@ function validateMove(colour, piece, startCell, endCell) {
 						invalidMove = pieceInCell(startCell[0] + (startNumber - 2));
 					}
 				}
-				return invalidMove;
+			case 'rook':
+			
+			return invalidMove;
+
 		}
 	})();
-	if (pieceInWay) return false; // TODO allow killing for pawn
+	if (pieceInWay) return false;
 
 	// validate movement pattern
 	switch (piece) {

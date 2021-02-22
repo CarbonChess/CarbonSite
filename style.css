@@ -9,6 +9,7 @@ table {
 	margin: auto; /* centering */
 	border-collapse: collapse;
 	user-select: none;
+	transition: 0.8s;
 }
 
 td {
@@ -22,6 +23,10 @@ td {
 tr:nth-child(odd) td:nth-child(even),
 tr:nth-child(even) td:nth-child(odd) {
   background: var(--dark-color);
+}
+
+table.rotate, table.rotate td {
+	transform: rotate(180deg);
 }
 
 /* Pieces */
@@ -82,3 +87,9 @@ button.enabled {background: rgb(48, 170, 48);}
 button.enabled::after {content: 'Yes';}
 button.disabled {background: rgb(168, 62, 80);}
 button.disabled::after {content: 'No';}
+
+/* Toggling */
+.label {
+	display: inline-block;
+	width: 120px;
+}

@@ -16,8 +16,21 @@
 	<table></table>
 	<div id="log"></div>
 	<div id="toggles">
-		<span>Rules:</span>
-		<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+		<div>
+			<span class="label">Rules:</span>
+			<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+		</div>
+		<div>
+			<span class="label">Board orientation:</span>
+			<button id="flip-board" onclick="flipBoard()">White</button>
+		</div>
+		<div>
+			<span class="label">Automatic orient:</span>
+			<button id="flip-board" class="disabled" onclick="changeAutoflip(this)"></button>
+		</div>
+	</div>
+	<div id="promotion">
+
 	</div>
 </body>
 

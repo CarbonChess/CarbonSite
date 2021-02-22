@@ -1,4 +1,5 @@
 let hasRules = true;
+let autoflip = false;
 
 function createGrid(l, k) {
 	let table = document.querySelector('table');
@@ -62,6 +63,18 @@ function toggleRules(button) {
 	button.classList.toggle("enabled");
 	button.classList.toggle("disabled");
 	currentTurn = currentTurn === 'white' ? 'black' : 'white';
+}
+
+function flipBoard() {
+	let button = document.getElementById('flip-board');
+	button.innerHTML = button.innerHTML === 'White' ? 'Black' : 'White';
+	document.querySelector('table').classList.toggle('rotate');
+}
+
+function changeAutoflip(button) {
+	autoflip = !autoflip;
+	button.classList.toggle('enabled');
+	button.classList.toggle('disabled');
 }
 
 function run() {
