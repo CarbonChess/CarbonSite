@@ -51,7 +51,7 @@ function createGrid(l, k) {
 function createPiece(name, colour, cell) {
 	if (!name) return;
 	let piece = document.createElement('img');
-	piece.src = 'chesspieces.png';
+	piece.src = 'assets/chesspieces.png';
 	piece.classList.add(colour);
 	piece.classList.add(name);
 	piece.id = 'piece' + cell;
