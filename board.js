@@ -65,10 +65,16 @@ function toggleRules(button) {
 	currentTurn = currentTurn === 'white' ? 'black' : 'white';
 }
 
-function flipBoard() {
+function flipBoard(force) {
 	let button = document.getElementById('flip-board');
-	button.innerHTML = button.innerHTML === 'White' ? 'Black' : 'White';
-	document.querySelector('table').classList.toggle('rotate');
+	let table = document.querySelector('table');
+	if (force) {
+		table.classList.toggle('rotate');
+	}
+	else {
+		table.classList.remove('rotate')
+		if (currentTurn === 'black') table.classList.add('rotate');
+	}
 }
 
 function changeAutoflip(button) {
@@ -79,4 +85,14 @@ function changeAutoflip(button) {
 
 function run() {
 	createGrid(8, 8);
+}
+
+function reset() {
+	document.querySelector('table').innerHTML = '';
+	document.getElementById('log').innerHTML = '';
+	totalMoves = 0;
+	selectedCell = null;
+	currentTurn = 'white';
+	flipBoard();
+	run();
 }

@@ -1,15 +1,22 @@
-/* Chess board */
+/* Page */
 
 :root { /* Variables */
-	--light-color: #ebecd0;
-	--dark-color: #779556;
+	--light-color: #ebdcc2;
+	--dark-color: #be9e73;
 }
+
+body {
+	font-family: Trebuchet MS, Vedana, Arial, sans-serif;
+	
+}
+
+/* Chess board */
 
 table {
 	margin: auto; /* centering */
 	border-collapse: collapse;
 	user-select: none;
-	transition: 0.8s;
+	transition: 0.5s;
 }
 
 td {
@@ -37,6 +44,9 @@ img {
 	object-fit: cover;
 	width: 32px;
 	height: 32px;
+}
+
+td img {
 	position: absolute;
 	margin-left: -16px;
 	margin-top: -16px;
@@ -71,7 +81,8 @@ img.black.king {object-position: calc(11*-32px) center;}
 	padding: 1px 2px;
 }
 
-/* Buttons */
+/* Options */
+
 button {
 	display: inline-block;
 	width: 60px;
@@ -80,7 +91,6 @@ button {
 	text-align: center;
 	border-radius: 2px;
 	font-size: 16px;
-	
 }
 
 button.enabled {background: rgb(48, 170, 48);}
@@ -88,8 +98,16 @@ button.enabled::after {content: 'Yes';}
 button.disabled {background: rgb(168, 62, 80);}
 button.disabled::after {content: 'No';}
 
-/* Toggling */
 .label {
 	display: inline-block;
-	width: 120px;
+	width: 140px;
+}
+
+#options {
+}
+
+#flip-board {
+	width: 60px;
+	height: 60px;
+	vertical-align: middle;
 }

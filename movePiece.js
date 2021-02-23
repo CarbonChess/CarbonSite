@@ -1,5 +1,3 @@
-// Variables
-
 let selectedCell;
 let promotionPiece;
 let totalMoves = 0;
@@ -9,7 +7,7 @@ function selectPiece(cell) {
 	selectedCell = cell;
 	let $cell = document.getElementById(selectedCell);
 	$cell ?.classList.add('selected');
-	console.log('S ' + selectedCell);
+	console.log('S', selectedCell);
 }
 
 function hasClicked(cell) {
@@ -85,6 +83,7 @@ function hasClicked(cell) {
 					let promote = prompt('Select piece'); // TODO better
 					promotionPiece = promote;
 					if (!['pawn', 'bishop', 'knight', 'rook'].includes(promote)) piece = 'queen';
+					else piece = promotionPiece;
 				}
 
 				// move the piece
@@ -120,90 +119,24 @@ function hasClicked(cell) {
 	}
 }
 
-function validateMove(colour, piece, startCell, endCell) {
-	const startNumber = parseInt(startCell[1]);
-	const endNumber = parseInt(endCell[1]);
-	const startLetter = startCell.charCodeAt(0);
-	const endLetter = endCell.charCodeAt(0);
-	const deltaLetter = Math.abs(endLetter - startLetter);
-	const deltaNum = Math.abs(endNumber - startNumber);
-
-	// only move if path is free
-	const pieceInWay = (function () {
-		let invalidMove;
-		let direction = {};
-		
-		// determine direction
-		if (endLetter > startLetter) direction.l = 1;
-		else if (endLetter < startLetter) direction.l = -1;
-		else direction.l = 0;
-		if (endNumber > startNumber) direction.n = 1;
-		else if (endNumber < startNumber) direction.n = -1;
-		else direction.n = 0;
-
-		switch (piece) {
-			case 'pawn':
-				if (colour === 'white') {
-					invalidMove = pieceInCell(startCell[0] + (startNumber + 1));
-					if (deltaNum === 2 && !invalidMove) {
-						invalidMove = pieceInCell(startCell[0] + (startNumber + 2));
-					}
-				}
-				else {
-					invalidMove = pieceInCell(startCell[0] + (startNumber - 1));
-					if (deltaNum === 2 && !invalidMove) {
-						invalidMove = pieceInCell(startCell[0] + (startNumber - 2));
-					}
-				}
-			case 'rook':
-			
-			return invalidMove;
-
-		}
-	})();
-	if (pieceInWay) return false;
-
-	// validate movement pattern
-	switch (piece) {
-		case 'rook':
-			return deltaLetter === 0 || deltaNum === 0;
-		case 'knight':
-			return deltaNum + deltaLetter == 3 && deltaLetter !== 0 && deltaNum !== 0;
-		case 'king':
-			return deltaLetter <= 1 && deltaNum <= 1;
-		case 'bishop':
-			return deltaLetter === deltaNum;
-		case 'queen':
-			return deltaLetter === 0 || deltaNum === 0 || deltaLetter === deltaNum;
-		case 'pawn':
-			const sameLetter = deltaLetter === 0;
-			const takingPiece = deltaLetter === 1 && deltaNum === 1 && pieceInCell(endCell);
-			const pawnMove = deltaNum === 1 || (deltaNum === 2 && ['2', '7'].includes(startCell[1]));
-			const forward = colour === 'white' ? endNumber > startNumber : endNumber < startNumber;
-			return (sameLetter || takingPiece) && pawnMove && forward;
-	}
-}
-
-function pieceInCell(cell) {
-	return document.getElementById('piece' + cell) ?.classList.length > 0;
-}
-
 function log(colour, piece, startCell, endCell, count, { taken, promoted }) {
-	let pieceID;
-	switch (piece) {
-		case 'pawn': pieceID = ''; break;
-		case 'knight': pieceID = 'n'; break;
-		default: pieceID = piece[0];
+	const checkID = function (piecetype) {
+		switch (piecetype) {
+			case 'pawn': return '';
+			case 'knight': return 'N';
+			default: return piecetype[0].toUpperCase();
+		}
 	}
+	let pieceID = checkID(piece);
 	let box = document.getElementById('log');
 	box.innerHTML += (
-		`<span>`
+		`<span class>`
 		+ (count % 2 ? '' : count / 2 + 1 + '. ')
-		+ pieceID.toUpperCase()
+		+ pieceID
 		+ (taken && piece === 'pawn' ? startCell[0].toLowerCase() : '')
 		+ (taken ? 'x' : '')
 		+ endCell.toLowerCase()
-		+ (promoted ? '=' + promotionPiece[0].toUpperCase() : '')
+		+ (promoted ? '=' + checkID(promotionPiece) : '')
 		+ '</span>'
 	);
 }
