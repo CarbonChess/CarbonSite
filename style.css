@@ -7,16 +7,15 @@
 
 body {
 	font-family: Trebuchet MS, Vedana, Arial, sans-serif;
-	
 }
 
 /* Chess board */
 
 table {
-	margin: auto; /* centering */
+	margin: auto;
 	border-collapse: collapse;
 	user-select: none;
-	transition: 0.5s;
+	transition: 0.7s;
 }
 
 td {
@@ -68,20 +67,7 @@ img.black.king {object-position: calc(11*-32px) center;}
 
 .selected {background: rgb(124, 192, 214) !important;}
 
-/* Log */
-
-#log {
-	width: 50%;
-	margin: 1em auto;
-	overflow-wrap: break-word;
-	text-align: center;
-}
-
-#log span {
-	padding: 1px 2px;
-}
-
-/* Options */
+/* Footer */
 
 button {
 	display: inline-block;
@@ -103,11 +89,36 @@ button.disabled::after {content: 'No';}
 	width: 140px;
 }
 
-#options {
+#foot {
+	margin-top: 1em;
+}
+
+#log {
+	width: 50%;
+	float: none;
+	margin: 1em auto;
+	overflow-wrap: break-word;
+	text-align: center;
+	grid-area: log;
+}
+
+#log span {
+	padding: 1px 2px;
+}
+
+#labelled-options {
+	float: left;
+}
+
+#icon-options {
+	text-align: right;
+	float: right;
 }
 
 #flip-board {
-	width: 60px;
-	height: 60px;
-	vertical-align: middle;
+	width: 50px;
+	height: 50px;
 }
+
+/* Visibility */
+.hide {display: none;}

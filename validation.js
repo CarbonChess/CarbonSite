@@ -1,3 +1,4 @@
+/*
 class Validation {
 	constructor(colour, piece, startCell, endCell) {
 		for (i in arguments) this[arguments[i]] = arguments[i];
@@ -9,7 +10,7 @@ class Validation {
 		this.deltaNum = Math.abs(this.endNumber - this.startNumber);
 	}
 }
-
+*/
 
 function validateMove(colour, piece, startCell, endCell) {
 	const startNumber = parseInt(startCell[1]);
@@ -27,7 +28,7 @@ function validateMove(colour, piece, startCell, endCell) {
 			case 'knight':
 				return deltaNum + deltaLetter == 3 && deltaLetter !== 0 && deltaNum !== 0;
 			case 'king':
-				return deltaLetter <= 1 && deltaNum <= 1;
+				return (deltaLetter <= 1 && deltaNum <= 1);
 			case 'bishop':
 				return deltaLetter === deltaNum;
 			case 'queen':
@@ -38,6 +39,8 @@ function validateMove(colour, piece, startCell, endCell) {
 				const pawnMove = deltaNum === 1 || (deltaNum === 2 && ['2', '7'].includes(startCell[1]));
 				const forward = colour === 'white' ? endNumber > startNumber : endNumber < startNumber;
 				return (sameLetter || takingPiece) && pawnMove && forward;
+			default:
+				return true;
 		}
 	})();
 
@@ -74,6 +77,7 @@ function validateMove(colour, piece, startCell, endCell) {
 			case 'rook':
 			case 'bishop':
 			case 'queen':
+			case 'castle':
 				for (let i = 1; i <= Math.max(deltaLetter, deltaNum) - 1; i++) {
 					let letter = String.fromCharCode(parseInt(startLetter) + direction.l * i);
 					let number = startNumber + direction.n * i;

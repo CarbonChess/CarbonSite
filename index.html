@@ -6,42 +6,44 @@
 	<meta name="viewport" content="width=device-width">
 	<title>OpenChess</title>
 	<link href="style.css" rel="stylesheet">
-	<script src="board.js">
-	</script>
-	<script src="movePiece.js">
-	</script>
-	<script src="validation.js">
-	</script>
+	<script src="index.js"></script>
+	<script src="board.js"></script>
+	<script src="movePiece.js"></script>
+	<script src="validation.js"></script>
 </head>
 
 <body onload="run()">
 	<table></table>
-	<div id="log"></div>
-	<div id="options">
-		<div id="promotion" style="display:none;">
-			<span>Promotion piece:</span><br>
-			<img src="assets/chesspieces.png" class="white bishop">
-			<img src="assets/chesspieces.png" class="white rook">
-			<img src="assets/chesspieces.png" class="white knight">
-			<img src="assets/chesspieces.png" class="white queen">
-		</div>
-		<div id="toggles">
-			<div>
-				<span class="label">Rules:</span>
-				<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+	<div id="foot">
+		<div id="labelled-options">
+			<div id="promotion" class="hide">
+				<span>Promotion piece:</span><br>
+				<img src="assets/chesspieces.png" onclick="setPromotion(this)" class="white bishop">
+				<img src="assets/chesspieces.png" onclick="setPromotion(this)" class="white rook">
+				<img src="assets/chesspieces.png" onclick="setPromotion(this)" class="white knight">
+				<img src="assets/chesspieces.png" onclick="setPromotion(this)" class="white queen">
 			</div>
 			<div>
-				<span class="label">Board orientation:</span>
+				<div>
+					<span class="label">Rules:</span>
+					<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+				</div>
+				<div>
+					<span class="label">Automatic orient:</span>
+					<button id="flip-board-automatic" class="disabled" onclick="changeAutoflip(this)"></button>
+				</div>
+			</div>
+		</div>
+		<div id="log"></div>
+		<div id="icon-options">
+			<div>
 				<button id="flip-board" onclick="flipBoard(true)">
 					<img src="assets/flipboardicon.png">
 				</button>
 			</div>
+			<br>
 			<div>
-				<span class="label">Automatic orient:</span>
-				<button id="flip-board-automatic" class="disabled" onclick="changeAutoflip(this)"></button>
-			</div>
-			<div>
-				<button id="reset" onclick="reset()">Reset</button>
+				<button id="reset" onclick="run()">Reset</button>
 			</div>
 		</div>
 	</div>
