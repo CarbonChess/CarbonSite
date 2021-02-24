@@ -82,7 +82,7 @@ function hasClicked(cell) {
 
 						addPiece('king', colour, kingCell);
 						addPiece('rook', colour, rookCell);
-					} 
+					}
 				}
 
 				// only move if able
@@ -111,6 +111,10 @@ function hasClicked(cell) {
 					if (startCell.includes('A')) castling[currentTurn[0]].q = false;
 					else if (startCell.includes('H')) castling[currentTurn[0]].k = false;
 				}
+
+				// check en passant
+				if (enpassantTaken) clearCells(enpassantCell);
+				enpassantCell = piece === 'pawn' && Math.abs(endCell[1] - startCell[1]) === 2 && endCell;
 
 				// log the move
 				console.log('M', startCell, '->', endCell);
@@ -170,17 +174,18 @@ function log(colour, piece, startCell, endCell, count, { taken, promoted, castle
 	}
 	let pieceID = checkID(piece);
 	let box = document.getElementById('log');
-	box.innerHTML += (
-		`<span class>`
-		+ (count % 2 ? '' : count / 2 + 1 + '. ')
-		+ (castled ? 'O-O' : '')//todo add 000
-		+ pieceID
-		+ (taken && piece === 'pawn' ? startCell[0].toLowerCase() : '')
-		+ (taken ? 'x' : '')
-		+ endCell.toLowerCase()
-		+ (promoted ? '=' + checkID(promotionPiece) : '')
-		+ '</span>'
-	);
+
+	let code = '';
+	if (!(count % 2)) code += count / 2 + 1 + '. ';
+	if (castled) code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '000' : '00';
+	else {
+		code += pieceID;
+		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();
+		if (taken || enpassantTaken) code += 'x';
+		code += endCell.toLowerCase();
+		if (promoted) code += '=' + checkID(promotionPiece);
+	}
+	box.innerHTML += `<span>` + code + '</span>';
 }
 
 /* Console IDs

@@ -5,10 +5,12 @@ function run() {
 	window.hasRules = true;
 	window.autoflip = false;
 	window.selectedCell = null;
+	window.totalMoves = 0;
 	window.currentTurn = 'white';
 	window.promotionPiece = 'queen';
-	window.totalMoves = 0;
 	window.castling = { w: { k: true, q: true }, b: { k: true, q: true } };
+	window.enpassantCell = null;
+	window.enpassantTaken = false;
 
 	document.getElementById('toggle-rules').setAttribute('class', 'enabled');
 	document.getElementById('flip-board-automatic').setAttribute('class', 'disabled');

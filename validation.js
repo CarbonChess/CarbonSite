@@ -9,9 +9,9 @@ class Validation {
 		this.endNumber = parseInt(endCell[1]);
 		this.deltaNumber = Math.abs(this.endNumber - this.startNumber);
 
-		this.startLetter = startCell.charCodeAt(0);
-		this.endLetter = endCell.charCodeAt(0);
-		this.deltaLetter = Math.abs(this.endLetter - this.startLetter);
+		this.startLetter = startCell[0];
+		this.endLetter = endCell[0];
+		this.deltaLetter = Math.abs(this.endCell.charCodeAt(0) - this.startCell.charCodeAt(0));
 		this.sameLetter = this.deltaLetter === 0;
 	}
 }
@@ -34,10 +34,17 @@ function isValid(v) {
 		case 'queen':
 			return v.deltaLetter === 0 || v.deltaNumber === 0 || v.deltaLetter === deltaNumber;
 		case 'pawn':
-			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(endCell);
-			const pawnMove = v.deltaNumber === 1 || (v.deltaNumber === 2 && ['2', '7'].includes(v.startCell[1]));
+			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(v.endCell);
+			const pawnMove = v.deltaNumber === 1 || (v.deltaNumber === 2 && [2, 7].includes(v.startNumber));
 			const forward = v.colour === 'white' ? v.endNumber > v.startNumber : v.endNumber < v.startNumber;
-			return (v.sameLetter || takingPiece) && pawnMove && forward;
+			const validSideways = n => (
+				pieceInCell(String.fromCharCode(v.startCell.charCodeAt(0) + n) + v.startNumber)
+				&& v.endLetter + (v.endNumber + (v.colour === 'black' ? +1 : -1) === enpassantCell ?.[1])
+			);
+			const enpassant = v.endLetter == enpassantCell ?.[0] && (validSideways(+1) || validSideways(-1));
+			if (enpassant) enpassantTaken = true;
+			console.log('debug', v.sameLetter,takingPiece,enpassant,pawnMove,forward)
+			return (v.sameLetter || takingPiece || enpassant) && pawnMove && forward;
 		default:
 			return true;
 	}
@@ -48,8 +55,8 @@ function pieceInWay(v) {
 	let direction = {};
 
 	// determine direction
-	if (v.endLetter > v.startLetter) direction.l = 1;
-	else if (v.endLetter < v.startLetter) direction.l = -1;
+	if (v.endCell.charCodeAt(0) > v.startCell.charCodeAt(0)) direction.l = 1;
+	else if (v.endCell.charCodeAt(0) < v.startCell.charCodeAt(0)) direction.l = -1;
 	else direction.l = 0;
 	if (v.endNumber > v.startNumber) direction.n = 1;
 	else if (v.endNumber < v.startNumber) direction.n = -1;
@@ -78,9 +85,8 @@ function pieceInWay(v) {
 		case 'queen':
 		case 'castle':
 			for (let i = 1; i <= Math.max(v.deltaLetter, v.deltaNumber) - 1; i++) {
-				let letter = String.fromCharCode(parseInt(v.startLetter) + direction.l * i);
+				let letter = String.fromCharCode(parseInt(v.startLetter.charCodeAt(0)) + direction.l * i);
 				let number = v.startNumber + direction.n * i;
-				console.log(letter, number, pieceInCell(letter + number))
 				if (pieceInCell(letter + number)) invalidMove = true;
 			}
 			return invalidMove;
