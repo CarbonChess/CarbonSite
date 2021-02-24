@@ -1,97 +1,90 @@
-/*
 class Validation {
 	constructor(colour, piece, startCell, endCell) {
-		for (i in arguments) this[arguments[i]] = arguments[i];
+		this.colour = colour;
+		this.piece = piece;
+		this.startCell = startCell;
+		this.endCell = endCell;
+
 		this.startNumber = parseInt(startCell[1]);
 		this.endNumber = parseInt(endCell[1]);
+		this.deltaNumber = Math.abs(this.endNumber - this.startNumber);
+
 		this.startLetter = startCell.charCodeAt(0);
 		this.endLetter = endCell.charCodeAt(0);
 		this.deltaLetter = Math.abs(this.endLetter - this.startLetter);
-		this.deltaNum = Math.abs(this.endNumber - this.startNumber);
+		this.sameLetter = this.deltaLetter === 0;
 	}
 }
-*/
 
-function validateMove(colour, piece, startCell, endCell) {
-	const startNumber = parseInt(startCell[1]);
-	const endNumber = parseInt(endCell[1]);
-	const startLetter = startCell.charCodeAt(0);
-	const endLetter = endCell.charCodeAt(0);
-	const deltaLetter = Math.abs(endLetter - startLetter);
-	const deltaNum = Math.abs(endNumber - startNumber);
-
-	// validate movement pattern
-	const isValid = (function () {
-		switch (piece) {
-			case 'rook':
-				return deltaLetter === 0 || deltaNum === 0;
-			case 'knight':
-				return deltaNum + deltaLetter == 3 && deltaLetter !== 0 && deltaNum !== 0;
-			case 'king':
-				return (deltaLetter <= 1 && deltaNum <= 1);
-			case 'bishop':
-				return deltaLetter === deltaNum;
-			case 'queen':
-				return deltaLetter === 0 || deltaNum === 0 || deltaLetter === deltaNum;
-			case 'pawn':
-				const sameLetter = deltaLetter === 0;
-				const takingPiece = deltaLetter === 1 && deltaNum === 1 && pieceInCell(endCell);
-				const pawnMove = deltaNum === 1 || (deltaNum === 2 && ['2', '7'].includes(startCell[1]));
-				const forward = colour === 'white' ? endNumber > startNumber : endNumber < startNumber;
-				return (sameLetter || takingPiece) && pawnMove && forward;
-			default:
-				return true;
-		}
-	})();
-
-	// only move if path is free
-	const pieceInWay = (function () {
-		let invalidMove;
-		let direction = {};
-
-		// determine direction
-		if (endLetter > startLetter) direction.l = 1;
-		else if (endLetter < startLetter) direction.l = -1;
-		else direction.l = 0;
-		if (endNumber > startNumber) direction.n = 1;
-		else if (endNumber < startNumber) direction.n = -1;
-		else direction.n = 0;
-
-		switch (piece) {
-			case 'pawn':
-				if (deltaLetter === 0) {
-					if (colour === 'white') {
-						invalidMove = pieceInCell(startCell[0] + (startNumber + 1));
-						if (deltaNum === 2 && !invalidMove) {
-							invalidMove = pieceInCell(startCell[0] + (startNumber + 2));
-						}
-					}
-					else {
-						invalidMove = pieceInCell(startCell[0] + (startNumber - 1));
-						if (deltaNum === 2 && !invalidMove) {
-							invalidMove = pieceInCell(startCell[0] + (startNumber - 2));
-						}
-					}
-				}
-				return invalidMove;
-			case 'rook':
-			case 'bishop':
-			case 'queen':
-			case 'castle':
-				for (let i = 1; i <= Math.max(deltaLetter, deltaNum) - 1; i++) {
-					let letter = String.fromCharCode(parseInt(startLetter) + direction.l * i);
-					let number = startNumber + direction.n * i;
-					console.log(letter, number, pieceInCell(letter + number))
-					if (pieceInCell(letter + number)) invalidMove = true;
-				}
-				return invalidMove;
-			default:
-				return false;
-		}
-	})();
-	return isValid && !pieceInWay;
+function validateMove(...args) {
+	const validator = new Validation(...args);
+	return isValid(validator) && !pieceInWay(validator);
 }
 
-function pieceInCell(cell) {
-	return document.getElementById('piece' + cell) ?.classList.length > 0;
+function isValid(v) {
+	switch (v.piece) {
+		case 'rook':
+			return v.deltaLetter === 0 || v.deltaNumber === 0;
+		case 'knight':
+			return v.deltaNumber + v.deltaLetter == 3 && v.deltaLetter !== 0 && v.deltaNumber !== 0;
+		case 'king':
+			return (v.deltaLetter <= 1 && v.deltaNumber <= 1);
+		case 'bishop':
+			return v.deltaLetter === v.deltaNumber;
+		case 'queen':
+			return v.deltaLetter === 0 || v.deltaNumber === 0 || v.deltaLetter === deltaNumber;
+		case 'pawn':
+			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(endCell);
+			const pawnMove = v.deltaNumber === 1 || (v.deltaNumber === 2 && ['2', '7'].includes(v.startCell[1]));
+			const forward = v.colour === 'white' ? v.endNumber > v.startNumber : v.endNumber < v.startNumber;
+			return (v.sameLetter || takingPiece) && pawnMove && forward;
+		default:
+			return true;
+	}
+}
+
+function pieceInWay(v) {
+	let invalidMove = false;
+	let direction = {};
+
+	// determine direction
+	if (v.endLetter > v.startLetter) direction.l = 1;
+	else if (v.endLetter < v.startLetter) direction.l = -1;
+	else direction.l = 0;
+	if (v.endNumber > v.startNumber) direction.n = 1;
+	else if (v.endNumber < v.startNumber) direction.n = -1;
+	else direction.n = 0;
+
+	// check cells
+	switch (v.piece) {
+		case 'pawn':
+			if (v.deltaLetter === 0) {
+				if (v.colour === 'white') {
+					invalidMove = pieceInCell(v.startCell[0] + (v.startNumber + 1));
+					if (v.deltaNumber === 2 && !invalidMove) {
+						invalidMove = pieceInCell(v.startCell[0] + (v.startNumber + 2));
+					}
+				}
+				else {
+					invalidMove = pieceInCell(v.startCell[0] + (v.startNumber - 1));
+					if (v.deltaNumber === 2 && !invalidMove) {
+						invalidMove = pieceInCell(v.startCell[0] + (v.startNumber - 2));
+					}
+				}
+			}
+			return invalidMove;
+		case 'rook':
+		case 'bishop':
+		case 'queen':
+		case 'castle':
+			for (let i = 1; i <= Math.max(v.deltaLetter, v.deltaNumber) - 1; i++) {
+				let letter = String.fromCharCode(parseInt(v.startLetter) + direction.l * i);
+				let number = v.startNumber + direction.n * i;
+				console.log(letter, number, pieceInCell(letter + number))
+				if (pieceInCell(letter + number)) invalidMove = true;
+			}
+			return invalidMove;
+		default:
+			return false;
+	}
 }

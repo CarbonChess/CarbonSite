@@ -82,6 +82,10 @@ function getPieceInCell(cell) {
 	return document.getElementById('piece' + cell);
 }
 
+function pieceInCell(cell) {
+	return getPieceInCell(cell) ?.classList.length > 0;
+}
+
 function toggleRules(button) {
 	hasRules = !hasRules;
 	button.classList.toggle("enabled");
