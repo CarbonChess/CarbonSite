@@ -32,18 +32,18 @@ function isValid(v) {
 		case 'bishop':
 			return v.deltaLetter === v.deltaNumber;
 		case 'queen':
-			return v.deltaLetter === 0 || v.deltaNumber === 0 || v.deltaLetter === deltaNumber;
+			return v.deltaLetter === 0 || v.deltaNumber === 0 || v.deltaLetter === v.deltaNumber;
 		case 'pawn':
 			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(v.endCell);
 			const pawnMove = v.deltaNumber === 1 || (v.deltaNumber === 2 && [2, 7].includes(v.startNumber));
 			const forward = v.colour === 'white' ? v.endNumber > v.startNumber : v.endNumber < v.startNumber;
-			const validSideways = n => (
-				pieceInCell(String.fromCharCode(v.startCell.charCodeAt(0) + n) + v.startNumber)
-				&& v.endLetter + (v.endNumber + (v.colour === 'black' ? +1 : -1) === enpassantCell ?.[1])
-			);
-			const enpassant = v.endLetter == enpassantCell ?.[0] && (validSideways(+1) || validSideways(-1));
+			const validSideways = n => {
+				let sidewaysCell = String.fromCharCode(v.startCell.charCodeAt(0) + n) + v.startNumber;
+				let aboveEnpassantCell = v.endLetter + (v.endNumber + (v.colour === 'black' ? +1 : -1)) === enpassantCell;
+				return pieceInCell(sidewaysCell) && aboveEnpassantCell;
+			};
+			const enpassant = enpassantCell && v.endLetter === enpassantCell[0] && (validSideways(+1) || validSideways(-1));
 			if (enpassant) enpassantTaken = true;
-			console.log('debug', v.sameLetter,takingPiece,enpassant,pawnMove,forward)
 			return (v.sameLetter || takingPiece || enpassant) && pawnMove && forward;
 		default:
 			return true;
