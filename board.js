@@ -1,5 +1,7 @@
+// Board functions //
+
 function createBoard(l, k) {
-	let table = document.querySelector('table');
+	let table = $('table');
 	for (i = 1; i <= l; i++) {
 
 		let tr = document.createElement('tr');
@@ -8,7 +10,7 @@ function createBoard(l, k) {
 
 		for (j = 1; j <= k; j++) {
 
-			let column = String.fromCharCode(j + 64);
+			let column = indexToLetter(j);
 			let cellName = column + (9 - i);
 			let td = document.createElement('td');
 
@@ -51,57 +53,62 @@ function createBoard(l, k) {
 	}
 }
 
+// Piece functions //
+
 function createPiece(name, colour, cell) {
 	if (!name) return;
 	let piece = document.createElement('img');
 	piece.src = 'assets/chesspieces.png';
 	piece.classList.add(colour);
 	piece.classList.add(name);
-	piece.id = 'piece' + cell;
-	piece.setAttribute('draggable', true);
+	if (cell) {
+		piece.id = 'piece' + cell;
+		piece.setAttribute('draggable', true);
+	}
 	return piece;
 }
 
 function addPiece(name, colour, cell) {
 	removePiece(cell);
-	getCell(cell).appendChild(createPiece(name, colour, cell));
+	$.id(cell).appendChild(createPiece(name, colour, cell));
 }
 
 function removePiece(cell) {
-	getCell(cell).innerHTML = '';
+	$.id(cell).innerHTML = '';
 }
 
-function getCell(cell) {
-	return document.getElementById(cell);
-}
+// Cell functions //
+
 function clearCells(...cells) {
-	for (cell of cells) document.getElementById(cell).innerHTML = cell;
+	for (cell of cells) {
+		$.id(cell).innerHTML = cell;
+	}
 }
 
-function getPieceInCell(cell) {
-	return document.getElementById('piece' + cell);
-}
+const indexToLetter = n => String.fromCharCode(n + 64);
+const getClasses = elem => Array.from(elem ?.classList || []);
+const getPieceClasses = cell => getClasses(getPieceInCell(cell));
+const getPieceInCell = cell => $.id('piece' + cell);
+const pieceInCell = cell => getClasses(getPieceInCell(cell)).length > 0;
+const invertColour = colour => colour === 'white' ? 'black' : 'white';
 
-function pieceInCell(cell) {
-	return getPieceInCell(cell) ?.classList.length > 0;
-}
+// Options functions //
 
 function toggleRules(button) {
 	hasRules = !hasRules;
 	button.classList.toggle("enabled");
 	button.classList.toggle("disabled");
-	currentTurn = currentTurn === 'white' ? 'black' : 'white';
+	currentTurn = invertColour(currentTurn);
 }
 
 function flipBoard(force) {
-	let button = document.getElementById('flip-board');
-	let table = document.querySelector('table');
+	const $table = $('table');
 	if (force) {
-		table.classList.toggle('rotate');
+		$table.classList.toggle('rotate');
 	}
 	else {
-		table.classList.remove('rotate')
-		if (currentTurn === 'black') table.classList.add('rotate');
+		$table.classList.remove('rotate')
+		if (currentTurn === 'black') $table.classList.add('rotate');
 	}
 }
 

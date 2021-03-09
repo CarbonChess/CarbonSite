@@ -50,9 +50,26 @@ function isValid(v) {
 	}
 }
 
+function isCheck(colour) {
+	const kingPiece = document.getElementsByClassName(colour + ' king')[0];
+	const kingCell = kingPiece.parentNode.id;
+	const opposingColour = colour === 'white' ? 'black' : 'white';
+	for (let i = 1; i <= 8; i++) {
+		for (let j = 1; j <= 8; j++) {
+			const cell = indexToLetter(j) + i;
+			if (getPieceClasses(cell).includes(opposingColour)) {
+				const checkPiece = getPieceInCell(cell);
+				const [colour, piece] = getClasses(checkPiece);
+				if (validateMove(colour, piece, cell, kingCell)) return true;
+			}
+		}
+	}
+	return false;
+}
+
 function pieceInWay(v) {
 	let invalidMove = false;
-	let direction = {};
+	const direction = {};
 
 	// determine direction
 	if (v.endCell.charCodeAt(0) > v.startCell.charCodeAt(0)) direction.l = 1;

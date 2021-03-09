@@ -1,6 +1,12 @@
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+$.id = s => document.getElementById(s);
+
 function run() {
-	document.querySelector('table').innerHTML = '';
-	document.getElementById('log').innerHTML = '';
+	$('table').innerHTML = '';
+	$('#log').innerHTML = '';
+	$('#taken-white-pieces').innerHTML = '';
+	$('#taken-black-pieces').innerHTML = '';
 
 	window.hasRules = true;
 	window.autoflip = false;
@@ -12,8 +18,8 @@ function run() {
 	window.enpassantCell = null;
 	window.enpassantTaken = false;
 
-	document.getElementById('toggle-rules').setAttribute('class', 'enabled');
-	document.getElementById('flip-board-automatic').setAttribute('class', 'disabled');
+	$('#toggle-rules').setAttribute('class', 'enabled');
+	$('#flip-board-automatic').setAttribute('class', 'disabled');
 
 	flipBoard();
 	createBoard(8, 8);

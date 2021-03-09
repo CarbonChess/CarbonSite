@@ -7,13 +7,13 @@ function selectPiece(cell) {
 
 function hasClicked(cell) {
 
-	const $cell = document.getElementById('piece' + cell);
+	const $cell = $.id('piece' + cell);
 	const cellClasses = $cell ? Array.from($cell.classList) : [];
 
 	// Cancel a move //
 	if (cell == selectedCell) {
 		// double click: cancel
-		document.getElementById(selectedCell).classList.remove('selected');
+		$.id(selectedCell).classList.remove('selected');
 		selectedCell = null;
 		console.log('X', cell);
 	}
@@ -26,13 +26,13 @@ function hasClicked(cell) {
 		let startCell = selectedCell;
 		let endCell = cell;
 
-		let $startCell = document.getElementById(selectedCell);
-		let $endCell = document.getElementById(endCell);
-		let $startPiece = document.getElementById('piece' + selectedCell);
-		let $endPiece = document.getElementById('piece' + endCell);
+		let $startCell = $.id(selectedCell);
+		let $endCell = $.id(endCell);
+		let $startPiece = $.id('piece' + selectedCell);
+		let $endPiece = $.id('piece' + endCell);
 
-		let startClasses = Array.from($startPiece ?.classList || []);
-		let endClasses = Array.from($endPiece ?.classList || []);
+		let startClasses = getClasses($startPiece);
+		let endClasses = getClasses($endPiece);
 
 		$startCell.classList.remove('selected');
 
@@ -97,16 +97,26 @@ function hasClicked(cell) {
 					console.log('I', startCell, '->', endCell);
 					return;
 				}
-
+				
 				// check en passant
 				// must be after validation
 				if (enpassantTaken && enpassantCell) clearCells(enpassantCell);
 				enpassantCell = piece === 'pawn' && Math.abs(endCell[1] - startCell[1]) === 2 ? endCell : null;
 
+				// log taken piece
+				if (endClasses.length && (validMove || !hasRules)) {
+					let [colour, piece] = getPieceClasses(endCell);
+					let takenPiece = createPiece(piece, colour);
+					$(`#taken-${colour}-pieces`).appendChild(takenPiece);
+				}
+
 				// move the piece
 				$startCell.innerHTML = startCell;
 				$endCell.innerHTML = '';
 				$endCell.appendChild(createPiece(piece, colour, endCell));
+				$$('td').forEach(elem => elem.classList.remove('last-move'));
+				$startCell.classList.add('last-move');
+				$endCell.classList.add('last-move');
 				selectedCell = null;
 
 				// log the move
@@ -116,13 +126,17 @@ function hasClicked(cell) {
 					{ taken: endClasses[0], promoted: canPromote, castled: hasCastled }
 				);
 
+				// check if in check 
+				console.log('check is' , isCheck(invertColour(colour)));
+
 				// hide promotion box
-				document.querySelector('#promotion').classList.add('hide');
-				document.querySelectorAll('#promotion img').forEach(elem => elem.classList.remove('selected'));
+				$('#promotion').classList.add('hide');
+				$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 
 				// switch turn
 				if (hasRules) {
-					currentTurn = currentTurn === 'white' ? 'black' : 'white';
+					$('table').setAttribute('style', '--turn:' + invertColour(currentTurn));
+					currentTurn = invertColour(currentTurn);
 					if (autoflip) flipBoard();
 				}
 			}
@@ -130,21 +144,31 @@ function hasClicked(cell) {
 		}
 	}
 
+	// Check
+	//else if (cellClasses.length&&isCheck(cellClasses[0])) {
+	//	console.log('im in check i think')
+	//}
+
 	// Select piece //
 	else if ($cell && (cellClasses.includes(currentTurn) || !hasRules)) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
-		console.log('\n' + (totalMoves + 1)); // spacer
-		if (
-			!hasRules && cellClasses.includes('pawn')
-			||
-			(cellClasses.includes('white') && +cell[1] === 7)
-			||
-			(cellClasses.includes('black') && +cell[1] === 2)
-		) document.getElementById('promotion').classList.remove('hide');
+		const isPawn = cellClasses.includes('pawn');
+		const isInSecondRow = (cellClasses.includes('white') && +cell[1] === 7) || (cellClasses.includes('black') && +cell[1] === 2);
+		if (isPawn && (!hasRules || isInSecondRow)) {
+			document.getElementById('promotion').classList.remove('hide');
+		}
+
 		selectPiece(cell);
+		console.log('\n' + (totalMoves + 1)); // spacer
 		console.log('T', ...cellClasses);
+
+		$$('#promotion img').forEach(elem => {
+			elem.classList.remove('white');
+			elem.classList.remove('black');
+			elem.classList.add($cell.classList[0]);
+		});
 	}
 
 	// Invalid //
@@ -155,8 +179,9 @@ function hasClicked(cell) {
 }
 
 function setPromotion(elem) {
-	let piece = elem.classList[1];
-	document.querySelectorAll('#promotion img').forEach(elem => elem.classList.remove('selected'));
+	// used in index.html
+	const [colour, piece] = elem.classList;
+	$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 	elem.classList.add('selected');
 	promotionPiece = piece;
 }
@@ -169,21 +194,19 @@ function log(colour, piece, startCell, endCell, count, { taken, promoted, castle
 			default: return piecetype[0].toUpperCase();
 		}
 	}
-	let pieceID = checkID(piece);
-	let box = document.getElementById('log');
 
 	let code = '';
-	if (count % 2 === 0 && hasRules) code += count / 2 + 1 + '. ';
+	if (count % 2 === 0 && hasRules) code += '<br>' + (count / 2 + 1) + '. ';
 	if (castled) code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
 	else {
-		code += pieceID;
+		code += checkID(piece);
 		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();
 		if (taken || enpassantTaken) code += 'x';
 		code += endCell.toLowerCase();
 		if (promoted) code += '=' + checkID(promotionPiece);
 	}
-	if (check) code += '+'
-	box.innerHTML += `<span>` + code + '</span>';
+	if (check) code += '+';
+	$('#log').innerHTML += `<span class="move">` + code + '</span>';
 }
 
 /* Console IDs
