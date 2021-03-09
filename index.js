@@ -8,8 +8,6 @@ function run() {
 	$('#taken-white-pieces').innerHTML = '';
 	$('#taken-black-pieces').innerHTML = '';
 
-	window.hasRules = true;
-	window.autoflip = false;
 	window.selectedCell = null;
 	window.totalMoves = 0;
 	window.currentTurn = 'white';
@@ -18,8 +16,11 @@ function run() {
 	window.enpassantCell = null;
 	window.enpassantTaken = false;
 
-	$('#toggle-rules').setAttribute('class', 'enabled');
-	$('#flip-board-automatic').setAttribute('class', 'disabled');
+	window.hasRules ||= true;
+	//$('#toggle-rules').setAttribute('class', 'enabled');
+
+	window.autoflip ||= false;
+	//$('#flip-board-automatic').setAttribute('class', 'disabled');
 
 	flipBoard();
 	createBoard(8, 8);

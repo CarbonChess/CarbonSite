@@ -13,9 +13,17 @@
 </head>
 
 <body onload="run()">
-	<div id="board">
-		<table style="--turn: white;"></table>
-		<div id="log"></div>
+	<table></table>
+	<div id="icon-options">
+		<div>
+			<button id="flip-board" onclick="flipBoard(true)">
+				<img src="assets/flipboardicon.png">
+			</button>
+		</div>
+		<br>
+		<div>
+			<button id="reset" onclick="run()">Reset</button>
+		</div>
 	</div>
 	<div id="foot">
 		<div id="labelled-options">
@@ -37,18 +45,8 @@
 				</div>
 			</div>
 		</div>
-		<div id="icon-options">
-			<div>
-				<button id="flip-board" onclick="flipBoard(true)">
-					<img src="assets/flipboardicon.png">
-				</button>
-			</div>
-			<br>
-			<div>
-				<button id="reset" onclick="run()">Reset</button>
-			</div>
-		</div>
 	</div>
+	<div id="log"></div>
 	<div id="taken-pieces">
 		<div id="taken-white-pieces"></div>
 		<div id="taken-black-pieces"></div>

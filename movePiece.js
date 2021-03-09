@@ -135,7 +135,6 @@ function hasClicked(cell) {
 
 				// switch turn
 				if (hasRules) {
-					$('table').setAttribute('style', '--turn:' + invertColour(currentTurn));
 					currentTurn = invertColour(currentTurn);
 					if (autoflip) flipBoard();
 				}
