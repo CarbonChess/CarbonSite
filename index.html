@@ -6,10 +6,11 @@
 	<meta name="viewport" content="width=device-width">
 	<title>OpenChess</title>
 	<link href="style.css" rel="stylesheet">
-	<script src="index.js"></script>
-	<script src="board.js"></script>
-	<script src="movePiece.js"></script>
-	<script src="validation.js"></script>
+	<script src="scripts/_index.js"></script>
+	<script src="scripts/board.js"></script>
+	<script src="scripts/helpers.js"></script>
+	<script src="scripts/movePiece.js"></script>
+	<script src="scripts/validation.js"></script>
 </head>
 
 <body onload="run()">
@@ -26,6 +27,7 @@
 		</div>
 	</div>
 	<div id="foot">
+		<div id="points"></div>
 		<div id="labelled-options">
 			<div id="promotion" class="hide">
 				<span>Promotion piece:</span><br>
@@ -47,10 +49,15 @@
 		</div>
 	</div>
 	<div id="log"></div>
-	<div id="taken-pieces">
-		<div id="taken-white-pieces"></div>
-		<div id="taken-black-pieces"></div>
+	<div id="taken-white-pieces">
+		<div id="white-pieces"></div>
+		<span id="white-points"></span>
 	</div>
+	<div id="taken-black-pieces">
+		<span id="black-points"></span>
+		<div id="black-pieces"></div>
+	</div>
+		
 </body>
 
 </html>

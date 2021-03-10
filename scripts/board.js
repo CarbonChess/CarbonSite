@@ -85,12 +85,11 @@ function clearCells(...cells) {
 	}
 }
 
-const indexToLetter = n => String.fromCharCode(n + 64);
-const getClasses = elem => Array.from(elem ?.classList || []);
 const getPieceClasses = cell => getClasses(getPieceInCell(cell));
+const getCell = cell => $.id(cell);
 const getPieceInCell = cell => $.id('piece' + cell);
 const pieceInCell = cell => getClasses(getPieceInCell(cell)).length > 0;
-const invertColour = colour => colour === 'white' ? 'black' : 'white';
+const getPieceColour = cell => getPieceClasses(cell)[0];
 
 // Options functions //
 

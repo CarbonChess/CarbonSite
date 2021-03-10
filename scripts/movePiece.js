@@ -13,6 +13,7 @@ function hasClicked(cell) {
 	// Cancel a move //
 	if (cell == selectedCell) {
 		// double click: cancel
+		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$.id(selectedCell).classList.remove('selected');
 		selectedCell = null;
 		console.log('X', cell);
@@ -34,13 +35,14 @@ function hasClicked(cell) {
 		let startClasses = getClasses($startPiece);
 		let endClasses = getClasses($endPiece);
 
+		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
 
 		if (startClasses) {
 			// is a piece: move it
 			// only move if the cell has metadata
 
-			let isSameColour = (
+			const isSameColour = (
 				(startClasses.includes('white') && endClasses.includes('white'))
 				||
 				(startClasses.includes('black') && endClasses.includes('black'))
@@ -49,6 +51,7 @@ function hasClicked(cell) {
 			if (isSameColour) {
 				// replace selected piece
 				selectPiece(cell);
+				findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
 				console.log('T', ...startClasses);
 			}
 			else {
@@ -60,23 +63,17 @@ function hasClicked(cell) {
 				// Special moves //
 
 				// castling
-				const deltaLetter = Math.abs(endCell.charCodeAt(0) - startCell[0].charCodeAt(0));
 				let hasCastled = false;
-				if (piece === 'king' && deltaLetter === 2 && endCell[1] === startCell[1]) {
-					const queenside = endCell[0] < startCell[0];
-					const validCastling = validateMove(colour, 'castle', startCell, (queenside ? 'B' : 'G') + startCell[1]) && window.castling[currentTurn[0]][queenside ? 'q' : 'k'];
-					if (validCastling) {
-						hasCastled = true;
-						let row = colour === 'white' ? 1 : 8;
-						[kingCell, rookCell] = queenside ? ['C' + row, 'D' + row] : ['G' + row, 'F' + row];
-						clearCells('E' + row, queenside ? 'A' + row : 'H' + row);
-						addPiece('king', colour, kingCell);
-						addPiece('rook', colour, rookCell);
-					}
-				}
-
-				// refresh castling rights 
 				if (piece === 'king') {
+					const { castlingValid, cells: newCells } = checkCastling(new Validation(colour, 'king', startCell, endCell));
+					if (castlingValid) {
+						hasCastled = true;
+						const queenside = endCell[0] < startCell[0];
+						const row = colour === 'white' ? 1 : 8;
+						clearCells('E' + row, queenside ? 'A' + row : 'H' + row);
+						addPiece('king', colour, newCells.king);
+						addPiece('rook', colour, newCells.rook);
+					}
 					castling[currentTurn[0]] = { k: false, q: false };
 				}
 				else if (piece === 'rook') {
@@ -94,10 +91,11 @@ function hasClicked(cell) {
 				const validMove = validateMove(colour, piece, startCell, endCell);
 				if (!validMove && hasRules && !hasCastled) {
 					$startCell.classList.add('selected');
+					findAllMoves(startCell).forEach(cell => getCell(cell).classList.add('valid'));
 					console.log('I', startCell, '->', endCell);
 					return;
 				}
-				
+
 				// check en passant
 				// must be after validation
 				if (enpassantTaken && enpassantCell) clearCells(enpassantCell);
@@ -107,7 +105,7 @@ function hasClicked(cell) {
 				if (endClasses.length && (validMove || !hasRules)) {
 					let [colour, piece] = getPieceClasses(endCell);
 					let takenPiece = createPiece(piece, colour);
-					$(`#taken-${colour}-pieces`).appendChild(takenPiece);
+					$.id(colour + '-pieces').appendChild(takenPiece);
 				}
 
 				// move the piece
@@ -123,11 +121,18 @@ function hasClicked(cell) {
 				console.log('M', startCell, '->', endCell);
 				log(
 					colour, originalPiece, startCell, endCell, totalMoves++,
-					{ taken: endClasses[0], promoted: canPromote, castled: hasCastled }
+					{ taken: endClasses[1], promoted: canPromote, castled: hasCastled }
 				);
 
-				// check if in check 
-				console.log('check is' , isCheck(invertColour(colour)));
+				// highlight if in check
+				const kingPiece = document.getElementsByClassName(colour + ' king')[0];
+				kingCell[colour[0]] = kingPiece.parentNode.id;
+				const opposingColour = invertColour(colour);
+				const kingInCheck = isCheck(opposingColour);
+				$$('td').forEach(elem => elem.classList.remove('check'));
+				if (kingInCheck) {
+					getCell(kingCell[invertColour(colour)[0]]).classList.add('check');
+				}
 
 				// hide promotion box
 				$('#promotion').classList.add('hide');
@@ -143,11 +148,6 @@ function hasClicked(cell) {
 		}
 	}
 
-	// Check
-	//else if (cellClasses.length&&isCheck(cellClasses[0])) {
-	//	console.log('im in check i think')
-	//}
-
 	// Select piece //
 	else if ($cell && (cellClasses.includes(currentTurn) || !hasRules)) {
 		// the piece is selectable
@@ -160,6 +160,10 @@ function hasClicked(cell) {
 		}
 
 		selectPiece(cell);
+		console.log(cell);
+		if (hasRules) {
+			findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
+		}
 		console.log('\n' + (totalMoves + 1)); // spacer
 		console.log('T', ...cellClasses);
 
@@ -194,9 +198,26 @@ function log(colour, piece, startCell, endCell, count, { taken, promoted, castle
 		}
 	}
 
+	if (taken) {
+		const col = colour[0];
+		switch (taken) {
+			case 'pawn': points[col] += 1; break;
+			case 'knight': points[col] += 3; break;
+			case 'bishop': points[col] += 3; break;
+			case 'rook': points[col] += 5; break;
+			case 'queen': points[col] += 9; break;
+			case 'king': points[col] += Infinity; break; // rmv when check
+		}
+		const pointsDiff = { w: points.b - points.w, b: points.w - points.b }
+		$.id('white-points').innerText = pointsDiff.w > 0 ? '+' + pointsDiff.w : '';
+		$.id('black-points').innerText = pointsDiff.b > 0 ? '+' + pointsDiff.b : '';
+	}
+
 	let code = '';
 	if (count % 2 === 0 && hasRules) code += '<br>' + (count / 2 + 1) + '. ';
-	if (castled) code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
+	if (castled) {
+		code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
+	}
 	else {
 		code += checkID(piece);
 		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();

@@ -1,6 +1,6 @@
 # OpenChess
 
-![Pieces](assets/chesspieces.png)
+![Pieces](assets/chesspieces.svg)
 
 OpenChess is a versatile ~~bug-free~~ chess client.
 

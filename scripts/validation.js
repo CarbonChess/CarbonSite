@@ -28,13 +28,15 @@ function isValid(v) {
 		case 'knight':
 			return v.deltaNumber + v.deltaLetter == 3 && v.deltaLetter !== 0 && v.deltaNumber !== 0;
 		case 'king':
-			return (v.deltaLetter <= 1 && v.deltaNumber <= 1);
+			const singleMove = v.deltaLetter <= 1 && v.deltaNumber <= 1;
+			const castleMove = v.deltaLetter <= 2 &&!v.deltaNumber&& (castling[v.colour[0]].k || castling[v.colour[0]].q);
+			return (singleMove || castleMove);
 		case 'bishop':
 			return v.deltaLetter === v.deltaNumber;
 		case 'queen':
 			return v.deltaLetter === 0 || v.deltaNumber === 0 || v.deltaLetter === v.deltaNumber;
 		case 'pawn':
-			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(v.endCell);
+			const takingPiece = v.deltaLetter === 1 && v.deltaNumber === 1 && pieceInCell(v.endCell) && getPieceColour(v.endCell) === invertColour(v.colour);
 			const pawnMove = v.deltaNumber === 1 || (v.deltaNumber === 2 && [2, 7].includes(v.startNumber));
 			const forward = v.colour === 'white' ? v.endNumber > v.startNumber : v.endNumber < v.startNumber;
 			const validSideways = n => {
@@ -42,29 +44,11 @@ function isValid(v) {
 				let aboveEnpassantCell = v.endLetter + (v.endNumber + (v.colour === 'black' ? +1 : -1)) === enpassantCell;
 				return pieceInCell(sidewaysCell) && aboveEnpassantCell;
 			};
-			const enpassant = enpassantCell && v.endLetter === enpassantCell[0] && (validSideways(+1) || validSideways(-1));
-			if (enpassant) enpassantTaken = true;
-			return (v.sameLetter || takingPiece || enpassant) && pawnMove && forward;
+			enpassantTaken = enpassantCell && v.endLetter === enpassantCell[0] ? (validSideways(+1) || validSideways(-1)) : null;
+			return (v.sameLetter || takingPiece || enpassantTaken) && pawnMove && forward;
 		default:
 			return true;
 	}
-}
-
-function isCheck(colour) {
-	const kingPiece = document.getElementsByClassName(colour + ' king')[0];
-	const kingCell = kingPiece.parentNode.id;
-	const opposingColour = colour === 'white' ? 'black' : 'white';
-	for (let i = 1; i <= 8; i++) {
-		for (let j = 1; j <= 8; j++) {
-			const cell = indexToLetter(j) + i;
-			if (getPieceClasses(cell).includes(opposingColour)) {
-				const checkPiece = getPieceInCell(cell);
-				const [colour, piece] = getClasses(checkPiece);
-				if (validateMove(colour, piece, cell, kingCell)) return true;
-			}
-		}
-	}
-	return false;
 }
 
 function pieceInWay(v) {
@@ -101,13 +85,79 @@ function pieceInWay(v) {
 		case 'bishop':
 		case 'queen':
 		case 'castle':
-			for (let i = 1; i <= Math.max(v.deltaLetter, v.deltaNumber) - 1; i++) {
+			let hasCollided = false;
+			for (let i = 1; i <= Math.max(v.deltaLetter, v.deltaNumber); i++) {
 				let letter = String.fromCharCode(parseInt(v.startLetter.charCodeAt(0)) + direction.l * i);
 				let number = v.startNumber + direction.n * i;
-				if (pieceInCell(letter + number)) invalidMove = true;
+
+				if (getPieceColour(letter + number) === v.colour || hasCollided)
+					invalidMove = true;
+				if ((getPieceColour(letter + number) == invertColour(v.colour) && !hasCollided))
+					hasCollided = true;
 			}
 			return invalidMove;
 		default:
-			return false;
+			if (getPieceColour(v.endCell) === v.colour)
+				return true;
+			else
+				return false;
 	}
 }
+
+function isCheck(colour) {
+	for (let i = 1; i <= 8; i++) {
+		for (let j = 1; j <= 8; j++) {
+			const cell = indexToLetter(j) + i;
+			if (getPieceClasses(cell).includes(invertColour(colour))) {
+				// if opposite colour, check its moves
+				const checkPiece = getPieceInCell(cell);
+				const [colour, piece] = getClasses(checkPiece);
+				if (validateMove(colour, piece, cell, kingCell[invertColour(colour)[0]]))
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+function checkCastling(v) {
+	let castlingValid = false;
+	let cells = {};
+	if (v.deltaLetter === 2 && v.endCell[1] === v.startCell[1]) {
+		const queenside = v.endCell[0] < v.startCell[0];
+		const row = v.colour === 'white' ? 1 : 8;
+		castlingValid = castling[v.colour[0]][queenside ? 'q' : 'k'] && validateMove(v.colour, 'castle', v.startCell, (queenside ? 'B' : 'G') + v.startCell[1]);
+
+		if (castlingValid) {
+			cells = queenside ? { king: 'C' + row, rook: 'D' + row } : { king: 'G' + row, rook: 'F' + row }
+		}
+	}
+	return { castlingValid, cells }
+}
+
+function findAllMoves(targetCell) {
+	let possibleSquares = [];
+	const [colour, piece] = getClasses(getPieceInCell(targetCell));
+	for (let i = 1; i <= 8; i++) {
+		for (let j = 1; j <= 8; j++) {
+			const cell = indexToLetter(j) + i;
+			if (validateMove(colour, piece, targetCell, cell)) {
+				possibleSquares.push(cell);
+			}
+		}
+	}
+
+	return possibleSquares;
+
+}
+
+/*function allPieceMoves(colour) {
+	for (let i = 1; i <= 8; i++) {
+		for (let j = 1; j <= 8; j++) {
+			const cell = indexToLetter(j) + i;
+			if (getPieceClasses(cell).includes(colour)) {
+				let possibleSquares = findAllMoves(cell);
+			}
+		}
+	}
+}*/
