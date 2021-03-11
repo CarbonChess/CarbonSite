@@ -16,15 +16,11 @@
 <body onload="run()">
 	<table></table>
 	<div id="icon-options">
-		<div>
-			<button id="flip-board" onclick="flipBoard(true)">
-				<img src="assets/flipboardicon.png">
-			</button>
-		</div>
-		<br>
-		<div>
-			<button id="reset" onclick="run()">Reset</button>
-		</div>
+		<button id="flip-board" onclick="flipBoard(true)">
+			<img src="assets/flipboardicon.png">
+		</button><br>
+		<button id="reset" onclick="run()">Reset</button><br>
+		<button id="undo" onclick="undoLastMove()">Undo</button>
 	</div>
 	<div id="foot">
 		<div id="points"></div>

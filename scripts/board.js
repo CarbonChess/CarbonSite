@@ -1,18 +1,17 @@
 // Board functions //
 
-function createBoard(l, k) {
-	let table = $('table');
+function createBoard(l = 8, k = 8) {
+	$('table').innerHTML = '';
 	for (i = 1; i <= l; i++) {
 
-		let tr = document.createElement('tr');
+		const tr = document.createElement('tr');
 		tr.id = 'r' + i;
-		table.appendChild(tr);
+		$('table').appendChild(tr);
 
 		for (j = 1; j <= k; j++) {
 
-			let column = indexToLetter(j);
-			let cellName = column + (9 - i);
-			let td = document.createElement('td');
+			const cellName = indexToLetter(j) + (9 - i);
+			const td = document.createElement('td');
 
 			td.id = cellName;
 			td.setAttribute('onclick', `hasClicked('${cellName}')`);
@@ -51,6 +50,42 @@ function createBoard(l, k) {
 		}
 
 	}
+	movesList.push(createFen())
+}
+
+function createBoardFromFen(fenString) {
+	createBoard();
+	$$('td').forEach(elem => elem.innerHTML = elem.id);
+	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
+	let currentRow = 8;
+	let currentColumn = 1;
+
+	if (fenString.match(/\//g).length !== 7) {
+		console.error('Incorrect FEN');
+		return;
+	}
+
+	let [rows, ...data] = fenString.split(' ');
+	for (let i = 0; i < rows.length; i++) {
+		const char = rows[i];
+		if (char === '\/') {
+			currentColumn = 1;
+			currentRow--;
+		}
+		else if (/[0-9]/.test(char)) {
+			currentColumn += +char;
+		}
+		else {
+			let colour = char === char.toUpperCase() ? 'white' : 'black';
+			let piece = pieces[char.toLowerCase()];
+			const cell = indexToLetter(currentColumn) + currentRow;
+			getCell(cell).innerHTML = '';
+			getCell(cell).appendChild(createPiece(piece, colour, cell));
+			currentColumn++;
+		}
+
+	}
+
 }
 
 // Piece functions //

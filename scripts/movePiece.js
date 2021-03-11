@@ -59,6 +59,8 @@ function hasClicked(cell) {
 
 				let [colour, piece] = startClasses;
 				const originalPiece = piece;
+				let startsInCheck = isCheck(colour);
+				window.last = {castling, enpassantCell, points};
 
 				// Special moves //
 
@@ -83,7 +85,7 @@ function hasClicked(cell) {
 
 				// promotion
 				const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-				if (canPromote) piece = promotionPiece;
+				if (canPromote) piece = promotionPiece; //todo fix
 
 				// Move piece //
 
@@ -97,7 +99,6 @@ function hasClicked(cell) {
 				}
 
 				// check en passant
-				// must be after validation
 				if (enpassantTaken && enpassantCell) clearCells(enpassantCell);
 				enpassantCell = piece === 'pawn' && Math.abs(endCell[1] - startCell[1]) === 2 ? endCell : null;
 
@@ -109,13 +110,22 @@ function hasClicked(cell) {
 				}
 
 				// move the piece
+				if (startsInCheck) { }
 				$startCell.innerHTML = startCell;
 				$endCell.innerHTML = '';
 				$endCell.appendChild(createPiece(piece, colour, endCell));
+				if (startsInCheck && isCheck(colour)) { }
 				$$('td').forEach(elem => elem.classList.remove('last-move'));
 				$startCell.classList.add('last-move');
 				$endCell.classList.add('last-move');
 				selectedCell = null;
+
+				// highlight if in check
+				const opposingColour = invertColour(colour);
+				kingCell[colour[0]] = $(`.${colour}.king`).parentNode.id;
+				$$(`td`).forEach(elem => elem.classList.remove('check'));
+				if (isCheck(colour)) getCell(kingCell[colour[0]]).classList.add('check');
+				if (isCheck(opposingColour)) getCell(kingCell[opposingColour[0]]).classList.add('check');
 
 				// log the move
 				console.log('M', startCell, '->', endCell);
@@ -123,16 +133,7 @@ function hasClicked(cell) {
 					colour, originalPiece, startCell, endCell, totalMoves++,
 					{ taken: endClasses[1], promoted: canPromote, castled: hasCastled }
 				);
-
-				// highlight if in check
-				const kingPiece = document.getElementsByClassName(colour + ' king')[0];
-				kingCell[colour[0]] = kingPiece.parentNode.id;
-				const opposingColour = invertColour(colour);
-				const kingInCheck = isCheck(opposingColour);
-				$$('td').forEach(elem => elem.classList.remove('check'));
-				if (kingInCheck) {
-					getCell(kingCell[invertColour(colour)[0]]).classList.add('check');
-				}
+				movesList.push(createFen());
 
 				// hide promotion box
 				$('#promotion').classList.add('hide');
@@ -179,6 +180,18 @@ function hasClicked(cell) {
 		// empty square selected
 		console.log('I', cell);
 	}
+}
+
+function undoLastMove() {
+	if (totalMoves === 0) return;
+	movesList.pop();
+	createBoardFromFen(movesList.pop());
+	totalMoves--;
+	currentTurn = invertColour(currentTurn);
+	window.castling = window.last.castling;
+	window.enpassantCell = window.last.enpassantCell;
+	window.points = window.last.points;
+	$('#log').removeChild($('#log').lastChild);
 }
 
 function setPromotion(elem) {

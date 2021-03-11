@@ -3,6 +3,8 @@
 :root { /* Variables */
 	--light-color: #ebdcc2;
 	--dark-color: #be9e73;
+	--cell-size: 50px;
+	--board-size: calc(var(--cell-size) * 8);
 }
 
 body {
@@ -21,8 +23,8 @@ table {
 
 td {
 	background: var(--light-color);
-	width: 50px;
-	height: 50px;
+	width: var(--cell-size);
+	height: var(--cell-size);
 	text-align: center;
 	cursor: pointer;
 }
@@ -66,9 +68,9 @@ img.black.bishop {object-position: calc(9*-32px) center;}
 img.black.queen {object-position: calc(10*-32px) center;}
 img.black.king {object-position: calc(11*-32px) center;}
 
+.last-move {background: rgb(239, 241, 99) !important;}
 .valid {background: rgb(66, 212, 91) !important;}
 .check {background: rgb(240, 67, 67) !important;}
-.last-move {background: rgb(239, 241, 99) !important;}
 .selected {background: rgb(124, 192, 214) !important;}
 
 /* Footer */
@@ -95,7 +97,7 @@ button.disabled::after {content: 'No';}
 
 #log {
 	margin: 1em auto;
-	max-width: 150px;
+	width: 150px;
 	overflow-wrap: break-word;
 	text-align: center;
 }
@@ -149,8 +151,8 @@ button.disabled::after {content: 'No';}
 		margin: 50px auto;
     	display: grid;
     	grid-template-areas: "icons table log" "white options black";
-		grid-template-columns: 1fr auto 1fr;
-		grid-template-rows: auto;
+		grid-template-columns: 1fr var(--board-size) 1fr;
+		grid-template-rows: var(--board-size);
 	}
 
 	table {
