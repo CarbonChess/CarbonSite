@@ -43,7 +43,8 @@ function hasClicked(cell) {
 		let [colour, piece] = startClasses;
 		const originalPiece = piece;
 		let taken = false;
-		window.last = { castling, enpassantCell, points };
+		window.last.castling = castling;
+		window.last.enpassantCell = enpassantCell;
 
 		const isSameColour = (
 			(startClasses.includes('white') && endClasses.includes('white'))
@@ -183,13 +184,14 @@ function hasClicked(cell) {
 function undoLastMove() {
 	if (totalMoves === 0) return;
 	movesList.pop();
-	createBoardFromFen(movesList[movesList.length - 1]);
+	const movesListLast = movesList[movesList.length - 1];
+	createBoardFromFen(movesListLast);
 	kingCell[currentTurn[0]] = $(`.${currentTurn}.king`).parentNode.id;
 	totalMoves--;
 	currentTurn = invertColour(currentTurn);
 	window.castling = window.last.castling;
 	window.enpassantCell = window.last.enpassantCell;
-	window.points = window.last.points;
+	window.points = getPointsFromFen(movesListLast);
 	logPoints();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => elem.parentNode.innerHTML = '');
 	$('#log').removeChild($('#log').lastChild);
@@ -204,11 +206,11 @@ function setPromotion(elem) {
 }
 
 function log(colour, piece, startCell, endCell, endClasses, count, { taken, promoted, castled, check }) {
-	const checkID = function (piecetype) {
-		switch (piecetype) {
+	const checkID = function (piece) {
+		switch (piece) {
 			case 'pawn': return '';
 			case 'knight': return 'N';
-			default: return piecetype[0].toUpperCase();
+			default: return piece[0].toUpperCase();
 		}
 	}
 

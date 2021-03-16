@@ -18,7 +18,7 @@ body {
 table {
 	border-collapse: collapse;
 	user-select: none;
-	transition: 0.5s;
+	transition: 0.4s;
 }
 
 td {
@@ -40,7 +40,7 @@ table.rotate, table.rotate td {
 
 /* Pieces */
 
-img {
+img:not(.hd) {
 	image-rendering: pixelated; /* chrome, edge */
 	image-rendering: crisp-edges; /* firefox */
 	object-fit: cover;
@@ -68,7 +68,7 @@ img.black.bishop {object-position: calc(9*-32px) center;}
 img.black.queen {object-position: calc(10*-32px) center;}
 img.black.king {object-position: calc(11*-32px) center;}
 
-.last-move {background: rgb(219, 226, 122) !important;}
+.last-move {background: rgb(228, 230, 129) !important;}
 .valid {background: rgb(105, 194, 132) !important;}
 .check {background: rgb(231, 70, 70) !important;}
 .selected {background: rgb(124, 192, 214) !important;}
@@ -114,6 +114,7 @@ button.disabled::after {content: 'No';}
 
 #icon-options,
 #labelled-options {
+	margin-top: 0.5em;
 	text-align: center;
 }
 
@@ -133,7 +134,7 @@ button.disabled::after {content: 'No';}
 	text-align: left;
 }
 
-#taken-black-pieces{
+#taken-black-pieces {
 	display: flex;
 	text-align: right;
 }
@@ -147,12 +148,13 @@ button.disabled::after {content: 'No';}
 
 /* Responsive */
 
-@media (min-width: 601px) {
+@media (min-width: 600px) {
 
 	body {
 		margin: 50px auto;
-    	display: grid;
-    	grid-template-areas: "icons table log" "white options black";
+    display: grid;
+		grid-gap: 6px;
+    grid-template-areas: "icons table log" "white options black";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: calc(var(--board-size) + 20px);
 	}
@@ -166,6 +168,9 @@ button.disabled::after {content: 'No';}
 	}
 
 	#icon-options {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		grid-area: icons;
 	}
 
@@ -185,22 +190,6 @@ button.disabled::after {content: 'No';}
 	#log {
 		overflow: auto;
 		grid-area: log;
-	}
-
-}
-
-@media (max-width: 600px) {
-
-	#icon-options {
-		margin-top: 1em;
-	}
-
-	#icon-options div {
-		display: inline-block;
-	}
-
-	#icon-options br {
-		display: none;
 	}
 
 }
