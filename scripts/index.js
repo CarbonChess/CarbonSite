@@ -4,9 +4,7 @@ $.id = s => document.getElementById(s);
 $$.className = s => document.getElementsByClassName(s);
 
 function run() {
-	$('#log').innerHTML = '';
-	$('#white-pieces').innerHTML = '';
-	$('#black-pieces').innerHTML = '';
+	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
 	window.selectedCell = null;
 	window.totalMoves = 0;
@@ -18,7 +16,7 @@ function run() {
 	window.enpassantTaken = false;
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
-	window.last = {castling, enpassantCell, points};
+	window.last = { castling, enpassantCell, points };
 
 	if (window.hasRules === undefined) {
 		window.hasRules = true;
@@ -31,5 +29,5 @@ function run() {
 	}
 
 	flipBoard();
-	createBoard();
+	createBoard(8, true);
 }

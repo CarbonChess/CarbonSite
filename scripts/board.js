@@ -1,14 +1,14 @@
 // Board functions //
 
-function createBoard(l = 8, k = 8) {
+function createBoard(size, initial) {
 	$('table').innerHTML = '';
-	for (i = 1; i <= l; i++) {
+	for (i = 1; i <= size; i++) {
 
 		const tr = document.createElement('tr');
 		tr.id = 'r' + i;
 		$('table').appendChild(tr);
 
-		for (j = 1; j <= k; j++) {
+		for (j = 1; j <= size; j++) {
 
 			const cellName = indexToLetter(j) + (9 - i);
 			const td = document.createElement('td');
@@ -21,18 +21,18 @@ function createBoard(l = 8, k = 8) {
 
 			// add pieces
 			let pieceName, pieceColour;
-			pieceColour = (i < l / 2) ? 'black' : 'white';
+			pieceColour = (i < size / 2) ? 'black' : 'white';
 
-			if (i === 1 || i === l) {
+			if (i === 1 || i === size) {
 				// first rows
-				const cell = n => j === n || j === k - n + 1;
+				const cell = n => j === n || j === size - n + 1;
 				if (cell(1)) pieceName = 'rook';
 				else if (cell(2)) pieceName = 'knight';
 				else if (cell(3)) pieceName = 'bishop';
 				else if (j === 4) pieceName = 'queen';
-				else if (j === k - 3) pieceName = 'king';
+				else if (j === size - 3) pieceName = 'king';
 			}
-			else if (i === 2 || i === l - 1) {
+			else if (i === 2 || i === size - 1) {
 				// second rows
 				pieceName = 'pawn';
 			}
@@ -50,11 +50,11 @@ function createBoard(l = 8, k = 8) {
 		}
 
 	}
-	movesList.push(createFen())
+	if (initial) movesList.push(createFen())
 }
 
 function createBoardFromFen(fenString) {
-	createBoard();
+	createBoard(8, false);
 	$$('td').forEach(elem => elem.innerHTML = elem.id);
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
@@ -120,6 +120,7 @@ function clearCells(...cells) {
 	}
 }
 
+const getClasses = elem => Array.from(elem ?.classList || []);
 const getPieceClasses = cell => getClasses(getPieceInCell(cell));
 const getCell = cell => $.id(cell);
 const getPieceInCell = cell => $.id('piece' + cell);

@@ -1,8 +1,8 @@
 /* Page */
 
 :root { /* Variables */
-	--light-color: #ebdcc2;
-	--dark-color: #be9e73;
+	--light-color: #f0d9b5;
+	--dark-color: #c4946e;
 	--cell-size: 50px;
 	--board-size: calc(var(--cell-size) * 8);
 }
@@ -68,18 +68,20 @@ img.black.bishop {object-position: calc(9*-32px) center;}
 img.black.queen {object-position: calc(10*-32px) center;}
 img.black.king {object-position: calc(11*-32px) center;}
 
-.last-move {background: rgb(239, 241, 99) !important;}
-.valid {background: rgb(66, 212, 91) !important;}
-.check {background: rgb(240, 67, 67) !important;}
+.last-move {background: rgb(219, 226, 122) !important;}
+.valid {background: rgb(105, 194, 132) !important;}
+.check {background: rgb(231, 70, 70) !important;}
 .selected {background: rgb(124, 192, 214) !important;}
 
 /* Footer */
 
 button {
 	display: inline-block;
-	width: 60px;
-	padding: 4px 6px;
+	width: 50px;
+	height: 50px;
+	padding: 2px 3px;
 	border: 1px solid #0004;
+	vertical-align: middle;
 	text-align: center;
 	border-radius: 2px;
 	font-size: 16px;
@@ -115,9 +117,9 @@ button.disabled::after {content: 'No';}
 	text-align: center;
 }
 
-#flip-board {
-	width: 45px;
-	height: 45px;
+#labelled-options button {
+	width: 60px;
+	height: 2em;
 }
 
 #points {
@@ -152,11 +154,15 @@ button.disabled::after {content: 'No';}
     	display: grid;
     	grid-template-areas: "icons table log" "white options black";
 		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: var(--board-size);
+		grid-template-rows: calc(var(--board-size) + 20px);
 	}
 
 	table {
 		grid-area: table;
+	}
+
+	button {
+		margin-bottom: 6px;
 	}
 
 	#icon-options {

@@ -17,10 +17,16 @@
 	<table></table>
 	<div id="icon-options">
 		<button id="flip-board" onclick="flipBoard(true)">
-			<img src="assets/flipboardicon.png">
-		</button><br>
-		<button id="reset" onclick="run()">Reset</button><br>
-		<button id="undo" onclick="undoLastMove()">Undo</button>
+			<img src="assets/flip.png">
+		</button>
+		<br>
+		<button id="reset" onclick="run()">
+			Reset
+		</button>
+		<br>
+		<button id="undo" onclick="undoLastMove()">
+			<img src="assets/undo.png">
+		</button>
 	</div>
 	<div id="foot">
 		<div id="points"></div>
@@ -44,14 +50,14 @@
 			</div>
 		</div>
 	</div>
-	<div id="log"></div>
+	<div id="log" class="resettable"></div>
 	<div id="taken-white-pieces">
-		<div id="white-pieces"></div>
-		<span id="white-points"></span>
+		<div id="white-pieces" class="resettable"></div>
+		<span id="white-points" class="resettable"></span>
 	</div>
 	<div id="taken-black-pieces">
-		<span id="black-points"></span>
-		<div id="black-pieces"></div>
+		<span id="black-points" class="resettable"></span>
+		<div id="black-pieces" class="resettable"></div>
 	</div>
 		
 </body>
