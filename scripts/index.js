@@ -6,8 +6,9 @@ $$.className = s => document.getElementsByClassName(s);
 function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
-	window.selectedCell = null;
+	window.ingame = true;
 	window.totalMoves = 0;
+	window.selectedCell = null;
 	window.currentTurn = 'white';
 	window.promotionPiece = 'queen';
 	window.kingCell = { w: 'E1', b: 'E8' };
@@ -16,7 +17,7 @@ function run() {
 	window.enpassantTaken = false;
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
-	window.last = { castling, enpassantCell, points };
+	window.lastEnpassantCell = enpassantCell;
 
 	if (window.hasRules === undefined) {
 		window.hasRules = true;
@@ -29,5 +30,7 @@ function run() {
 	}
 
 	flipBoard();
-	createBoard(8, true);
+
+	if (location.search) createBoardFromFen(location.search.replace('?', ''));
+	else createBoard(8, true);
 }

@@ -1,8 +1,8 @@
 # OpenChess
 
-![Pieces](assets/chesspieces.svg)
+![Pieces](assets/chesspieces.png)
 
-OpenChess is a versatile ~~bug-free~~ chess client.
+OpenChess is a versatile ~~***bug-free***~~ chess client.
 
 Play legitimately or turn rules off to play as you want!
 

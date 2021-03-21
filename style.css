@@ -41,11 +41,12 @@ table.rotate, table.rotate td {
 /* Pieces */
 
 img:not(.hd) {
-	image-rendering: pixelated; /* chrome, edge */
-	image-rendering: crisp-edges; /* firefox */
-	object-fit: cover;
 	width: 32px;
 	height: 32px;
+	object-fit: cover;
+	user-select: none;
+	image-rendering: pixelated; /* chrome, edge */
+	image-rendering: crisp-edges; /* firefox */
 }
 
 td img {
@@ -69,9 +70,16 @@ img.black.queen {object-position: calc(10*-32px) center;}
 img.black.king {object-position: calc(11*-32px) center;}
 
 .last-move {background: rgb(228, 230, 129) !important;}
-.valid {background: rgb(105, 194, 132) !important;}
+.valid {background: rgb(155, 207, 144) !important;}
 .check {background: rgb(231, 70, 70) !important;}
 .selected {background: rgb(124, 192, 214) !important;}
+
+/* Header */
+#winner {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.5em;
+}
 
 /* Footer */
 
@@ -98,8 +106,9 @@ button.disabled::after {content: 'No';}
 }
 
 #log {
-	margin: 1em auto;
+	margin: 0 auto;
 	width: 150px;
+	border: 2px solid #111;
 	overflow-wrap: break-word;
 	text-align: center;
 }
@@ -129,21 +138,15 @@ button.disabled::after {content: 'No';}
 	text-align: center;
 }
 
-#taken-white-pieces {
-	display: flex;
-	text-align: left;
-}
-
+#taken-white-pieces,
 #taken-black-pieces {
-	display: flex;
-	text-align: right;
+	margin: 1em 3em;
 }
 
 #black-points,
 #white-points {
-    vertical-align: middle;
-    line-height: 36px;
-    font-size: large;
+  vertical-align: middle;
+  font-size: large;
 }
 
 /* Responsive */
@@ -154,9 +157,9 @@ button.disabled::after {content: 'No';}
 		margin: 50px auto;
     display: grid;
 		grid-gap: 6px;
-    grid-template-areas: "icons table log" "white options black";
+    grid-template-areas: ". winner ." "icons table log" "black options white";
 		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: calc(var(--board-size) + 20px);
+		grid-template-rows: min-content calc(var(--board-size) + 20px) 1fr;
 	}
 
 	table {
@@ -165,6 +168,10 @@ button.disabled::after {content: 'No';}
 
 	button {
 		margin-bottom: 6px;
+	}
+
+	#winner {
+		grid-area: winner;
 	}
 
 	#icon-options {

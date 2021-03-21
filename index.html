@@ -7,13 +7,16 @@
 	<title>OpenChess</title>
 	<link href="style.css" rel="stylesheet">
 	<script src="scripts/index.js"></script>
+	<script src="scripts/fen.js"></script>
+	<script src="scripts/game-cycle.js"></script>
 	<script src="scripts/board.js"></script>
 	<script src="scripts/helpers.js"></script>
-	<script src="scripts/movePiece.js"></script>
+	<script src="scripts/pieces.js"></script>
 	<script src="scripts/validation.js"></script>
 </head>
 
 <body onload="run()">
+	<div id="winner" class="resettable"></div>
 	<table></table>
 	<div id="icon-options">
 		<button id="flip-board" onclick="flipBoard(true)">
@@ -27,7 +30,6 @@
 		</button>
 	</div>
 	<div id="foot">
-		<div id="points"></div>
 		<div id="labelled-options">
 			<div id="promotion" class="hide">
 				<span>Promotion piece:</span><br>
@@ -45,17 +47,23 @@
 					<span class="label">Automatic orient:</span>
 					<button id="flip-board-automatic" class="disabled" onclick="changeAutoflip(this)"></button>
 				</div>
+				<div>
+					<span class="label">Create permalink:</span>
+					<button onclick="createLink()">Create</button>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div id="log" class="resettable"></div>
-	<div id="taken-white-pieces">
-		<div id="white-pieces" class="resettable"></div>
-		<span id="white-points" class="resettable"></span>
-	</div>
 	<div id="taken-black-pieces">
+		<strong>White</strong>
 		<span id="black-points" class="resettable"></span>
 		<div id="black-pieces" class="resettable"></div>
+	</div>
+	<div id="taken-white-pieces">
+		<strong>Black</strong>
+		<span id="white-points" class="resettable"></span>
+		<div id="white-pieces" class="resettable"></div>
 	</div>
 		
 </body>

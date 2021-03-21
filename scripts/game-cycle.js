@@ -1,17 +1,11 @@
-function selectPiece(cell) {
-	selectedCell = cell;
-	const $cell = document.getElementById(selectedCell);
-	$cell ?.classList.add('selected');
-	console.log('S', selectedCell);
-}
-
 function hasClicked(cell) {
+	if (!ingame) return;
 
 	const $cell = $.id('piece' + cell);
 	const cellClasses = $cell ? Array.from($cell.classList) : [];
 
 	// Cancel a move //
-	if (cell == selectedCell) {
+	if (cell === selectedCell) {
 		// double click: cancel
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$.id(selectedCell).classList.remove('selected');
@@ -24,16 +18,16 @@ function hasClicked(cell) {
 		// a cell has already been selected
 		// move the piece
 
-		let startCell = selectedCell;
-		let endCell = cell;
+		const startCell = selectedCell;
+		const endCell = cell;
 
-		let $startCell = $.id(selectedCell);
-		let $endCell = $.id(endCell);
-		let $startPiece = $.id('piece' + selectedCell);
-		let $endPiece = $.id('piece' + endCell);
+		const $startCell = $.id(selectedCell);
+		const $endCell = $.id(endCell);
+		const $startPiece = $.id('piece' + selectedCell);
+		const $endPiece = $.id('piece' + endCell);
 
-		let startClasses = getClasses($startPiece);
-		let endClasses = getClasses($endPiece);
+		const startClasses = getClasses($startPiece);
+		const endClasses = getClasses($endPiece);
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
@@ -43,8 +37,7 @@ function hasClicked(cell) {
 		let [colour, piece] = startClasses;
 		const originalPiece = piece;
 		let taken = false;
-		window.last.castling = castling;
-		window.last.enpassantCell = enpassantCell;
+		window.lastEnpassantCell = enpassantCell;
 
 		const isSameColour = (
 			(startClasses.includes('white') && endClasses.includes('white'))
@@ -70,9 +63,8 @@ function hasClicked(cell) {
 				hasCastled = true;
 				const queenside = endCell[0] < startCell[0];
 				const row = colour === 'white' ? 1 : 8;
-				clearCells('E' + row, queenside ? 'A' + row : 'H' + row);
-				addPiece('king', colour, newCells.king);
-				addPiece('rook', colour, newCells.rook);
+				movePiece('E' + row, newCells.king);
+				movePiece(queenside ? 'A' + row : 'H' + row, newCells.rook);
 			}
 			castling[currentTurn[0]] = { k: false, q: false };
 		}
@@ -88,7 +80,7 @@ function hasClicked(cell) {
 		// Move piece //
 
 		// validate move
-		const validMove = validateMove(colour, piece, startCell, endCell);
+		const validMove = validateMove(colour, originalPiece, startCell, endCell);
 		if (!validMove && hasRules && !hasCastled) {
 			$startCell.classList.add('selected');
 			findAllMoves(startCell).forEach(cell => getCell(cell).classList.add('valid'));
@@ -99,16 +91,11 @@ function hasClicked(cell) {
 		// display taken piece on side
 		if (enpassantTaken || endClasses.length && (validMove || !hasRules)) {
 			taken = true;
-			const [colour, piece] = getPieceClasses(enpassantCell || endCell);
-			const takenPiece = createPiece(piece, colour);
-			takenPiece.setAttribute('data-move', totalMoves);
-			$.id(colour + '-pieces').appendChild(takenPiece);
+			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
 		}
 
 		// move the piece
-		$startCell.innerHTML = startCell;
-		$endCell.innerHTML = '';
-		$endCell.appendChild(createPiece(piece, colour, endCell));
+		if (!hasCastled) movePiece(startCell, endCell);
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
@@ -131,11 +118,20 @@ function hasClicked(cell) {
 
 		// highlight if in check
 		const opposingColour = invertColour(colour);
-		kingCell[colour[0]] = $(`.${colour}.king`).parentNode.id;
+		updateKingCells();
 		if (isCheck(colour) && hasRules) undoLastMove();
 		$$(`td`).forEach(elem => elem.classList.remove('check'));
 		if (isCheck(colour)) getCell(kingCell[colour[0]]).classList.add('check');
 		if (isCheck(opposingColour)) getCell(kingCell[opposingColour[0]]).classList.add('check');
+
+		// game ending
+		let winner = undefined;
+		if (gameEndingStatus(opposingColour) === 'checkmate') winner = colour;
+		else if (gameEndingStatus(opposingColour) === 'stalemate' || threefoldRepetition()) winner = false;
+		if (winner !== undefined) {
+			ingame = false;
+			$('#winner').innerText = winner ? winner + ' wins' : 'Draw';
+		}
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
@@ -155,7 +151,11 @@ function hasClicked(cell) {
 		// mark this piece as being in process of moving
 
 		const isPawn = cellClasses.includes('pawn');
-		const isInSecondRow = (cellClasses.includes('white') && +cell[1] === 7) || (cellClasses.includes('black') && +cell[1] === 2);
+		const isInSecondRow = (
+			(cellClasses.includes('white') && +cell[1] === 7)
+			||
+			(cellClasses.includes('black') && +cell[1] === 2)
+		);
 		if (isPawn && (!hasRules || isInSecondRow)) {
 			document.getElementById('promotion').classList.remove('hide');
 		}
@@ -164,13 +164,11 @@ function hasClicked(cell) {
 		if (hasRules) {
 			findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
 		}
-		console.log('\n' + (totalMoves + 1)); // spacer
+		console.log('\n' + (totalMoves + 1));
 		console.log('T', ...cellClasses);
 
 		$$('#promotion img').forEach(elem => {
-			elem.classList.remove('white');
-			elem.classList.remove('black');
-			elem.classList.add($cell.classList[0]);
+			elem.setAttribute('class', elem.getAttribute('class').replace(/white|black/, $cell.classList[0]));
 		});
 	}
 
@@ -189,20 +187,10 @@ function undoLastMove() {
 	kingCell[currentTurn[0]] = $(`.${currentTurn}.king`).parentNode.id;
 	totalMoves--;
 	currentTurn = invertColour(currentTurn);
-	window.castling = window.last.castling;
-	window.enpassantCell = window.last.enpassantCell;
-	window.points = getPointsFromFen(movesListLast);
 	logPoints();
-	$$(`[data-move="${totalMoves}"]`).forEach(elem => elem.parentNode.innerHTML = '');
+	if (autoflip) flipBoard();
+	$$(`[data-move="${totalMoves}"]`).forEach(elem => { if (elem.parentNode) elem.parentNode.innerHTML = '' });
 	$('#log').removeChild($('#log').lastChild);
-}
-
-function setPromotion(elem) {
-	// used in index.html
-	const [piece, colour] = elem.classList;
-	$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
-	elem.classList.add('selected');
-	promotionPiece = piece;
 }
 
 function log(colour, piece, startCell, endCell, endClasses, count, { taken, promoted, castled, check }) {
@@ -212,7 +200,7 @@ function log(colour, piece, startCell, endCell, endClasses, count, { taken, prom
 			case 'knight': return 'N';
 			default: return piece[0].toUpperCase();
 		}
-	}
+	};
 
 	if (taken) {
 		const col = colour[0];
@@ -247,6 +235,13 @@ function logPoints() {
 	const pointsDiff = { w: points.b - points.w, b: points.w - points.b }
 	$.id('white-points').innerText = pointsDiff.w > 0 ? '+' + pointsDiff.w : '';
 	$.id('black-points').innerText = pointsDiff.b > 0 ? '+' + pointsDiff.b : '';
+}
+
+function logTakenPiece(colour, piece) {
+	const takenPiece = createPiece(piece, colour);
+	takenPiece.setAttribute('data-move', totalMoves);
+	$.id(colour + '-pieces').appendChild(takenPiece);
+	logPoints();
 }
 
 /* Console IDs

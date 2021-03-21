@@ -29,7 +29,7 @@ function isValid(v) {
 			return v.deltaNumber + v.deltaLetter == 3 && v.deltaLetter !== 0 && v.deltaNumber !== 0;
 		case 'king':
 			const singleMove = v.deltaLetter <= 1 && v.deltaNumber <= 1;
-			const castleMove = v.deltaLetter <= 2 &&!v.deltaNumber&& (castling[v.colour[0]].k || castling[v.colour[0]].q);
+			const castleMove = v.deltaLetter <= 2 && v.deltaNumber === 0 && (castling[v.colour[0]].k || castling[v.colour[0]].q);
 			return (singleMove || castleMove);
 		case 'bishop':
 			return v.deltaLetter === v.deltaNumber;
@@ -120,6 +120,36 @@ function isCheck(colour) {
 	return false;
 }
 
+function gameEndingStatus(colour) {
+	let currentlyCheck = isCheck(colour);
+	let noValidMoves = true;
+
+	outer:
+	for (let i = 1; i <= 8; i++) {
+		for (let j = 1; j <= 8; j++) {
+			const startCell = indexToLetter(j) + i;
+			if (getPieceClasses(startCell).includes(colour)) {
+				const possibleSquares = findAllMoves(startCell);
+				for (let k in possibleSquares) {
+					let pieceStore;
+					if (pieceInCell(possibleSquares[k])) {
+						pieceStore = getPieceClasses(possibleSquares[k]);
+					}
+					movePiece(startCell, possibleSquares[k]);
+					if (!isCheck(colour)) noValidMoves = false;
+					movePiece(possibleSquares[k], startCell);
+					if (pieceStore) addPiece(pieceStore[1], pieceStore[0], possibleSquares[k]);
+
+					if (!noValidMoves) break outer;
+				}
+			}
+		}
+	}
+
+	if (noValidMoves) return currentlyCheck ? 'checkmate' : 'stalemate';
+	else return false;
+}
+
 function checkCastling(v) {
 	let castlingValid = false;
 	let cells = {};
@@ -146,18 +176,15 @@ function findAllMoves(targetCell) {
 			}
 		}
 	}
-
 	return possibleSquares;
-
 }
 
-/*function allPieceMoves(colour) {
-	for (let i = 1; i <= 8; i++) {
-		for (let j = 1; j <= 8; j++) {
-			const cell = indexToLetter(j) + i;
-			if (getPieceClasses(cell).includes(colour)) {
-				let possibleSquares = findAllMoves(cell);
-			}
-		}
+function threefoldRepetition() {
+	const lastFen = movesList[movesList.length - 1].replace(/ . .$/, '');
+	let repetitions = 0;
+	for (let i in movesList) {
+		if (movesList[i].replace(/ . .$/, '') === lastFen)
+			repetitions++;
 	}
-}*/
+	return repetitions >= 3;
+}

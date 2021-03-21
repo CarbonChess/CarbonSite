@@ -54,17 +54,20 @@ function createBoard(size, initial) {
 }
 
 function createBoardFromFen(fenString) {
-	createBoard(8, false);
-	$$('td').forEach(elem => elem.innerHTML = elem.id);
+	fenString = decodeURIComponent(fenString);
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
 	let currentColumn = 1;
+
+	createBoard(8, false);
+	$$('td').forEach(elem => elem.innerHTML = elem.id);
 
 	if (fenString.match(/\//g).length !== 7) {
 		console.error('Incorrect FEN');
 		return;
 	}
 
+	// Create pieces
 	let [rows, ...data] = fenString.split(' ');
 	for (let i = 0; i < rows.length; i++) {
 		const char = rows[i];
@@ -75,7 +78,7 @@ function createBoardFromFen(fenString) {
 		else if (/[0-9]/.test(char)) {
 			currentColumn += +char;
 		}
-		else {
+		else if (currentColumn <= 8) {
 			let colour = char === char.toUpperCase() ? 'white' : 'black';
 			let piece = pieces[char.toLowerCase()];
 			const cell = indexToLetter(currentColumn) + currentRow;
@@ -83,49 +86,34 @@ function createBoardFromFen(fenString) {
 			getCell(cell).appendChild(createPiece(piece, colour, cell));
 			currentColumn++;
 		}
+	}
 
+	// Update metadata
+	window.enpassantCell = fenString.split(' ')[3].replace('-', '') || null;
+	window.castling = getCastlingFromFen(fenString);
+	window.points = getPointsFromFen(fenString);
+	if (!movesList.length) movesList = [fenString];
+
+	// Update taken pieces
+	const takenPieces = getTakenPiecesFromFen(fenString);
+	for (let i = 0; i < takenPieces.w.length; i++) {
+		const c = takenPieces.w[i];
+		logTakenPiece('white', pieces[c.toLowerCase()]);
+	}
+	for (let i = 0; i < takenPieces.b.length; i++) {
+		const c = takenPieces.b[i];
+		logTakenPiece('black', pieces[c]);
 	}
 
 }
-
-// Piece functions //
-
-function createPiece(name, colour, cell) {
-	if (!name) return;
-	let piece = document.createElement('img');
-	piece.src = 'assets/chesspieces.png';
-	piece.classList.add(colour);
-	piece.classList.add(name);
-	if (cell) {
-		piece.id = 'piece' + cell;
-		piece.setAttribute('draggable', true);
-	}
-	return piece;
-}
-
-function addPiece(name, colour, cell) {
-	removePiece(cell);
-	$.id(cell).appendChild(createPiece(name, colour, cell));
-}
-
-function removePiece(cell) {
-	$.id(cell).innerHTML = '';
-}
-
-// Cell functions //
 
 function clearCells(...cells) {
 	for (cell of cells) {
-		$.id(cell).innerHTML = cell;
+		getCell(cell).innerHTML = cell;
 	}
 }
 
-const getClasses = elem => Array.from(elem ?.classList || []);
-const getPieceClasses = cell => getClasses(getPieceInCell(cell));
 const getCell = cell => $.id(cell);
-const getPieceInCell = cell => $.id('piece' + cell);
-const pieceInCell = cell => getClasses(getPieceInCell(cell)).length > 0;
-const getPieceColour = cell => getPieceClasses(cell)[0];
 
 // Options functions //
 
