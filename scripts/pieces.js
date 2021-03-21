@@ -64,6 +64,6 @@ function setPromotion(elem) {
 }
 
 function updateKingCells() {
-	kingCell.b = $('.black.king').parentNode.id;
-	kingCell.w = $('.white.king').parentNode.id;
+	kingCell.b = $('.black.king')?.parentNode.id;
+	kingCell.w = $('.white.king')?.parentNode.id;
 }

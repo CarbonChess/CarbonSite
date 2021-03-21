@@ -93,6 +93,7 @@ function createBoardFromFen(fenString) {
 	window.castling = getCastlingFromFen(fenString);
 	window.points = getPointsFromFen(fenString);
 	if (!movesList.length) movesList = [fenString];
+	checkKingStatus(getCurrentTurnFromFen(fenString));
 
 	// Update taken pieces
 	const takenPieces = getTakenPiecesFromFen(fenString);

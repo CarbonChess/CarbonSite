@@ -23,6 +23,10 @@ function createFen() {
 	return currentFen;
 }
 
+function getCurrentTurnFromFen(fenString) {
+	return fenString.split(' ')[1] === 'w' ? 'white' : 'black';
+}
+
 function getPointsFromFen(fenString) {
 	let points = { w: 39, b: 39 };
 	for (let i in fenString.split(' ')[0]) {
@@ -60,4 +64,11 @@ function getCastlingFromFen(fenString) {
 
 function createLink() {
 	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?' + createFen());
+	
+	const input = document.body.appendChild(document.createElement("input"));
+  input.value = location.href;
+  input.focus();
+  input.select();
+  document.execCommand('copy');
+  input.parentNode.removeChild(input);
 }

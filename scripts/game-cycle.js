@@ -116,22 +116,8 @@ function hasClicked(cell) {
 		);
 		movesList.push(createFen());
 
-		// highlight if in check
-		const opposingColour = invertColour(colour);
-		updateKingCells();
-		if (isCheck(colour) && hasRules) undoLastMove();
-		$$(`td`).forEach(elem => elem.classList.remove('check'));
-		if (isCheck(colour)) getCell(kingCell[colour[0]]).classList.add('check');
-		if (isCheck(opposingColour)) getCell(kingCell[opposingColour[0]]).classList.add('check');
-
-		// game ending
-		let winner = undefined;
-		if (gameEndingStatus(opposingColour) === 'checkmate') winner = colour;
-		else if (gameEndingStatus(opposingColour) === 'stalemate' || threefoldRepetition()) winner = false;
-		if (winner !== undefined) {
-			ingame = false;
-			$('#winner').innerText = winner ? winner + ' wins' : 'Draw';
-		}
+		// check check
+		checkKingStatus(colour);
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
@@ -176,6 +162,26 @@ function hasClicked(cell) {
 	else {
 		// empty square selected
 		console.log('I', cell);
+	}
+}
+
+function checkKingStatus(colour) {
+	// highlight if in check
+	const opposingColour = invertColour(colour);
+	updateKingCells();
+	if (isCheck(colour) && hasRules) undoLastMove();
+	$$(`td`).forEach(elem => elem.classList.remove('check'));
+	if (isCheck(colour)) getCell(kingCell[colour[0]]).classList.add('check');
+	if (isCheck(opposingColour)) getCell(kingCell[opposingColour[0]]).classList.add('check');
+
+	// game ending
+	let winner = undefined;
+	if (gameEndingStatus(colour) === 'checkmate') winner = opposingColour;
+	else if (gameEndingStatus(opposingColour) === 'checkmate') winner = colour;
+	else if (gameEndingStatus(opposingColour) === 'stalemate' || threefoldRepetition()) winner = false;
+	if (winner !== undefined) {
+		ingame = false;
+		$('#winner').innerText = winner ? winner + ' wins' : 'Draw';
 	}
 }
 
