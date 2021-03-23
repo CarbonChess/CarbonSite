@@ -12,6 +12,7 @@
 	<script src="scripts/board.js"></script>
 	<script src="scripts/pieces.js"></script>
 	<script src="scripts/validation.js"></script>
+	<script src="scripts/engine/bot.js"></script>
 </head>
 
 <body onload="run()">
@@ -26,6 +27,9 @@
 		</button>
 		<button id="undo" onclick="undoLastMove()">
 			<img class="hd" src="assets/undo.png">
+		</button>
+		<button onclick="botMove(currentTurn);">
+			Bot
 		</button>
 	</div>
 	<div id="foot">
