@@ -1,9 +1,9 @@
-# OpenChess
+# CarbonChess
 
-![Pieces](assets/chesspieces.png)
+![Pieces](assets/chesspieces.svg)
 
-OpenChess is a versatile ~~***bug-free***~~ chess client.
+CarbonChess is a versatile singleplayer chess client.
 
 Play legitimately or turn rules off to play as you want!
 
-Try a game at https://iownagithub.github.io/OpenChess.
+Try a game at https://akatenmore.github.io/CarbonChess.
