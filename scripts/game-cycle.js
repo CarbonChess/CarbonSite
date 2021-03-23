@@ -75,7 +75,11 @@ function hasClicked(cell) {
 
 		// promotion
 		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-		if (canPromote) piece = promotionPiece;
+		if (canPromote) {
+			piece = promotionPiece;
+			clearCells(startCell);
+			addPiece(piece, colour, startCell);
+		}
 
 		// Move piece //
 

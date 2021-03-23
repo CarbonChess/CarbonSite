@@ -62,8 +62,12 @@ function getCastlingFromFen(fenString) {
 	return castling;
 }
 
+function getFenFromURL() {
+	return location.search.replace('?fen=', '');
+}
+
 function createLink() {
-	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?' + createFen());
+	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?fen=' + createFen());
 	
 	const input = document.body.appendChild(document.createElement("input"));
   input.value = location.href;

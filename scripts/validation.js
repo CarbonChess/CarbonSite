@@ -112,7 +112,8 @@ function isCheck(colour) {
 				// if opposite colour, check its moves
 				const checkPiece = getPieceInCell(cell);
 				const [colour, piece] = getClasses(checkPiece);
-				if (validateMove(colour, piece, cell, kingCell[invertColour(colour)[0]]))
+				const opposingKingCell = kingCell[invertColour(colour)[0]];
+				if (!opposingKingCell || validateMove(colour, piece, cell, opposingKingCell))
 					return true;
 			}
 		}

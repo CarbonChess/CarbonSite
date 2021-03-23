@@ -57,13 +57,13 @@ function movePiece(startCell, endCell) {
 
 function setPromotion(elem) {
 	// used in index.html
-	const [piece, colour] = elem.classList;
+	const [colour, piece] = elem.classList;
 	$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 	elem.classList.add('selected');
 	window.promotionPiece = piece;
 }
 
 function updateKingCells() {
-	kingCell.b = $('.black.king')?.parentNode.id;
-	kingCell.w = $('.white.king')?.parentNode.id;
+	kingCell.b = $('.black.king') ?.parentNode.id;
+	kingCell.w = $('.white.king') ?.parentNode.id;
 }

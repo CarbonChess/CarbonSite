@@ -3,6 +3,11 @@ const $$ = s => document.querySelectorAll(s);
 $.id = s => document.getElementById(s);
 $$.className = s => document.getElementsByClassName(s);
 
+const debug = (...args) => console.log('DEBUG', ...args);
+const indexToLetter = n => String.fromCharCode(n + 64);
+const getClasses = elem => Array.from(elem ?.classList || []);
+const invertColour = colour => colour === 'white' ? 'black' : 'white';
+
 function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
@@ -17,8 +22,9 @@ function run() {
 	window.enpassantTaken = false;
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
+	window.currentBoard = [];
 	window.lastEnpassantCell = enpassantCell;
-
+	
 	if (window.hasRules === undefined) {
 		window.hasRules = true;
 		$('#toggle-rules').setAttribute('class', 'enabled');
@@ -31,6 +37,6 @@ function run() {
 
 	flipBoard();
 
-	if (location.search) createBoardFromFen(location.search.replace('?', ''));
+	if (location.search) createBoardFromFen(getFenFromURL());
 	else createBoard(8, true);
 }

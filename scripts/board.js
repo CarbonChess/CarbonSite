@@ -55,6 +55,8 @@ function createBoard(size, initial) {
 
 function createBoardFromFen(fenString) {
 	fenString = decodeURIComponent(fenString);
+	history.pushState({}, '', location.href.replace(/\?.*$/, ''));
+
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
 	let currentColumn = 1;
@@ -93,9 +95,11 @@ function createBoardFromFen(fenString) {
 	window.castling = getCastlingFromFen(fenString);
 	window.points = getPointsFromFen(fenString);
 	if (!movesList.length) movesList = [fenString];
+	updateKingCells();
 	checkKingStatus(getCurrentTurnFromFen(fenString));
 
 	// Update taken pieces
+	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
 	const takenPieces = getTakenPiecesFromFen(fenString);
 	for (let i = 0; i < takenPieces.w.length; i++) {
 		const c = takenPieces.w[i];
@@ -109,7 +113,7 @@ function createBoardFromFen(fenString) {
 }
 
 function clearCells(...cells) {
-	for (cell of cells) {
+	for (let cell of cells) {
 		getCell(cell).innerHTML = cell;
 	}
 }
