@@ -191,6 +191,7 @@ function checkKingStatus(colour) {
 
 function undoLastMove() {
 	if (totalMoves === 0) return;
+	ingame = true;
 	movesList.pop();
 	const movesListLast = movesList[movesList.length - 1];
 	createBoardFromFen(movesListLast);
@@ -201,6 +202,7 @@ function undoLastMove() {
 	if (autoflip) flipBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => { if (elem.parentNode) elem.parentNode.innerHTML = '' });
 	$('#log').removeChild($('#log').lastChild);
+	$('#winner').innerText = '';
 }
 
 function log(colour, piece, startCell, endCell, endClasses, count, { taken, promoted, castled, check }) {
