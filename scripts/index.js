@@ -25,9 +25,8 @@ function run() {
 	window.movesList = [];
 	window.currentBoard = [];
 	window.lastEnpassantCell = enpassantCell;
-	window.autobot = false;
-	window.botIntelligence = 0;
-	
+	window.fmrMoves = 0;
+
 	if (window.hasRules === undefined) {
 		window.hasRules = true;
 		$('#toggle-rules').setAttribute('class', 'enabled');
@@ -36,6 +35,19 @@ function run() {
 	if (window.autoflip === undefined) {
 		window.autoflip = false;
 		$('#flip-board-automatic').setAttribute('class', 'disabled');
+	}
+
+	if (window.autobot === undefined) {
+		window.autobot = false;
+		$('#auto-bot').setAttribute('class', 'disabled');
+	}
+
+	if (window.botIntelligence === undefined) {
+		$('#bot-colour').value = botIntelligence = 0;
+	}
+
+	if (window.botColour === undefined) {
+		$('#bot-colour').value = botColour = 'black';
 	}
 
 	flipBoard();

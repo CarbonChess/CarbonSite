@@ -122,6 +122,10 @@ function isCheck(colour) {
 }
 
 function gameEndingStatus(colour) {
+
+	if (fmrMoves >= 50) return 'stalemate'; // 50 move rule
+	if (createFen().split(' ')[0].replace(/\/|\d+/g, '').toLowerCase() === 'kk') return 'stalemate'; // only 2 kings left
+
 	let currentlyCheck = isCheck(colour);
 	let noValidMoves = true;
 

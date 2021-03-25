@@ -94,6 +94,7 @@ function createBoardFromFen(fenString) {
 	window.enpassantCell = fenString.split(' ')[3].replace('-', '') || null;
 	window.castling = getCastlingFromFen(fenString);
 	window.points = getPointsFromFen(fenString);
+	window.fmrMoves = getFmrFromFen(fenString);
 	if (!movesList.length) movesList = [fenString];
 	updateKingCells();
 	checkKingStatus(getCurrentTurnFromFen(fenString));

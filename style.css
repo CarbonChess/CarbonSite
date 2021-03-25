@@ -16,6 +16,7 @@ body {
 /* Chess board */
 
 table {
+	margin-bottom: 1em;
 	border-collapse: collapse;
 	user-select: none;
 	transition: 0.4s;
@@ -86,9 +87,9 @@ img.black.king {object-position: calc(11*-32px) center;}
 button,
 select {
 	display: inline-block;
-	width: 50px;
-	height: 50px;
-	padding: 2px 3px;
+	width: max-content;
+	height: 2em;
+	padding: 4px 8px;
 	border: 1px solid #0004;
 	vertical-align: middle;
 	text-align: center;
@@ -102,7 +103,8 @@ button.disabled {background: rgb(168, 62, 80);}
 button.disabled::after {content: 'No';}
 
 select {
-	padding: 0;
+	width: 90px;
+	padding: 2px 4px;
 	font-size: 90%;
 }
 
@@ -111,32 +113,27 @@ select {
 	width: 140px;
 }
 
-#log {
-	margin: 0 auto;
-	width: 150px;
-	border: 2px solid #111;
-	overflow-wrap: break-word;
-	text-align: center;
-}
-
-#log .move {
-	padding: 1px 2px;
-}
-
-#foot {
-	margin: 1em auto;
-}
-
 #icon-options,
-#labelled-options {
-	margin-top: 0.5em;
+#foot {
+	margin-top: 0.5em auto;
 	text-align: center;
 }
 
-#labelled-options button,
-#labelled-options select {
+#icon-options button {
+	width: 50px;
+	height: 50px;
+	padding: 2px 4px;
+}
+
+#foot strong {
+	display: block;
+	margin: 1em 0 0.5em;
+	font-size: 1.1em;
+}
+
+button.enabled,
+button.disabled {
 	width: 60px;
-	height: 2em;
 }
 
 #points {
@@ -154,6 +151,18 @@ select {
 #white-points {
   vertical-align: middle;
   font-size: large;
+}
+
+#log {
+	margin: 0 auto;
+	width: 150px;
+	border: 2px solid #111;
+	overflow-wrap: break-word;
+	text-align: center;
+}
+
+#log .move {
+	padding: 1px 2px;
 }
 
 /* Responsive */

@@ -17,7 +17,7 @@ function createFen() {
 		currentTurn[0],
 		(castling.w.k ? 'K' : '') + (castling.w.q ? 'Q' : '') + (castling.b.k ? 'k' : '') + (castling.b.q ? 'q' : ''),
 		enpassantCell ?.toLowerCase() || '-',
-		0,
+		fmrMoves,
 		Math.ceil(totalMoves / 2),
 	].join(' ');
 	return currentFen;
@@ -62,12 +62,16 @@ function getCastlingFromFen(fenString) {
 	return castling;
 }
 
+function getFmrFromFen(fenString) {
+	return fenString.split(' ')[4];
+}
+
 function getFenFromURL() {
-	return location.search.replace('?fen=', '');
+	return location.search.replace('?fen=', '').replace(/_/g, ' ');
 }
 
 function createLink() {
-	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?fen=' + createFen());
+	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?fen=' + createFen().replace(/ /g, '_'));
 	
 	const input = document.body.appendChild(document.createElement("input"));
   input.value = location.href;

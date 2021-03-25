@@ -1,3 +1,5 @@
+let failedMoveCount = 0;
+
 function botMove(botColour) {
 	let validSquares = [];
 	let goodSquares = [];
@@ -18,27 +20,40 @@ function botMove(botColour) {
 	for (let i in validSquares) {
 		for (let cell of validSquares[i].moves) {
 			if (pieceInCell(cell)) {
+				// Add to good squares list for later use
 				goodSquares.push({ start: validSquares[i].cell, end: cell });
 			}
 		}
 	}
-	goodSquares = goodSquares.map(obj => {
-		const score = getPointsEquivalent(getPieceClasses(obj.end)[1]);
-		return { start: obj.start, end: obj.end, score: score };
-	});
-	goodSquares = goodSquares.sort((a, b) => a.score < b.score ? +1 : -1);
 
-	// Select cell
-	let startCell, endCell;
-	if (goodSquares[0] && botIntelligence > 0) {
-		// select the most-prized cell
-		startCell = goodSquares[0].start;
-		endCell = goodSquares[0].end;
-	} else {
-		// select random cell if no best cell exists
+	let startCell, endCell, failed;
+
+	// Various intelligence levels
+	if (botIntelligence === 0 || failedMoveCount >= 3 || goodSquares.length === 0) {
+		// Intelligence level 0: move randomly
 		const selected = validSquares[random(0, validSquares.length - 1)];
 		startCell = selected.cell;
-		endCell = selected.moves[random(0, validSquares.length - 1)];
+		endCell = selected.moves[random(0, selected.moves.length - 1)];
+	}
+
+	else if (botIntelligence === 1) {
+		// Intelligence level 1: prioritise moving forward
+		goodSquares = goodSquares.map(obj => {
+			const forward = currentTurn === 'white' ? obj.start[1] < obj.end[1] : obj.start[1] > obj.end[1];
+			return { start: obj.start, end: obj.end, forward };
+		});
+		startCell = goodSquares[0].start;
+		endCell = goodSquares[0].end;
+	}
+
+	else if (botIntelligence === 2) {
+		// Intelligence level 2: prioritise taking pieces
+		goodSquares = goodSquares.map(obj => {
+			const score = getPointsEquivalent(getPieceClasses(obj.end)[1]);
+			return { start: obj.start, end: obj.end, score: score };
+		}).sort((a, b) => a.score < b.score ? +1 : -1);
+		startCell = goodSquares[0].start;
+		endCell = goodSquares[0].end;
 	}
 
 	// Move the piece
@@ -48,15 +63,20 @@ function botMove(botColour) {
 
 function forceBotMove() {
 	let curFen = createFen();
-	do { botMove(currentTurn); }
-	while (createFen() == curFen && ingame);
+	failedMoveCount = 0;
+	do {
+		botMove(currentTurn);
+		if (createFen() === curFen) failedMoveCount++;
+	}
+	while (createFen() === curFen && ingame);
 }
 
 function updateAutobot() {
-	autobot = !autobot;
-	$('#autobot').setAttribute('class', autobot ? 'enabled' : 'disabled');
+	window.autobot = !autobot;
+	$('#auto-bot').setAttribute('class', autobot ? 'enabled' : 'disabled');
 }
 
 setInterval(function () {
-	if (autobot && ingame && currentTurn === 'black') forceBotMove();
-}, 1000);
+	if (window.autobot && window.ingame && (window.currentTurn === window.botColour || window.botColour === 'both'))
+		forceBotMove();
+}, 500);
