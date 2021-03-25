@@ -29,7 +29,7 @@
 			<img class="hd" src="assets/undo.png">
 		</button>
 		<button onclick="forceBotMove()">
-			Bot
+			Bot move
 		</button>
 	</div>
 	<div id="foot">
@@ -47,12 +47,19 @@
 					<button id="autobot" class="disabled" onclick="updateAutobot()"></button>
 				</div>
 				<div>
-					<span class="label">Rules:</span>
-					<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
+					<span class="label">Bot intelligence:</span>
+					<select onchange="botIntelligence = +this.value;">
+						<option value="0">None</option>
+						<option value="1">Slight</option>
+					</select>
 				</div>
 				<div>
 					<span class="label">Automatic orient:</span>
 					<button id="flip-board-automatic" class="disabled" onclick="changeAutoflip(this)"></button>
+				</div>
+				<div>
+					<span class="label">Rules:</span>
+					<button id="toggle-rules" class="enabled" onclick="toggleRules(this)"></button>
 				</div>
 				<div>
 					<span class="label">Create permalink:</span>
@@ -61,7 +68,6 @@
 			</div>
 		</div>
 	</div>
-	<div id="log" class="resettable"></div>
 	<div id="taken-black-pieces">
 		<strong>White</strong>
 		<span id="black-points" class="resettable"></span>
@@ -72,7 +78,8 @@
 		<span id="white-points" class="resettable"></span>
 		<div id="white-pieces" class="resettable"></div>
 	</div>
-		
+	<div id="log" class="resettable"></div>
+	
 </body>
 
 </html>

@@ -67,3 +67,23 @@ function updateKingCells() {
 	kingCell.b = $('.black.king') ?.parentNode.id;
 	kingCell.w = $('.white.king') ?.parentNode.id;
 }
+
+function getPieceID(piece) {
+	switch (piece) {
+		case 'pawn': return '';
+		case 'knight': return 'N';
+		default: return piece[0].toUpperCase();
+	}
+}
+
+function getPointsEquivalent(piece) {
+	const points = {
+		pawn: 1,
+		knight: 3,
+		bishop: 3,
+		rook: 5,
+		queen: 9,
+		king: Infinity,
+	};
+	return points[piece];
+}

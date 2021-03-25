@@ -206,26 +206,11 @@ function undoLastMove() {
 }
 
 function log(colour, piece, startCell, endCell, endClasses, count, { taken, promoted, castled, check }) {
-	const checkID = function (piece) {
-		switch (piece) {
-			case 'pawn': return '';
-			case 'knight': return 'N';
-			default: return piece[0].toUpperCase();
-		}
-	};
 
-	if (taken) {
-		const col = colour[0];
-		switch (endClasses[1]) {
-			case 'pawn': points[col] += 1; break;
-			case 'knight': points[col] += 3; break;
-			case 'bishop': points[col] += 3; break;
-			case 'rook': points[col] += 5; break;
-			case 'queen': points[col] += 9; break;
-			case 'king': points[col] += Infinity; break;
-		}
-		logPoints();
-	}
+	const col = colour[0];
+	if (taken) points[col] += getPointsEquivalent(endClasses[1]);
+	if (promoted) points[col] += getPointsEquivalent(endClasses[1]);
+	logPoints();
 
 	let code = '';
 	if (count % 2 === 0 && hasRules) code += '<br>' + (count / 2 + 1) + '. ';
@@ -233,11 +218,11 @@ function log(colour, piece, startCell, endCell, endClasses, count, { taken, prom
 		code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
 	}
 	else {
-		code += checkID(piece);
+		code += getPieceID(piece);
 		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();
 		if (taken || enpassantTaken) code += 'x';
 		code += endCell.toLowerCase();
-		if (promoted) code += '=' + checkID(promotionPiece);
+		if (promoted) code += '=' + getPieceID(promotionPiece);
 	}
 	if (check) code += '+';
 	$('#log').innerHTML += `<span class="move">` + code + '</span>';

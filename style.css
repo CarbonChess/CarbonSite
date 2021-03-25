@@ -83,7 +83,8 @@ img.black.king {object-position: calc(11*-32px) center;}
 
 /* Footer */
 
-button {
+button,
+select {
 	display: inline-block;
 	width: 50px;
 	height: 50px;
@@ -99,6 +100,11 @@ button.enabled {background: rgb(48, 170, 48);}
 button.enabled::after {content: 'Yes';}
 button.disabled {background: rgb(168, 62, 80);}
 button.disabled::after {content: 'No';}
+
+select {
+	padding: 0;
+	font-size: 90%;
+}
 
 .label {
 	display: inline-block;
@@ -127,7 +133,8 @@ button.disabled::after {content: 'No';}
 	text-align: center;
 }
 
-#labelled-options button {
+#labelled-options button,
+#labelled-options select {
 	width: 60px;
 	height: 2em;
 }
@@ -166,7 +173,8 @@ button.disabled::after {content: 'No';}
 		grid-area: table;
 	}
 
-	button {
+	button,
+	select {
 		margin-bottom: 6px;
 	}
 

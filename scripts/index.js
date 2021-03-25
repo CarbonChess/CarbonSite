@@ -26,6 +26,7 @@ function run() {
 	window.currentBoard = [];
 	window.lastEnpassantCell = enpassantCell;
 	window.autobot = false;
+	window.botIntelligence = 0;
 	
 	if (window.hasRules === undefined) {
 		window.hasRules = true;
