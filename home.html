@@ -7,13 +7,17 @@
 	<title>Home &ndash; CarbonChess</title>
 	<link href="styles/common.css" rel="stylesheet">
 	<link href="styles/home.css" rel="stylesheet">
-	<script src="scripts/helpers.js"></script>
-	<script src="scripts/home.js"></script>
+	<script src="scripts/helpers.js">
+	</script>
+	<script src="scripts/home.js">
+	</script>
 </head>
 
 <body>
-
-	<h1>CarbonChess</h1>
+	<h1>
+		<img id="logo" src="/assets/carbonchesslogo.svg" height="100px">
+		<a href="/home">CarbonChess</a>
+	</h1>
 
 	<section id="select-opponent" class="">
 		<h2>Select opponent</h2>
@@ -34,7 +38,7 @@
 		<h2>Select opponent</h2>
 		<div class="cards">
 			<a id="player-device" class="card selected" onclick="updatePlayerPlay('device', this)">Same device</a>
-			<a id="player-online" class="card" onclick="updatePlayerPlay('online', this); showSection('online')">Online</a>
+			<a id="player-online" class="card hide" onclick="updatePlayerPlay('online', this); showSection('online')">Online</a>
 		</div>
 	</section>
 
@@ -46,7 +50,7 @@
 			<a onclick="updateBotPlay('intelligence', this)" data-value="2" class="small card">Charge</a>
 			<a onclick="updateBotPlay('intelligence', this)" data-value="3" class="small card">Attack</a>
 		</div>
-		
+
 		<h2>Bot colour</h2>
 		<div id="bot-colour" class="cards">
 			<a onclick="updateBotPlay('colour', this)" data-value="black" class="card selected">
@@ -58,7 +62,7 @@
 		</div>
 
 		<div id="bot-play" class="cards">
-			<a href="play.html?bot=1&botColour=black&botIntelligence=0" class="card play">
+			<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card play">
 				Play
 			</a>
 		</div>
@@ -66,18 +70,22 @@
 
 	<section id="play-online" class="hide">
 		<h2>Game Code</h2>
-		<input type="text" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');"></input>
+		<input type="number" size="5" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');">
 		<a onclick="randomGameCode();updatePlayerPlay('gamecode');">
 			↻ Create
 		</a>
 	</section>
 
 	<div id="player-play" class="cards hide">
-		<a href="play.html?bot=0&multiplayer=0&gamecode=" class="card play">
+		<a href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=" class="card play">
 			Play
 		</a>
 	</div>
 
+	<div id="support">
+		<script src="https://ko-fi.com/widgets/widget_2.js"></script>
+		<script>kofiwidget2.init('Support CarbonChess on Ko-fi', '#6b93ce', 'Q5Q644C1B');kofiwidget2.draw();</script>
+	</div>
 </body>
 
 </html>

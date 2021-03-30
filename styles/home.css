@@ -23,6 +23,17 @@ h2 {
 	font-size: 2em;
 }
 
+a {
+	color: inherit;
+	text-decoration: inherit;
+	cursor: pointer;
+}
+
+#logo {
+	vertical-align: middle;
+	margin-right: 6px;
+}
+
 .cards {
 	display: flex;
 	flex-wrap: wrap;
@@ -60,10 +71,9 @@ h2 {
 	background: #555;
 }
 
-a {
-	color: inherit;
-	text-decoration: inherit;
-	cursor: pointer;
+#support {
+	margin-top: auto;
+	margin-bottom: 1em;
 }
 
 .hide {

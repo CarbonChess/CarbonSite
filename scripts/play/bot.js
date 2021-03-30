@@ -83,7 +83,7 @@ function updateAutobot() {// deprecated
 }
 
 setInterval(function () {
-	if (window.gameOptions.bot && window.ingame && window.currentTurn === window.gameOptions.botColour) {
+	if (window.gameOptions && window.gameOptions.bot && window.ingame && window.currentTurn === window.gameOptions.botColour) {
 		forceBotMove();
 	}
 }, 650);

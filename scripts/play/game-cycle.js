@@ -104,7 +104,10 @@ function hasClicked(cell) {
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
 		selectedCell = null;
-
+		
+		//play audio
+		let movesound = new Audio('/assets/movesound.wav');
+		movesound.play();		
 		// check en passant
 		if (enpassantTaken && enpassantCell) {
 			clearCells(enpassantCell);

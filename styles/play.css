@@ -1,9 +1,10 @@
 /* Page */
 
+
 :root { /* Variables */
-	--light-color: #f0d9b5;
-	--dark-color: #c4946e;
-	--cell-size: 50px;
+	--light-color: #dcdcdc;
+	--dark-color: #afafaf;
+	--cell-size: 60px;
 	--board-size: calc(var(--cell-size) * 8);
 }
 
@@ -25,7 +26,7 @@ table {
 	margin-bottom: 1em;
 	border-collapse: collapse;
 	user-select: none;
-	transition: 0.4s;
+	transition: 0.2s;
 	color: #000;
 }
 
@@ -48,34 +49,33 @@ table.rotate, table.rotate td {
 
 /* Pieces */
 
-img:not(.hd) {
-	width: 32px;
+:not(button) > img {
+	margin-top: 32px;
+	margin-left: 32px;
+	width: 16px;
 	height: 32px;
 	object-fit: cover;
-	user-select: none;
-	image-rendering: pixelated; /* chrome, edge */
-	image-rendering: crisp-edges; /* firefox */
+	transform: scale(3);
 }
 
-td img {
+table img {
 	position: absolute;
-	margin-left: -16px;
-	margin-top: -16px;
+	margin-left: -8px;
+	width: 16px;
 }
 
-img.white.pawn {object-position: calc(0*-32px) center;}
-img.white.rook {object-position: calc(1*-32px) center;}
-img.white.knight {object-position: calc(2*-32px) center;}
-img.white.bishop {object-position: calc(3*-32px) center;}
-img.white.queen {object-position: calc(4*-32px) center;}
-img.white.king {object-position: calc(5*-32px) center;}
+img.white {clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);}
+img.black {clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 50%);}
 
-img.black.pawn {object-position: calc(6*-32px) center;}
-img.black.rook {object-position: calc(7*-32px) center;}
-img.black.knight {object-position: calc(8*-32px) center;}
-img.black.bishop {object-position: calc(9*-32px) center;}
-img.black.queen {object-position: calc(10*-32px) center;}
-img.black.king {object-position: calc(11*-32px) center;}
+img.king   {object-position: calc(0*-16px) center;}
+img.queen  {object-position: calc(1*-16px) center;}
+img.bishop {object-position: calc(2*-16px) center;}
+img.knight {object-position: calc(3*-16px) center;}
+img.rook   {object-position: calc(4*-16px) center;}
+img.pawn   {object-position: calc(5*-16px) center;}
+
+table img.white {margin-top: 6px;}
+table img.black {margin-top: -43px;}
 
 .last-move {background: rgb(228, 230, 129) !important;}
 .valid {background: rgb(155, 207, 144) !important;}
@@ -97,17 +97,28 @@ select {
 	width: max-content;
 	height: 2em;
 	padding: 4px 8px;
-	border: 1px solid #0004;
+	background: #4e5f79;
 	vertical-align: middle;
 	text-align: center;
-	border-radius: 2px;
+	border-radius: 5px;
 	font-size: 16px;
+	color: white;
+	border: none;
+	font-family: 'fira sans';
+}
+
+button:hover {
+	background: #4481dd;
 }
 
 button.enabled {background: rgb(48, 170, 48);}
 button.enabled::after {content: 'On'; color: white;}
 button.disabled {background: rgb(168, 62, 80);}
 button.disabled::after {content: 'Off'; color: white;}
+
+button img {
+	filter: invert(1);
+}
 
 select {
 	width: 90px;
@@ -158,12 +169,19 @@ button.disabled {
   font-size: large;
 }
 
+#taken-black-pieces,
+#taken-white-pieces {
+	min-height: 32px;
+}
+
 #log {
 	margin: 0 auto;
 	width: 150px;
 	border: 2px solid #111;
 	overflow-wrap: break-word;
 	text-align: center;
+	background-color: #dcdcdc;
+	color: black;
 }
 
 #log .move {
@@ -180,7 +198,7 @@ button.disabled {
 		grid-gap: 6px;
     grid-template-areas: ". title ." ". winner ." ". black ." "icons table log" ". white ." ". options .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: repeat(2, min-content) 32px calc(var(--board-size) + 20px) 32px 100px;
+		grid-template-rows: repeat(2, min-content) inherit calc(var(--board-size) + 20px) inherit 100px;
 	}
 
 	h1 {

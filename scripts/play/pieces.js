@@ -13,7 +13,7 @@ function selectPiece(cell) {
 function createPiece(name, colour, cell) {
 	if (!name) return;
 	let piece = document.createElement('img');
-	piece.src = 'assets/chesspieces.png';
+	piece.src = 'assets/chesspieces.svg';
 	piece.classList.add(colour);
 	piece.classList.add(name);
 	if (cell) {
