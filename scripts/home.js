@@ -2,9 +2,14 @@ function showSection(section) {
 	$('#select-opponent').setAttribute('class', 'hide');
 	if (section === 'player') {
 		$('#player-settings').setAttribute('class', '');
+		$('#player-play').classList.remove('hide');
 	}
 	else if (section === 'bot') {
 		$('#bot-settings').setAttribute('class', '');
+	}
+	else if (section === 'online') {
+		$('#play-online').setAttribute('class', '');
+		$('#player-play').classList.remove('hide');
 	}
 }
 
@@ -12,12 +17,15 @@ function updatePlayerPlay(type, elem) {
 	if (type === 'device') {
 		$('#player-online').classList.remove('selected');
 		$('#player-device').classList.add('selected');
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=1/, '$1=0'))
+		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=1/, '$1=0'));
 	}
 	else if (type === 'online') {
 		$('#player-device').classList.remove('selected');
 		$('#player-online').classList.add('selected');
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=0/, '$1=1'))
+		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=0/, '$1=1'));
+	}
+	else if (type === 'gamecode') {
+		$$('#player-play a').forEach(a => a.href = a.href.replace(/(gamecode)=\d*/, '$1=' + $('#game-code').value));
 	}
 }
 
@@ -35,4 +43,8 @@ function updateBotPlay(type, elem) {
 		});
 	}
 	elem.classList.add('selected');
+}
+
+function randomGameCode() {
+	$('#game-code').value = Math.random().toString().substr(2, 5);
 }

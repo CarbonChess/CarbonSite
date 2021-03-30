@@ -10,6 +10,7 @@ function run() {
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
 		free: booleanParam('free'),
+		gamecode: params.get('gamecode'),
 	}
 
 	window.ingame = true;
@@ -30,6 +31,7 @@ function run() {
 	window.autoFlip = hasOptions && !gameOptions.bot && !gameOptions.multiplayer && !gameOptions.free;
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = !gameOptions.free;
+	window.gameID = gameOptions.gamecode;
 
 	flipBoard();
 

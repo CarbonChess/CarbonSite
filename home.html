@@ -24,7 +24,7 @@
 			<a class="card" onclick="showSection('bot')">
 				Bot
 			</a>
-			<a class="card" href="/play.html?free=1">
+			<a class="card" href="play.html?free=1">
 				Self
 			</a>
 		</div>
@@ -34,12 +34,7 @@
 		<h2>Select opponent</h2>
 		<div class="cards">
 			<a id="player-device" class="card selected" onclick="updatePlayerPlay('device', this)">Same device</a>
-			<a id="player-online" class="card" onclick="updatePlayerPlay('online', this)">Online</a>
-		</div>
-		<div id="player-play" class="cards">
-			<a href="/play.html?bot=0&multiplayer=0" class="card play">
-				Play
-			</a>
+			<a id="player-online" class="card" onclick="updatePlayerPlay('online', this); showSection('online')">Online</a>
 		</div>
 	</section>
 
@@ -63,11 +58,25 @@
 		</div>
 
 		<div id="bot-play" class="cards">
-			<a href="/play.html?bot=1&botColour=black&botIntelligence=0" class="card play">
+			<a href="play.html?bot=1&botColour=black&botIntelligence=0" class="card play">
 				Play
 			</a>
 		</div>
 	</section>
+
+	<section id="play-online" class="hide">
+		<h2>Game Code</h2>
+		<input type="text" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');"></input>
+		<a onclick="randomGameCode();updatePlayerPlay('gamecode');">
+			↻ Create
+		</a>
+	</section>
+
+	<div id="player-play" class="cards hide">
+		<a href="play.html?bot=0&multiplayer=0&gamecode=" class="card play">
+			Play
+		</a>
+	</div>
 
 </body>
 

@@ -1,10 +1,9 @@
 const api = 'https://api.jsonbin.io/v3/b/60629d5518592d461f0308d4';
 
 const dbCheckInterval = 5 * 1000;
-let lastDBEntry = '';
+//let lastDBEntry = '';
 let timeSinceLastDBChange = 0;
 let lastDB = {};
-let gameID = 1;
 
 async function readDB() {
 	const db = (await fetch(api + '/latest').then(data => data.json())).record;
@@ -18,15 +17,31 @@ async function readDB() {
 
 async function readLastTurn() {
 	let db = await readDB();
-	const fen = db.games[gameID];
-	lastDBEntry = fen;
-	if (fen) createBoardFromFen(fen);
+	const gameData = db.games[gameID];
+	if (!gameData) return;
+	//lastDBEntry = gameData.fen;
+	if (gameData.fen) createBoardFromFen(gameData.fen);
 }
 
 async function sendCurrentTurn(fen) {
+	timeSinceLastDBChange=0;
+	
 	let db = await readDB();
 	if (!db.games) db.games = {};
-	db.games[gameID] = fen || createFen();
+
+	db.name = 'CarbonChess API';
+	db.version = 'beta';
+	for (let id in db.games) {
+		const oneDay = 86.4e6;
+		if (+new Date() - db.games[id].time > oneDay / 2) {
+			delete db.games[id];
+		}
+	}
+
+	db.games[gameID] = {
+		fen: fen || createFen(),
+		time: +new Date(),
+	};
 
 	let req = new XMLHttpRequest();
 	req.open('PUT', api, false);
@@ -42,7 +57,7 @@ function changeAutoPing() {
 }
 
 function ping() {
-	if (timeSinceLastDBChange > 60*1000) {
+	if (timeSinceLastDBChange > 60 * 1000) {
 		alert('Timed out');
 		location.reload();
 	}
