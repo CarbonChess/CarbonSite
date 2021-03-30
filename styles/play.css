@@ -9,8 +9,14 @@
 
 body {
 	max-width: 900px;
-	box-sizing: border-box;
-	font-family: Trebuchet MS, Vedana, Arial, sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+
+h1 a {
+	color: inherit;
 }
 
 /* Chess board */
@@ -20,6 +26,7 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	transition: 0.4s;
+	color: #000;
 }
 
 td {
@@ -98,12 +105,15 @@ select {
 }
 
 button.enabled {background: rgb(48, 170, 48);}
-button.enabled::after {content: 'Yes';}
+button.enabled::after {content: 'On'; color: white;}
 button.disabled {background: rgb(168, 62, 80);}
-button.disabled::after {content: 'No';}
+button.disabled::after {content: 'Off'; color: white;}
 
 select {
 	width: 90px;
+}
+
+select {
 	padding: 2px 4px;
 	font-size: 90%;
 }
@@ -142,14 +152,9 @@ button.disabled {
 	text-align: center;
 }
 
-#taken-white-pieces,
-#taken-black-pieces {
-	margin: 1em 3em;
-}
-
 #black-points,
 #white-points {
-  vertical-align: middle;
+  vertical-align: super;
   font-size: large;
 }
 
@@ -173,9 +178,13 @@ button.disabled {
 		margin: 50px auto;
     display: grid;
 		grid-gap: 6px;
-    grid-template-areas: ". winner ." "icons table log" "black options white";
+    grid-template-areas: ". title ." ". winner ." ". black ." "icons table log" ". white ." ". options .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: min-content calc(var(--board-size) + 20px) 1fr;
+		grid-template-rows: repeat(2, min-content) 32px calc(var(--board-size) + 20px) 32px 100px;
+	}
+
+	h1 {
+		grid-area: title;
 	}
 
 	table {
@@ -203,7 +212,6 @@ button.disabled {
 	}
 
 	#taken-black-pieces {
-		text-align: right;
 		grid-area: black;
 	}
 

@@ -1,0 +1,15 @@
+:root {
+	--bg-colour: #363648;
+	--cell-colour: #636470;
+	--border-colour: #222;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Trebuchet MS, Vedana, Arial, sans-serif;
+	background: var(--bg-colour);
+	color: #eee;
+}

@@ -29,7 +29,14 @@ function isValid(v) {
 			return v.deltaNumber + v.deltaLetter == 3 && v.deltaLetter !== 0 && v.deltaNumber !== 0;
 		case 'king':
 			const singleMove = v.deltaLetter <= 1 && v.deltaNumber <= 1;
-			const castleMove = v.deltaLetter <= 2 && v.deltaNumber === 0 && (castling[v.colour[0]].k || castling[v.colour[0]].q);
+			const castleMove = (
+				v.deltaLetter <= 2 && v.deltaNumber === 0
+				&& (
+					castling[v.colour[0]].k && v.endCell[0] === 'G'
+					||
+					castling[v.colour[0]].q && v.endCell[0] === 'B'
+				)
+			);
 			return (singleMove || castleMove);
 		case 'bishop':
 			return v.deltaLetter === v.deltaNumber;

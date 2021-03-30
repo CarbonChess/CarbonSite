@@ -116,16 +116,16 @@ function hasClicked(cell) {
 		fmrMoves++;
 		if (piece === 'pawn' || taken) fmrMoves = 0;
 
+		// check check
+		checkKingStatus(colour);
+
 		// log the move
 		console.log('M', startCell, '->', endCell);
 		log(
 			colour, originalPiece, startCell, endCell, endClasses, totalMoves++,
-			{ taken: taken, promoted: canPromote, castled: hasCastled }
+			{ taken: taken, promoted: canPromote, castled: hasCastled }//todo log isCheck
 		);
 		movesList.push(createFen());
-
-		// check check
-		checkKingStatus(colour);
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
@@ -134,13 +134,16 @@ function hasClicked(cell) {
 		// switch turn
 		if (hasRules) {
 			currentTurn = invertColour(currentTurn);
-			if (autoflip) flipBoard();
+			if (autoFlip) flipBoard();
 		}
+
+		// send to server
+		if (autoPing) sendCurrentTurn();
 
 	}
 
 	// Select piece //
-	else if ($cell && (cellClasses.includes(currentTurn) || !hasRules)) {
+	else if ($cell && (!hasRules || (cellClasses.includes(currentTurn)))) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
@@ -203,8 +206,9 @@ function undoLastMove() {
 	totalMoves--;
 	currentTurn = invertColour(currentTurn);
 	logPoints();
-	if (autoflip) flipBoard();
+	if (autoFlip) flipBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => { if (elem.parentNode) elem.parentNode.innerHTML = '' });
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
+	if (autoPing) sendCurrentTurn();
 }

@@ -1,3 +1,5 @@
+const defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
+
 function createFen() {
 	let currentFen = '';
 
@@ -62,12 +64,17 @@ function getCastlingFromFen(fenString) {
 	return castling;
 }
 
+function getEnpassantFromFen(fenString) {
+	return fenString.split(' ')[3].replace('-', '').toUpperCase() || null;
+}
+
 function getFmrFromFen(fenString) {
 	return fenString.split(' ')[4];
 }
 
 function getFenFromURL() {
-	return location.search.replace('?fen=', '').replace(/_/g, ' ');
+	const url = new URL(location.href);
+	return url.searchParams.get('fen')?.replace(/_/g, ' ');
 }
 
 function createLink() {
