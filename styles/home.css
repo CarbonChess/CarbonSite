@@ -41,6 +41,7 @@ input {
 .cards {
 	display: flex;
 	flex-wrap: wrap;
+	place-content: center;
 }
 
 .card {
@@ -80,6 +81,9 @@ input {
 	margin-top: auto;
 	margin-bottom: 1em;
 }
+
+[data-rules="yes"]::after {content: 'Yes';}
+[data-rules="no"]::after {content: 'No';}
 
 .hide {
 	display: none;

@@ -33,7 +33,7 @@ function run() {
 	window.hasRules = !gameOptions.free;
 	window.gameID = gameOptions.gamecode;
 
-	flipBoard();
+	flipBoard(gameOptions.botColour === 'white');
 
 	let urlFen = getFenFromURL();
 	if (urlFen) createBoardFromFen(urlFen);

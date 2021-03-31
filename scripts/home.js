@@ -1,3 +1,5 @@
+let rules = true;
+
 function showSection(section) {
 	$('#select-opponent').setAttribute('class', 'hide');
 	if (section === 'player') {
@@ -26,6 +28,12 @@ function updatePlayerPlay(type, elem) {
 	}
 	else if (type === 'gamecode') {
 		$$('#player-play a').forEach(a => a.href = a.href.replace(/(gamecode)=\d*/, '$1=' + $('#game-code').value));
+	}
+	else if (type === 'no rules') {
+		rules = !rules;
+		$('#no-rules').setAttribute('data-rules', rules ? 'yes' : 'no');
+		$('#no-rules').classList[!rules ? 'remove' : 'add']('selected');
+		$$('#player-play a').forEach(a => a.href = a.href.replace(/(rules)=\d*/, '$1=' + (rules ? '1' : '0')));
 	}
 }
 

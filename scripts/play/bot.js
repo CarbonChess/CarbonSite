@@ -28,7 +28,6 @@ function botMove(botColour) {
 
 	// Move piece using various intelligence levels
 	let startCell, endCell, failed;
-	debug('b30', { validSquares, botIntelligence, failedMoveCount, goodSquares })
 
 	if (botIntelligence === 0 || failedMoveCount >= 3 || goodSquares.length === 0) {
 		// Intelligence level 0: move randomly
@@ -75,11 +74,6 @@ function forceBotMove() {
 		if (createFen() === curFen) failedMoveCount++;
 	}
 	while (createFen() === curFen && ingame);
-}
-
-function updateAutobot() {// deprecated
-	window.autobot = !autobot;
-	$('#auto-bot').setAttribute('class', autobot ? 'enabled' : 'disabled');
 }
 
 setInterval(function () {

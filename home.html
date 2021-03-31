@@ -28,14 +28,10 @@
 			<a class="card" onclick="showSection('bot')">
 				Bot
 			</a>
-			<a class="card" href="play.html">
-				Self
-			</a>
-			<a class="card" href="play.html?free=1">
-				Free Play
-			</a>
 		</div>
 	</section>
+
+	<!-- Player -->
 
 	<section id="player-settings" class="hide">
 		<h2>Select opponent</h2>
@@ -43,7 +39,29 @@
 			<a id="player-device" class="card selected" onclick="updatePlayerPlay('device', this)">Same device</a>
 			<a id="player-online" class="card hide" onclick="updatePlayerPlay('online', this); showSection('online')">Online</a>
 		</div>
+		<h2>Game options</h2>
+		<div class="cards">
+			<a id="no-rules" class="card small selected" data-rules="yes" onclick="updatePlayerPlay('no rules', this);">
+				Rules:
+			</a>
+		</div>
 	</section>
+
+	<section id="play-online" class="hide">
+		<h2>Game Code</h2>
+		<input type="number" size="5" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');">
+		<a onclick="randomGameCode();updatePlayerPlay('gamecode');">
+			↻ Create
+		</a>
+	</section>
+
+	<div id="player-play" class="cards hide">
+		<a href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=" class="card play">
+			Play
+		</a>
+	</div>
+
+	<!-- Bot -->
 
 	<section id="bot-settings" class="hide">
 		<h2>Bot intelligence</h2>
@@ -65,25 +83,11 @@
 		</div>
 
 		<div id="bot-play" class="cards">
-			<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card play">
+			<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0&amp;free=1" class="card play">
 				Play
 			</a>
 		</div>
 	</section>
-
-	<section id="play-online" class="hide">
-		<h2>Game Code</h2>
-		<input type="number" size="5" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');">
-		<a onclick="randomGameCode();updatePlayerPlay('gamecode');">
-			↻ Create
-		</a>
-	</section>
-
-	<div id="player-play" class="cards hide">
-		<a href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=" class="card play">
-			Play
-		</a>
-	</div>
 
 	<div id="support">
 		<script src="https://ko-fi.com/widgets/widget_2.js"></script>

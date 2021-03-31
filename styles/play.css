@@ -186,7 +186,7 @@ button.disabled {
 
 /* Responsive */
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
 
 	body {
 		margin: 50px auto;

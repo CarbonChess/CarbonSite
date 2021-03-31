@@ -57,7 +57,7 @@ function movePiece(startCell, endCell) {
 }
 
 function setPromotion(elem) {
-	// used in index.html
+	// used in play.html
 	const [colour, piece] = elem.classList;
 	$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 	elem.classList.add('selected');

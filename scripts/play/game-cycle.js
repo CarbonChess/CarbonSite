@@ -120,16 +120,16 @@ function hasClicked(cell) {
 		fmrMoves++;
 		if (piece === 'pawn' || taken) fmrMoves = 0;
 
-		// check check
-		checkKingStatus(colour);
-
 		// log the move
 		console.log('M', startCell, '->', endCell);
 		log(
 			colour, originalPiece, startCell, endCell, endClasses, totalMoves++,
-			{ taken: taken, promoted: canPromote, castled: hasCastled }//todo log isCheck
+			{ taken: taken, promoted: canPromote, castled: hasCastled, check: isCheck(colour) }
 		);
 		movesList.push(createFen());
+
+		// check if in check
+		checkKingStatus(colour);
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
@@ -201,11 +201,12 @@ function checkKingStatus(colour) {
 }
 
 function undoLastMove() {
-	if (totalMoves === 0) return;
+	if (totalMoves === 0 || movesList.length === 0) return;
 	ingame = true;
 	movesList.pop();
 	const movesListLast = movesList[movesList.length - 1];
 	createBoardFromFen(movesListLast);
+	currentTurn = invertColour(currentTurn);
 	kingCell[currentTurn[0]] = $(`.${currentTurn}.king`).parentNode.id;
 	totalMoves--;
 	currentTurn = invertColour(currentTurn);
