@@ -1,10 +1,9 @@
 /* Page */
 
-
 :root { /* Variables */
 	--light-color: #dcdcdc;
 	--dark-color: #afafaf;
-	--cell-size: 60px;
+	--cell-size: min(12vw, 60px);
 	--board-size: calc(var(--cell-size) * 8);
 }
 
@@ -23,7 +22,6 @@ h1 a {
 /* Chess board */
 
 table {
-	margin-bottom: 1em;
 	border-collapse: collapse;
 	user-select: none;
 	transition: 0.2s;
@@ -49,47 +47,37 @@ table.rotate, table.rotate td {
 
 /* Pieces */
 
-:not(button) > img {
-	margin-top: 32px;
-	margin-left: 32px;
-	width: 16px;
-	height: 32px;
-	object-fit: cover;
-	transform: scale(3);
+[data-piece] {
+	margin-left: 2px;
+	width: 48px;
+	height: 48px;
+	background-image: url('../assets/chesspieces.svg');
+	--piece-size: -45px;
 }
 
-table img {
-	position: absolute;
-	margin-left: -8px;
-	width: 16px;
+[data-piece].black {background-position-y: var(--piece-size);}
+[data-piece].white {background-position-y: 0px;}
+
+[data-piece].king   {background-position-x: calc(0*var(--piece-size));}
+[data-piece].queen  {background-position-x: calc(1*var(--piece-size));}
+[data-piece].bishop {background-position-x: calc(2*var(--piece-size));}
+[data-piece].knight {background-position-x: calc(3*var(--piece-size));}
+[data-piece].rook   {background-position-x: calc(4*var(--piece-size));}
+[data-piece].pawn   {background-position-x: calc(5*var(--piece-size));}
+
+.taken-pieces [data-piece] {
+	margin: -8px;
+	transform: scale(0.75);
+	filter: contrast(0);
+	user-select: none;
 }
-
-img.white {clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);}
-img.black {clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 50%);}
-
-img.king   {object-position: calc(0*-16px) center;}
-img.queen  {object-position: calc(1*-16px) center;}
-img.bishop {object-position: calc(2*-16px) center;}
-img.knight {object-position: calc(3*-16px) center;}
-img.rook   {object-position: calc(4*-16px) center;}
-img.pawn   {object-position: calc(5*-16px) center;}
-
-table img.white {margin-top: 6px;}
-table img.black {margin-top: -43px;}
 
 .last-move {background: rgb(228, 230, 129) !important;}
 .valid {background: rgb(155, 207, 144) !important;}
 .check {background: rgb(231, 70, 70) !important;}
 .selected {background: rgb(124, 192, 214) !important;}
 
-/* Header */
-#winner {
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 1.5em;
-}
-
-/* Footer */
+/* Options */
 
 button,
 select {
@@ -105,6 +93,7 @@ select {
 	color: white;
 	border: none;
 	font-family: 'fira sans';
+	cursor: pointer;
 }
 
 button:hover {
@@ -134,6 +123,18 @@ select {
 	width: 140px;
 }
 
+/* Sections */
+
+#game-content {
+	margin-bottom: 1em;
+}
+
+#winner {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.5em;
+}
+
 #icon-options,
 #foot {
 	margin-top: 0.5em auto;
@@ -144,12 +145,6 @@ select {
 	width: 50px;
 	height: 50px;
 	padding: 2px 4px;
-}
-
-#foot strong {
-	display: block;
-	margin: 1em 0 0.5em;
-	font-size: 1.1em;
 }
 
 button.enabled,
@@ -176,6 +171,7 @@ button.disabled {
 
 #log {
 	margin: 0 auto;
+	padding: 1em 0.5em;
 	width: 150px;
 	border: 2px solid #111;
 	overflow-wrap: break-word;
@@ -194,15 +190,8 @@ button.disabled {
 
 	body {
 		margin: 50px auto;
-    display: grid;
-		grid-gap: 6px;
-    grid-template-areas: ". title ." ". winner ." ". black ." "icons table log" ". white ." ". options .";
-		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: repeat(2, min-content) inherit calc(var(--board-size) + 20px) inherit 100px;
-	}
-
-	h1 {
-		grid-area: title;
+    display: flex;
+		flex-direction: column;
 	}
 
 	table {
@@ -214,8 +203,20 @@ button.disabled {
 		margin-bottom: 6px;
 	}
 
-	#winner {
-		grid-area: winner;
+	#game-content {
+		display: grid;
+		grid-template-areas: ". white ." "icons table log" ". black .";
+		grid-template-columns: 1fr var(--board-size) 1fr;
+		grid-template-rows: 48px auto 48px;
+	}
+
+	#taken-black-pieces {
+		padding-top: 10px;
+		grid-area: black;
+	}
+
+	#taken-white-pieces {
+		grid-area: white;
 	}
 
 	#icon-options {
@@ -223,18 +224,6 @@ button.disabled {
 		flex-direction: column;
 		align-items: center;
 		grid-area: icons;
-	}
-
-	#taken-white-pieces {
-		grid-area: white;
-	}
-
-	#taken-black-pieces {
-		grid-area: black;
-	}
-
-	#foot {
-		grid-area: options;
 	}
 
 	#log {

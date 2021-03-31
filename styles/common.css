@@ -1,18 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 
 :root {
-	--bg-colour: #363648;
+	--bg-colour: #3e3e4d;
 	--cell-colour: #636470;
 	--border-colour: #222;
 }
-
 
 * {
 	box-sizing: border-box;
 }
 
 body {
-	font-family: 'Fira Sans', Trebuchet MS, Vedana, Arial, sans-serif;
+	font-family: 'Fira Sans', 'Trebuchet MS', Vedana, Arial, sans-serif;
 	background: var(--bg-colour);
 	color: #eee;
 }
