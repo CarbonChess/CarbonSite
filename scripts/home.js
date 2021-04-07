@@ -1,58 +1,37 @@
-let rules = true;
-
 function showSection(section) {
-	$('#select-opponent').setAttribute('class', 'hide');
-	if (section === 'player') {
-		$('#player-settings').setAttribute('class', '');
-		$('#player-play').classList.remove('hide');
-	}
-	else if (section === 'bot') {
-		$('#bot-settings').setAttribute('class', '');
-	}
-	else if (section === 'online') {
-		$('#play-online').setAttribute('class', '');
-		$('#player-play').classList.remove('hide');
-	}
+	$('#back').classList.remove('hide');
+	$('#select-opponent').classList.add('hide');
+	$('#' + section + '-settings').classList.remove('hide');
 }
 
-function updatePlayerPlay(type, elem) {
-	if (type === 'device') {
-		$('#player-online').classList.remove('selected');
-		$('#player-device').classList.add('selected');
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=1/, '$1=0'));
-	}
-	else if (type === 'online') {
-		$('#player-device').classList.remove('selected');
-		$('#player-online').classList.add('selected');
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(multiplayer)=0/, '$1=1'));
-	}
-	else if (type === 'gamecode') {
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(gamecode)=\d*/, '$1=' + $('#game-code').value));
-	}
-	else if (type === 'no rules') {
-		rules = !rules;
-		$('#no-rules').setAttribute('data-rules', rules ? 'yes' : 'no');
-		$('#no-rules').classList[!rules ? 'remove' : 'add']('selected');
-		$$('#player-play a').forEach(a => a.href = a.href.replace(/(rules)=\d*/, '$1=' + (rules ? '1' : '0')));
-	}
+function back() {
+	$('#back').classList.add('hide');
+	$('#select-opponent').classList.remove('hide');
+	$$('[id*="settings"]').forEach(elem => elem.classList.add('hide'));
 }
 
 function updateBotPlay(type, elem) {
+	const $botPlay = $('#bot-play a');
 	if (type === 'intelligence') {
 		$$('#bot-intelligence .card').forEach(a => a.classList.remove('selected'));
-		$$('#bot-play a').forEach(a => {
-			a.href = a.href.replace(/(botIntelligence=)\d+/, '$1' + elem.dataset.value);
-		});
+		$botPlay.href = $botPlay.href.replace(/(botIntelligence=)\d+/, '$1' + elem.dataset.value);
 	}
 	else if (type === 'colour') {
 		$$('#bot-colour .card').forEach(a => a.classList.remove('selected'));
-		$$('#bot-play a').forEach(a => {
-			a.href = a.href.replace(/(botColour=)\w+/, '$1' + elem.dataset.value)
-		});
+		$botPlay.href = $botPlay.href.replace(/(botColour=)\w+/, '$1' + elem.innerText.toLowerCase())
 	}
 	elem.classList.add('selected');
 }
 
-function randomGameCode() {
+function updateRules(elem) {
+	elem.dataset.rules = elem.dataset.rules === 'false';
+	$('#offline-play').href = $('#offline-play').href.replace(/(?<=free=)\d/, elem.dataset.rules === 'false' ? 1 : 0);
+}
+
+function createGameCode() {
 	$('#game-code').value = Math.random().toString().substr(2, 5);
+}
+
+function updateOnlinePlay(elem) {
+	$('#online-play').href = $('#online-play').href.replace(/(?<=gamecode=)\d+/, $('#game-code').value);
 }

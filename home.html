@@ -7,91 +7,99 @@
 	<title>Home &ndash; CarbonChess</title>
 	<link href="styles/common.css" rel="stylesheet">
 	<link href="styles/home.css" rel="stylesheet">
-	<script src="scripts/helpers.js">
-	</script>
-	<script src="scripts/home.js">
-	</script>
+	<script src="scripts/helpers.js"></script>
+	<script src="scripts/home.js"></script>
 </head>
 
 <body>
-	<h1>
+	<a href="/home.html">
 		<img id="logo" src="/assets/carbonchesslogo.svg" height="100px">
-		<a href="/home.html">CarbonChess</a>
-	</h1>
+	</a>
 
-	<section id="select-opponent" class="">
-		<h2>Select opponent</h2>
-		<div class="cards">
-			<a class="card" onclick="showSection('player')">
-				Player
-			</a>
-			<a class="card" onclick="showSection('bot')">
-				Bot
-			</a>
-		</div>
-	</section>
+	<main>
 
-	<!-- Player -->
+		<section id="select-opponent" class="">
+			<h2>Select opponent</h2>
+			<div class="cards">
+				<a class="card styled" onclick="showSection('bot')">
+					<img src="assets/icons/computer.svg" class="card-image" height="100px">
+					<span class="card-heading">Computer</span>
+					<span class="card-description">Play against the computer</span>
+				</a>
+				<a class="card styled" onclick="showSection('offline')">
+					<img src="assets/icons/offline.svg" class="card-image" height="100px">
+					<span class="card-heading">Offline</span>
+					<span class="card-description">Play against someone on the same device</span>
+				</a>
+				<a class="card styled" onclick="showSection('online')">
+					<img src="assets/icons/online.svg" class="card-image" height="100px">
+					<span class="card-heading">Online</span>
+					<span class="card-description">Play against someone anywhere in the world</span>
+				</a>
+			</div>
+		</section>
 
-	<section id="player-settings" class="hide">
-		<h2>Select opponent</h2>
-		<div class="cards">
-			<a id="player-device" class="card selected" onclick="updatePlayerPlay('device', this)">Same device</a>
-			<a id="player-online" class="card hide" onclick="updatePlayerPlay('online', this); showSection('online')">Online</a>
-		</div>
-		<h2>Game options</h2>
-		<div class="cards">
-			<a id="no-rules" class="card small selected" data-rules="yes" onclick="updatePlayerPlay('no rules', this);">
-				Rules:
-			</a>
-		</div>
-	</section>
-
-	<section id="play-online" class="hide">
-		<h2>Game Code</h2>
-		<input type="number" size="5" id="game-code" placeholder="Input Game Code" onchange="updatePlayerPlay('gamecode');">
-		<a onclick="randomGameCode();updatePlayerPlay('gamecode');">
-			↻ Create
-		</a>
-	</section>
-
-	<div id="player-play" class="cards hide">
-		<a href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=" class="card play">
-			Play
-		</a>
-	</div>
-
-	<!-- Bot -->
-
-	<section id="bot-settings" class="hide">
-		<h2>Bot intelligence</h2>
-		<div id="bot-intelligence" class="cards">
-			<a onclick="updateBotPlay('intelligence', this)" data-value="0" class="small card selected">None</a>
-			<a onclick="updateBotPlay('intelligence', this)" data-value="1" class="small card">March</a>
-			<a onclick="updateBotPlay('intelligence', this)" data-value="2" class="small card">Charge</a>
-			<a onclick="updateBotPlay('intelligence', this)" data-value="3" class="small card">Attack</a>
-		</div>
-
-		<h2>Bot colour</h2>
-		<div id="bot-colour" class="cards">
-			<a onclick="updateBotPlay('colour', this)" data-value="black" class="card selected">
-				Black
-			</a>
-			<a onclick="updateBotPlay('colour', this)" data-value="white" class="card">
-				White
-			</a>
-		</div>
-
-		<div id="bot-play" class="cards">
-			<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0&amp;free=1" class="card play">
+		<!-- Offline -->
+		<section id="offline-settings" class="hide">
+			<h2>Game options</h2>
+			<div class="cards">
+				<a class="card small" onclick="updateRules(this)" data-rules="true">
+					Rules
+				</a>
+			</div>
+			<a id="offline-play" href="play.html?bot=0&amp;multiplayer=0&amp;free=0" class="card play">
 				Play
 			</a>
-		</div>
-	</section>
+		</section>
 
-	<div id="support">
+		<!-- Online -->
+		<section id="online-settings" class="hide">
+			<h2>Game Code</h2>
+			<input type="numeric" size="5" id="game-code" placeholder="Game Code" onchange="updateOnlinePlay();">
+			<a onclick="createGameCode();updateOnlinePlay();">
+				↻ Create
+			</a>
+			<a id="online-play" href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=0" class="card play">
+				Play
+			</a>
+		</section>
+
+		<!-- Computer -->
+		<section id="bot-settings" class="hide">
+			<h2>Bot intelligence</h2>
+			<div id="bot-intelligence" class="cards">
+				<a class="small card selected" onclick="updateBotPlay('intelligence', this)" data-value="0">None</a>
+				<a class="small card" onclick="updateBotPlay('intelligence', this)" data-value="1">March</a>
+				<a class="small card" onclick="updateBotPlay('intelligence', this)" data-value="2">Charge</a>
+				<a class="small card" onclick="updateBotPlay('intelligence', this)" data-value="3">Attack</a>
+			</div>
+
+			<h2>Bot colour</h2>
+			<div id="bot-colour" class="cards">
+				<a class="card small selected" onclick="updateBotPlay('colour', this)">
+					Black
+				</a>
+				<a class="card small" onclick="updateBotPlay('colour', this)">
+					White
+				</a>
+			</div>
+
+			<div id="bot-play" class="cards">
+				<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card play">
+					Play
+				</a>
+			</div>
+		</section>
+
+		<a id="back" class="card small hide" onclick="back()">
+			&larr; Back
+		</a>
+
+	</main>
+
+	<div id="donate">
 		<script src="https://ko-fi.com/widgets/widget_2.js"></script>
-		<script>kofiwidget2.init('Support CarbonChess on Ko-fi', '#6b93ce', 'Q5Q644C1B');kofiwidget2.draw();</script>
+		<script>kofiwidget2.init('Donate', '#6b93ce', 'Q5Q644C1B');kofiwidget2.draw();</script>
 	</div>
 </body>
 

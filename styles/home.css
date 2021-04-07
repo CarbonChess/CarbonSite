@@ -1,26 +1,26 @@
+:root {
+	--bg-colour: #191919;
+	--cell-colour: #232323;
+}
+
 body {
 	margin: 0;
 	height: 100vh;
-	display: flex;
-	flex-direction: column;
-  align-items: center;
-	text-align: center;
-	font-family: sans-serif;
+	font-family: 'Century Gothic', sans-serif;
 }
 
-h1 {
-	width: 100%;
-	padding: 0.5em;
-	margin: 0;
-	border-bottom: 10px solid var(--cell-colour);
-	background: var(--bg-colour);
+main {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	place-content: center;
+	background-image: url('assets/background.svg');
+	text-align: center;
 }
-@media (min-width: 600px) { h1 {
-	font-size: 4em;
-}}
 
 h2 {
 	font-size: 2em;
+	text-transform: uppercase;
 }
 
 a {
@@ -29,13 +29,14 @@ a {
 	cursor: pointer;
 }
 
-input {
-	padding: 1em;
-}
-
-#logo {
-	vertical-align: middle;
-	margin-right: 6px;
+#logo, #donate {margin: 3em;}
+@media (min-width: 600px) {
+	#logo, #donate {
+		position: absolute;
+		top: 0;
+	}
+	#logo {left: 0;}
+	#donate {right: 0;}
 }
 
 .cards {
@@ -46,17 +47,26 @@ input {
 
 .card {
 	margin: 1em;
-	height: 100px;
-	width: 100px;
+	height: 250px;
+	width: 250px;
+  display: grid;
+	place-items: center;
+	align-content: center;
+	border-radius: 12px;
+	background: var(--cell-colour);
+}
+@media (min-width: 600px) { .card {
+	height: 325px;
+	width: 325px;
+}}
+
+.card:not(.styled) {
 	display: grid;
 	place-content: center;
 	border: 5px solid var(--border-colour);
 	border-radius: 0.5em;
-	background: var(--cell-colour);
 }
-@media (min-width: 600px) { .card {
-	height: 200px;
-	width: 200px;
+@media (min-width: 600px) { .card:not(.styled) {
 	font-size: 3em;
 }}
 
@@ -73,18 +83,44 @@ input {
 	width: 200px;
 }
 
+.card-image {
+	margin: 1em;
+	height: 7em;
+}
+
+.card-heading {
+	width: 200px;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.card-heading::before {
+	content: ' ';
+	height: 1px;
+	width: 55px;
+	background: #c8c8c8;
+	display: block;
+	margin-left: 72px;
+	margin-bottom: 1em;
+}
+
+.card-description {
+	width: 200px;
+}
+
 .selected {
 	background: #555;
 }
 
-#support {
-	margin-top: auto;
-	margin-bottom: 1em;
+[data-rules="true"]::after {content: '(Yes)';}
+[data-rules="false"]::after {content: '(No)';}
+
+#play-online {
+	font-size: 1.2em;
 }
 
-[data-rules="yes"]::after {content: 'Yes';}
-[data-rules="no"]::after {content: 'No';}
-
-.hide {
-	display: none;
+#game-code {
+	width: 7em;
+	height: 3em;
+	padding: 0.5em;
 }

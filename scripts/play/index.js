@@ -9,7 +9,7 @@ function run() {
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
-		free: booleanParam('free'),
+		rules: !booleanParam('free'),
 		gamecode: params.get('gamecode'),
 	}
 
@@ -28,9 +28,9 @@ function run() {
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
-	window.autoFlip = hasOptions && !gameOptions.bot && !gameOptions.multiplayer && !gameOptions.free;
+	window.autoFlip = hasOptions && !gameOptions.bot && !gameOptions.multiplayer && gameOptions.rules;
 	window.autoPing = gameOptions.multiplayer;
-	window.hasRules = !gameOptions.free;
+	window.hasRules = gameOptions.rules;
 	window.gameID = gameOptions.gamecode;
 
 	flipBoard(gameOptions.botColour === 'white');
