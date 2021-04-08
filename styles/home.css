@@ -14,8 +14,11 @@ main {
 	display: flex;
 	flex-direction: column;
 	place-content: center;
-	background-image: url('assets/background.svg');
+	background-image: url('/assets/background.svg');
+    background-size: 90%; 
 	text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 h2 {
@@ -55,6 +58,7 @@ a {
 	border-radius: 12px;
 	background: var(--cell-colour);
 }
+
 @media (min-width: 600px) { .card {
 	height: 325px;
 	width: 325px;
@@ -106,6 +110,11 @@ a {
 
 .card-description {
 	width: 200px;
+    font-family:'Source Sans Pro', sans-serif;
+    color: rgb(200,200,200);
+    padding-top: 0.5em;
+    display: block;
+    line-height: 1.15em
 }
 
 .selected {
