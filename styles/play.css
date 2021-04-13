@@ -4,7 +4,7 @@
 	--light-color: #dcdcdc;
 	--dark-color: #afafaf;
 	--bg-colour: #191919;
-	--cell-size: min(12vw, 60px);
+	--cell-size: 55px;
 	--board-size: calc(var(--cell-size) * 8);
 }
 

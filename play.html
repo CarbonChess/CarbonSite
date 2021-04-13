@@ -18,32 +18,34 @@
 	<script src="scripts/play/pieces.js"></script>
 	<script src="scripts/play/validation.js"></script>
 	<script src="scripts/play/fauna.js"></script>
-	<!--Fauna DB-->
+	<!--Fauna DB--/>
 	<script src="//cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+	-->
 
 </head>
 
 <body onload="run()">
 
 	<h1>
-		<a href="/home.html"><img id="logo" src="/assets/finallogo.svg" height="65px"></a>
+		<a href="/home.html">
+			<img id="logo" src="/assets/finallogo.svg" height="65px">
+		</a>
 	</h1>
 
 	<div id="winner" class="resettable"></div>
-
 
 	<div id="game-content">
 		<table></table>
 
 		<div id="icon-options">
 			<button id="flip-board" onclick="flipBoard(true)">
-				<img class="hd" src="assets/flip.png">
+				<img class="hd" src="assets/icons/flip.png">
 			</button>
 			<button id="reset" onclick="run();sendCurrentTurn(defaultFen);">
 				Reset
 			</button>
 			<button id="undo" onclick="undoLastMove()">
-				<img class="hd" src="assets/undo.png">
+				<img class="hd" src="assets/icons/undo.png">
 			</button>
 			<button onclick="createLink()" title="Copy to clipboard">
 				Share

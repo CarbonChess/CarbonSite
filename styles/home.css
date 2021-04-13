@@ -1,6 +1,9 @@
+/* General */
+
 :root {
 	--bg-colour: #191919;
 	--cell-colour: #232323;
+	--accent-colour: #4285f4;
 }
 
 body {
@@ -14,11 +17,28 @@ main {
 	display: flex;
 	flex-direction: column;
 	place-content: center;
-	background-image: url('/assets/background.svg');
-    background-size: 90%; 
+	--background: url('/assets/backgrounds/variety.svg');
+	background-image: var(--background);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 	text-align: center;
-    background-position: center;
-    background-repeat: no-repeat;
+}
+@media (max-width: 600px) {
+	main {
+		background: none;
+	}
+	main::before {
+		content: "";
+		position: absolute;
+		width: 200%;
+		height: 200%;
+		top: -50%;
+		left: -50%;
+		background: var(--background);
+		transform: rotate(90deg);
+		z-index: -1;
+	}
 }
 
 h2 {
@@ -42,6 +62,8 @@ a {
 	#donate {right: 0;}
 }
 
+/* Cards */
+
 .cards {
 	display: flex;
 	flex-wrap: wrap;
@@ -49,35 +71,63 @@ a {
 }
 
 .card {
-	margin: 1em;
-	height: 250px;
-	width: 250px;
-  display: grid;
+	display: grid;
 	place-items: center;
-	align-content: center;
+	place-content: center;
 	border-radius: 12px;
 	background: var(--cell-colour);
+	transition: 50ms;
 }
 
-@media (min-width: 600px) { .card {
-	height: 325px;
-	width: 325px;
-}}
-
-.card:not(.styled) {
-	display: grid;
-	place-content: center;
-	border: 5px solid var(--border-colour);
-	border-radius: 0.5em;
+.card:hover,
+.card.selected {
+	border: 2.5px solid var(--accent-colour);
+	transform: scale(1.1);
 }
-@media (min-width: 600px) { .card:not(.styled) {
-	font-size: 3em;
-}}
+.card.big.selected {
+	border-width: 3.5px;
+}
+
+.card.selected::before {
+	content: '';
+	margin-left: 165px;
+	margin-bottom: 60px;
+	width: 20px;
+	height: 20px;
+	display: block;
+	position: absolute;
+	border-radius: 50%;
+	background: var(--accent-colour);
+	background-image: url('/assets/icons/selected.svg');
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+}
+
+.card.big {
+	margin: 2em;
+	height: 250px;
+	width: 250px;
+}
+@media (min-width: 600px) {
+	.card.big {
+		height: 325px;
+		width: 325px;
+	}
+}
 
 .card.small {
-	height: 100px;
-	width: 100px;
+	margin: 1em;
+	height: 170px;
+	width: 170px;
+	padding-bottom: 45px;
 	font-size: 1.5em;
+}
+
+.card.wide {
+	margin: 1em;
+	width: 170px;
+	height: 70px;
 }
 
 .card.play {
@@ -91,14 +141,23 @@ a {
 	margin: 1em;
 	height: 7em;
 }
+.card.small .card-image {
+	height: 2em;
+}
 
 .card-heading {
 	width: 200px;
 	font-size: 1.5em;
 	font-weight: bold;
 }
+.card.small .card-heading {
+	font-size: 0.7em;
+}
+.card.wide .card-heading {
+	font-size: 1.15em;
+}
 
-.card-heading::before {
+.card.big .card-heading::before {
 	content: ' ';
 	height: 1px;
 	width: 55px;
@@ -107,18 +166,18 @@ a {
 	margin-left: 72px;
 	margin-bottom: 1em;
 }
+.card.small .card-heading::before {
+	width: 35px;
+	margin-left: 82px;
+}
 
 .card-description {
 	width: 200px;
-    font-family:'Source Sans Pro', sans-serif;
-    color: rgb(200,200,200);
-    padding-top: 0.5em;
-    display: block;
-    line-height: 1.15em
-}
-
-.selected {
-	background: #555;
+	font-family:'Source Sans Pro', sans-serif;
+	color: rgb(200,200,200);
+	padding-top: 0.5em;
+	display: block;
+	line-height: 1.15em
 }
 
 [data-rules="true"]::after {content: '(Yes)';}
@@ -132,4 +191,46 @@ a {
 	width: 7em;
 	height: 3em;
 	padding: 0.5em;
+}
+
+#bot-intelligence-dots {
+	--spacing: 72px;
+	margin-left: var(--spacing);
+	letter-spacing: var(--spacing);
+	font-size: 38px;
+	user-select: none;
+}
+
+/* Bot slider */
+
+input[type="range"]::-moz-range-progress {
+	background-color: var(--accent-colour);
+	height: 100%;
+	border-radius: 30px;
+	border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+	width: 18px;
+	height: 18px;
+	background: #fff;
+	cursor: pointer;
+	border-radius: 50%;
+	border: none;
+	outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 9px;
+  height: 9px;
+  background: var(--accent-colour);
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+input[type="range"] {
+	width: 550px;
+	height: 8px;
+	border-radius: 30px;
 }

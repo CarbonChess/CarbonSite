@@ -1,2 +1,0 @@
-settings menu -> board and pieces theme + light/dark mode
-variants -> fischerrandom, crazyhouse, 3 check, king of the hill, antichess

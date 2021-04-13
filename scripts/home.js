@@ -13,14 +13,19 @@ function back() {
 function updateBotPlay(type, elem) {
 	const $botPlay = $('#bot-play a');
 	if (type === 'intelligence') {
-		$$('#bot-intelligence .card').forEach(a => a.classList.remove('selected'));
-		$botPlay.href = $botPlay.href.replace(/(botIntelligence=)\d+/, '$1' + elem.dataset.value);
+		$botPlay.href = $botPlay.href.replace(/(botIntelligence=)\d+/, '$1' + elem.value);
 	}
 	else if (type === 'colour') {
 		$$('#bot-colour .card').forEach(a => a.classList.remove('selected'));
-		$botPlay.href = $botPlay.href.replace(/(botColour=)\w+/, '$1' + elem.innerText.toLowerCase())
+		$botPlay.href = $botPlay.href.replace(/(botColour=)\w+/, '$1' + elem.innerText.toLowerCase());
+		elem.classList.add('selected');
 	}
-	elem.classList.add('selected');
+}
+
+function updateBotIntelligence() {
+	const level = $('#bot-intelligence-level').value;
+	$$(`[data-level]`).forEach(elem => elem.classList.add('hide'));
+	$(`[data-level="${level}"]`).classList.remove('hide');
 }
 
 function updateRules(elem) {
