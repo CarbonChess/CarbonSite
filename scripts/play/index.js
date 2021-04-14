@@ -3,13 +3,14 @@ function run() {
 
 	const params = (new URL(location.href)).searchParams;
 	const booleanParam = opt => ['1', 'true'].includes(params.get(opt));
-	const hasOptions = /[?&](bot|multi)/.test(location.search);
+	const hasOptions = /[?&](bot|multi|rules|auto|gamecode)/.test(location.search);
 	window.gameOptions = {
 		bot: booleanParam('bot'),
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
 		rules: !booleanParam('free'),
+		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
 	}
 
@@ -28,7 +29,7 @@ function run() {
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
-	window.autoFlip = hasOptions && !gameOptions.bot && !gameOptions.multiplayer && gameOptions.rules;
+	window.autoFlip = gameOptions.autoFlip;
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameID = gameOptions.gamecode;

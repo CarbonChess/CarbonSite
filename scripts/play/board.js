@@ -132,13 +132,13 @@ function toggleRules(button) {
 }
 
 function flipBoard(force) {
-	const $table = $('table');
+	const elem = $('body');
 	if (force) {
-		$table.classList.toggle('rotate');
+		elem.classList.toggle('rotate');
 	}
 	else {
-		$table.classList.remove('rotate')
-		if (currentTurn === 'black') $table.classList.add('rotate');
+		elem.classList.remove('rotate')
+		if (currentTurn === 'black') elem.classList.add('rotate');
 	}
 }
 

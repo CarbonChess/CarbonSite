@@ -41,7 +41,7 @@ tr:nth-child(even) td:nth-child(odd) {
   background: var(--dark-color);
 }
 
-table.rotate, table.rotate td {
+.rotate table, .rotate td {
 	transform: rotate(180deg);
 }
 
@@ -52,6 +52,7 @@ table.rotate, table.rotate td {
 	width: 48px;
 	height: 48px;
 	background-image: url('../assets/chesspieces.svg');
+	image-rendering: crisp-edges;
 	--piece-size: -45px;
 }
 
@@ -92,7 +93,7 @@ select {
 	font-size: 16px;
 	color: white;
 	border: none;
-	font-family: 'fira sans';
+	font-family: 'Century Gothic';
 	cursor: pointer;
 }
 
@@ -167,6 +168,7 @@ button.disabled {
 #taken-black-pieces,
 #taken-white-pieces {
 	min-height: 32px;
+	height: max-content;
 }
 
 #log {
@@ -208,6 +210,10 @@ button.disabled {
 		grid-template-areas: ". white ." "icons table log" ". black .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: 48px auto 48px;
+	}
+
+	.rotate #game-content {
+		grid-template-areas: ". black ." "icons table log" ". white .";
 	}
 
 	#taken-black-pieces {

@@ -14,6 +14,7 @@ body {
 
 main {
 	min-height: 100%;
+	padding-bottom: 6em;
 	display: flex;
 	flex-direction: column;
 	place-content: center;
@@ -42,6 +43,7 @@ main {
 }
 
 h2 {
+	margin: 2em 0 1em;
 	font-size: 2em;
 	text-transform: uppercase;
 }
@@ -82,7 +84,7 @@ a {
 .card:hover,
 .card.selected {
 	border: 2.5px solid var(--accent-colour);
-	transform: scale(1.1);
+	transform: scale(1.05);
 }
 .card.big.selected {
 	border-width: 3.5px;
@@ -90,8 +92,8 @@ a {
 
 .card.selected::before {
 	content: '';
-	margin-left: 165px;
-	margin-bottom: 60px;
+	margin-left: 138px;
+	margin-bottom: 40px;
 	width: 20px;
 	height: 20px;
 	display: block;
@@ -101,7 +103,7 @@ a {
 	background-image: url('/assets/icons/selected.svg');
 	background-size: 60%;
 	background-repeat: no-repeat;
-	background-position: 5px 5px;
+	background-position: 4px 6px;
 }
 
 .card.big {
@@ -130,11 +132,49 @@ a {
 	height: 70px;
 }
 
+.card.play,
+.card#back {
+	border-radius: 3em;
+	text-transform: uppercase;
+    font-weight: bold;
+}
+.card.play:hover,
+.card#back:hover {
+	transform: none;
+	background: var(--accent-colour);
+}
+.card.play::after,
+.card#back::before {
+	content: '';
+	height: 1em;
+	width: 1em;
+	position: absolute;
+	background: url('/assets/icons/arrow.svg');
+	background-repeat: no-repeat;
+}
+
 .card.play {
-	margin-left: auto;
-	margin-right: auto;
-	height: 100px;
-	width: 200px;
+	bottom: 5em;
+	right: 5em;
+	position: absolute;
+	padding-right: 2em;
+	background: var(--accent-colour);
+}
+.card.play::after {
+	margin-left: 3em;
+	margin-top: 0.5em;
+}
+
+.card#back {
+	bottom: 5em;
+	left: 5em;
+	position: absolute;
+	padding-left: 2em;
+}
+.card#back::before {
+	margin-right: 3em;
+	margin-bottom: 0.2em;
+	transform: rotate(180deg);
 }
 
 .card-image {
@@ -180,8 +220,10 @@ a {
 	line-height: 1.15em
 }
 
-[data-rules="true"]::after {content: '(Yes)';}
-[data-rules="false"]::after {content: '(No)';}
+[data-value="true"]::after {content: 'Enabled';}
+[data-value="false"]::after {content: 'Disabled';}
+
+/* Sections */
 
 #play-online {
 	font-size: 1.2em;
@@ -199,6 +241,62 @@ a {
 	letter-spacing: var(--spacing);
 	font-size: 38px;
 	user-select: none;
+}
+
+#dot-highlighted {
+	display: inline-block;
+	margin-left: 7px;
+	margin-right: -7px;
+	color: var(--accent-colour);
+	transform: scale(1.2);
+}
+
+/* Toggles */
+
+.toggle {
+	margin-top: 2em;
+	display: block;
+}
+
+.toggle strong {
+	width: 100px;
+	margin-left: -50px;
+	display: inline-block;
+}
+
+.slider {
+	width: 3.5em;
+	height: 1.5em;
+	margin-left: -20px;
+	position: absolute;
+	cursor: pointer;
+	background: #ccc;
+	border-radius: 1em;
+	transition: 0.4s;
+}
+
+.slider:before {
+	content: '';
+	height: 30px;
+	width: 30px;
+	left: 1px;
+	top: -3px;
+	position: absolute;
+	background: #fff;
+	border-radius: 50%;
+	transition: 0.4s;
+}
+
+input:checked + .slider {
+  background: var(--accent-colour);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--accent-colour);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 /* Bot slider */

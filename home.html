@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width;initial-scale=1">
 	<title>Home &ndash; CarbonChess</title>
 	<link href="styles/common.css" rel="stylesheet">
 	<link href="styles/home.css" rel="stylesheet">
@@ -18,7 +18,7 @@
 
 	<main>
 
-		<section id="select-opponent" class="">
+		<section id="select-opponent">
 			<h2>Select opponent</h2>
 			<div class="cards">
 				<a class="card big" onclick="showSection('bot')">
@@ -42,12 +42,20 @@
 		<!-- Offline -->
 		<section id="offline-settings" class="hide">
 			<h2>Game options</h2>
-			<div class="cards">
-				<a class="card small" onclick="updateRules(this)" data-rules="true">
-					Rules
-				</a>
+			<div>
+				<label class="toggle">
+					<strong>Rules</strong>
+					<input checked type="checkbox" autocomplete="off" oninput="updatePlay('rules', this)">
+					<span class="slider"></span>
+				</label>
+				<label class="toggle">
+					<strong>Auto Flip</strong>
+					<input checked type="checkbox" autocomplete="off" oninput="updatePlay('autoflip', this)">
+					<span class="slider"></span>
+				</label>
 			</div>
-			<a id="offline-play" href="play.html?bot=0&amp;multiplayer=0&amp;free=0" class="card play">
+
+			<a id="offline-play" class="card wide play" href="play.html?bot=0&amp;multiplayer=0&amp;autoflip=1&amp;free=0">
 				Play
 			</a>
 		</section>
@@ -59,7 +67,7 @@
 			<a onclick="createGameCode();updateOnlinePlay();">
 				↻ Create
 			</a>
-			<a id="online-play" href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=0" class="card play">
+			<a id="online-play" href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=0" class="card wide play">
 				Play
 			</a>
 		</section>
@@ -68,49 +76,49 @@
 		<section id="bot-settings" class="hide">
 			<h2>Bot intelligence</h2>
 			<div id="bot-intelligence" class="cards">
-				<a class="card small" data-level=1>
+				<a class="card small" data-level="1">
 					<img src="assets/icons/none.svg" class="card-image" height="100px">
 					<span class="card-heading">None</span>
 				</a>
-				<a class="card small hide" data-level=2>
+				<a class="card small hide" data-level="2">
 					<img src="assets/icons/march.svg" class="card-image" height="100px">
 					<span class="card-heading">March</span>
 				</a>
-				<a class="card small hide" data-level=3>
+				<a class="card small hide" data-level="3">
 					<img src="assets/icons/charge.svg" class="card-image" height="100px">
 					<span class="card-heading">Charge</span>
 				</a>
-				<a class="card small hide" data-level=4>
+				<a class="card small hide" data-level="4">
 					<img src="assets/icons/attack.svg" class="card-image" height="100px">
 					<span class="card-heading">Attack</span>
 				</a>
 				<div style="width:100%">
-					<input type="range" id="bot-intelligence-level" value=1 min=1 max=4 oninput="updateBotIntelligence();updateBotPlay('intelligence', this)">
+					<input type="range"autocomplete="off" id="bot-intelligence-level" value="1" min="1" max="4" oninput="updateBotIntelligence();updatePlay('intelligence', this)">
 					<div id="bot-intelligence-dots">
-						• • • •
+						<span id="dot-highlighted">•</span> • • •
 					</div>
 				</div>
 			</div>
 
 			<h2>Bot colour</h2>
 			<div id="bot-colour" class="cards">
-				<a class="card wide selected" onclick="updateBotPlay('colour', this)">
+				<a class="card wide selected" onclick="updatePlay('colour', this)">
 					<span class="card-heading">Black</span>
 				</a>
-				<a class="card wide" onclick="updateBotPlay('colour', this)">
+				<a class="card wide" onclick="updatePlay('colour', this)">
 					<span class="card-heading">White</span>
 				</a>
 			</div>
 
 			<div id="bot-play" class="cards">
-				<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card play">
+				<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card wide play">
 					Play
 				</a>
 			</div>
 		</section>
 
-		<a id="back" class="card small hide" onclick="back()">
-			&larr; Back
+		<a id="back" class="card wide hide" onclick="back()">
+			Back
 		</a>
 
 	</main>
