@@ -14,15 +14,10 @@ body {
 
 main {
 	min-height: 100%;
-	padding-bottom: 6em;
+	padding-bottom: 11em;
 	display: flex;
 	flex-direction: column;
 	place-content: center;
-	--background: url('/assets/backgrounds/variety.svg');
-	background-image: var(--background);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
 	text-align: center;
 }
 @media (max-width: 600px) {
@@ -52,16 +47,6 @@ a {
 	color: inherit;
 	text-decoration: inherit;
 	cursor: pointer;
-}
-
-#logo, #donate {margin: 3em;}
-@media (min-width: 600px) {
-	#logo, #donate {
-		position: absolute;
-		top: 0;
-	}
-	#logo {left: 0;}
-	#donate {right: 0;}
 }
 
 /* Cards */
@@ -107,7 +92,7 @@ a {
 }
 
 .card.big {
-	margin: 2em;
+	margin: 1em;
 	height: 250px;
 	width: 250px;
 }
@@ -134,6 +119,8 @@ a {
 
 .card.play,
 .card#back {
+	bottom: 7em;
+	position: absolute;
 	border-radius: 3em;
 	text-transform: uppercase;
     font-weight: bold;
@@ -154,9 +141,7 @@ a {
 }
 
 .card.play {
-	bottom: 5em;
 	right: 5em;
-	position: absolute;
 	padding-right: 2em;
 	background: var(--accent-colour);
 }
@@ -166,9 +151,7 @@ a {
 }
 
 .card#back {
-	bottom: 5em;
 	left: 5em;
-	position: absolute;
 	padding-left: 2em;
 }
 .card#back::before {
@@ -211,6 +194,11 @@ a {
 	margin-left: 82px;
 }
 
+.card:hover .card-heading::before {
+	background: var(--accent-colour);
+	height: 3px;
+}
+
 .card-description {
 	width: 200px;
 	font-family:'Source Sans Pro', sans-serif;
@@ -224,6 +212,16 @@ a {
 [data-value="false"]::after {content: 'Disabled';}
 
 /* Sections */
+
+#logo, #donate {margin: 3em;}
+@media (min-width: 600px) {
+	#logo, #donate {
+		position: absolute;
+		top: 0;
+	}
+	#logo {left: 0;}
+	#donate {right: 0;}
+}
 
 #play-online {
 	font-size: 1.2em;
@@ -264,6 +262,10 @@ a {
 	display: inline-block;
 }
 
+.toggle.disabled strong {
+	color: gray;
+}
+
 .slider {
 	width: 3.5em;
 	height: 1.5em;
@@ -272,7 +274,7 @@ a {
 	cursor: pointer;
 	background: #ccc;
 	border-radius: 1em;
-	transition: 0.4s;
+	transition: 0.2s;
 }
 
 .slider:before {
@@ -284,19 +286,25 @@ a {
 	position: absolute;
 	background: #fff;
 	border-radius: 50%;
-	transition: 0.4s;
+	transition: 0.2s;
 }
 
 input:checked + .slider {
   background: var(--accent-colour);
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 input:focus + .slider {
   box-shadow: 0 0 1px var(--accent-colour);
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+input:disabled + .slider {
+	background: gray;
+}
+input:disabled + .slider::before {
+	background: #a9a9a9;
 }
 
 /* Bot slider */

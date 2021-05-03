@@ -6,10 +6,31 @@
 }
 
 body {
-	font-family: 'Century Gothic', 'Trebuchet MS', Vedana, Arial, sans-serif;
-	background: var(--bg-colour);
+	--background: url('/assets/backgrounds/variety.svg');
+	background-color: var(--bg-colour);
+	background-image: var(--background);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 	color: #eee;
-	
+	font-family: 'Century Gothic', 'Trebuchet MS', Vedana, Arial, sans-serif;
+}
+
+footer {
+	padding: 1em;
+	text-align: center;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+@media (min-width: 600px) { 
+	footer {
+		right: 0;
+		bottom: 0;
+		position: absolute;
+	}
+}
+
+footer a {
+	text-decoration: underline;
 }
 
 .hide {

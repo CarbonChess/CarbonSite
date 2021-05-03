@@ -23,6 +23,7 @@ h1 a {
 /* Chess board */
 
 table {
+	height: var(--board-size);
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
@@ -138,7 +139,7 @@ select {
 
 #icon-options,
 #foot {
-	margin-top: 0.5em auto;
+	margin: 0.5em auto;
 	text-align: center;
 }
 
@@ -167,6 +168,7 @@ button.disabled {
 
 #taken-black-pieces,
 #taken-white-pieces {
+	padding: 5px 0;
 	min-height: 32px;
 	height: max-content;
 }
@@ -175,6 +177,7 @@ button.disabled {
 	margin: 0 auto;
 	padding: 1em 0.5em;
 	width: 150px;
+	height: var(--board-size);
 	border: 2px solid #111;
 	overflow-wrap: break-word;
 	text-align: center;
@@ -188,11 +191,13 @@ button.disabled {
 
 /* Responsive */
 
-@media (min-width: 800px) {
+@media (min-width: 801px) {
 
 	body {
-		margin: 50px auto;
-    display: flex;
+		height: 100vh;
+		margin: 0 auto;
+		padding: 50px 0;
+		display: flex;
 		flex-direction: column;
 	}
 
@@ -217,7 +222,6 @@ button.disabled {
 	}
 
 	#taken-black-pieces {
-		padding-top: 10px;
 		grid-area: black;
 	}
 
@@ -235,6 +239,29 @@ button.disabled {
 	#log {
 		overflow: auto;
 		grid-area: log;
+	}
+
+}
+
+@media (max-width: 800px) {
+
+	#game-content {
+		display: flex;
+		flex-direction: column;
+	}
+
+	table {
+		margin: auto;
+	}
+
+	#log {
+		width: 80%;
+		height: 100px;
+		padding: 0;
+	}
+
+	#log br {
+		display: none;
 	}
 
 }
