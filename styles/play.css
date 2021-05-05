@@ -299,6 +299,10 @@ button.disabled {
 
 @media (max-width: 800px) {
 
+	:root {
+		--cell-size: -50px;
+	}
+
 	#game-content {
 		display: flex;
 		flex-direction: column;
@@ -306,6 +310,10 @@ button.disabled {
 
 	table {
 		margin: auto;
+	}
+
+	[data-piece] {
+		transform: none;
 	}
 
 	#log {
