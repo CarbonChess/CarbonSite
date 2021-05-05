@@ -16,7 +16,7 @@ async function getDocs() {
 	const docs = await client.query(
 		Q.Map(
 			Q.Paginate(Q.Documents(Q.Collection("Games"))),
-			Q.Lambda("X", Q.Get(Q.Var("X")))
+			Q.Lambda("X", Q.Get(Q.Var("X"))) //?
 		)
 	);
 	console.log('Documents:', docs.data);
@@ -66,20 +66,21 @@ async function sendData(gameId, fen) {
 }
 
 exports.handler = async function (event, context, callback) {
-	const { type, data } = event.queryStringParameters;
+	const { type, gameId, fen } = event.queryStringParameters;
 	const funcs = {
-		fetch: data => getGameData(data.gameId),
-		read: data => readData(data.gameId),
-		send: data => sendData(data.gameId, data.fen),
+		fetch: data => getDocs(),
+		game: data => getGameData(gameId),
+		read: data => readData(gameId),
+		send: data => sendData(gameId, fen),
 	};
 	if (!funcs[type]) return { statusCode: 405, body: `Error: Invalid function name "${type}".` };
 
 	let resp;
 	try {
 		resp = await funcs[type](data);
+		return { statusCode: 200, body: JSON.stringify(resp) };
 	}
 	catch (err) {
 		return { statusCode: err.statusCode || 500, body: JSON.stringify(err) };
 	}
-	return { statusCode: 200, body: JSON.stringify(resp) };
 }
