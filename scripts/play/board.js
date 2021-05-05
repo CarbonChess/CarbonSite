@@ -2,6 +2,7 @@
 
 function createBoard(size, initial) {
 	$('table').innerHTML = '';
+	let emptyCells = [];
 	for (i = 1; i <= size; i++) {
 
 		const tr = document.createElement('tr');
@@ -38,7 +39,7 @@ function createBoard(size, initial) {
 			}
 			else {
 				// no pieces
-				td.innerHTML = cellName;
+				emptyCells.push(cellName);
 			}
 
 			// add piece to board
@@ -50,7 +51,8 @@ function createBoard(size, initial) {
 		}
 
 	}
-	if (initial) movesList.push(createFen())
+	if (initial) movesList.push(createFen());
+	clearCells(...emptyCells);
 }
 
 function createBoardFromFen(fenString) {
@@ -62,7 +64,7 @@ function createBoardFromFen(fenString) {
 	let currentColumn = 1;
 
 	createBoard(8, false);
-	$$('td').forEach(elem => elem.innerHTML = elem.id);
+	$$('td').forEach(elem => clearCells(elem));
 
 	if (fenString.match(/\//g).length !== 7) {
 		console.error('Incorrect FEN');
@@ -84,7 +86,7 @@ function createBoardFromFen(fenString) {
 			let colour = char === char.toUpperCase() ? 'white' : 'black';
 			let piece = pieces[char.toLowerCase()];
 			const cell = indexToLetter(currentColumn) + currentRow;
-			getCell(cell).innerHTML = '';
+			clearCells(cell);
 			getCell(cell).appendChild(createPiece(piece, colour, cell));
 			currentColumn++;
 		}
@@ -116,7 +118,7 @@ function createBoardFromFen(fenString) {
 
 function clearCells(...cells) {
 	for (let cell of cells) {
-		getCell(cell).innerHTML = cell;
+		getCell(cell).innerHTML = '<img src="assets/transparent.gif" data-piece="blank">';
 	}
 }
 
@@ -135,10 +137,16 @@ function flipBoard(force) {
 	const elem = $('body');
 	if (force) {
 		elem.classList.toggle('rotate');
+		elem.classList.toggle('norotate');
 	}
 	else {
-		elem.classList.remove('rotate')
-		if (currentTurn === 'black') elem.classList.add('rotate');
+		if (currentTurn === 'black') {
+			elem.classList.add('rotate');
+			elem.classList.remove('norotate');
+		} else {
+			elem.classList.remove('rotate');
+			elem.classList.add('norotate');
+		}
 	}
 }
 

@@ -4,7 +4,7 @@
 	--light-color: #dcdcdc;
 	--dark-color: #afafaf;
 	--bg-colour: #191919;
-	--cell-size: 55px;
+	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8);
 }
 
@@ -46,26 +46,80 @@ tr:nth-child(even) td:nth-child(odd) {
 	transform: rotate(180deg);
 }
 
+/* Chess board labels */
+tr td::after,
+tr td::before {
+	position: absolute;
+	font-weight: bold;
+}
+/* Columns */
+tr td::after {
+	margin-top: calc(var(--cell-size) / 2);
+	padding-top: 6px;
+}
+.norotate tr:last-child td:nth-child(1)::after {content: 'a';}
+.norotate tr:last-child td:nth-child(2)::after {content: 'b';}
+.norotate tr:last-child td:nth-child(3)::after {content: 'c';}
+.norotate tr:last-child td:nth-child(4)::after {content: 'd';}
+.norotate tr:last-child td:nth-child(5)::after {content: 'e';}
+.norotate tr:last-child td:nth-child(6)::after {content: 'f';}
+.norotate tr:last-child td:nth-child(7)::after {content: 'g';}
+.norotate tr:last-child td:nth-child(8)::after {content: 'h';}
+.rotate tr:first-child td:nth-child(8)::after {content: 'a';}
+.rotate tr:first-child td:nth-child(7)::after {content: 'b';}
+.rotate tr:first-child td:nth-child(6)::after {content: 'c';}
+.rotate tr:first-child td:nth-child(5)::after {content: 'd';}
+.rotate tr:first-child td:nth-child(4)::after {content: 'e';}
+.rotate tr:first-child td:nth-child(3)::after {content: 'f';}
+.rotate tr:first-child td:nth-child(2)::after {content: 'g';}
+.rotate tr:first-child td:nth-child(1)::after {content: 'h';}
+/* Rows */
+tr td::before {
+	margin-top: -12px;
+	margin-left: -12px;
+}
+.norotate tr:nth-child(1) td:first-child::before {content: '8';}
+.norotate tr:nth-child(2) td:first-child::before {content: '7';}
+.norotate tr:nth-child(3) td:first-child::before {content: '6';}
+.norotate tr:nth-child(4) td:first-child::before {content: '5';}
+.norotate tr:nth-child(5) td:first-child::before {content: '4';}
+.norotate tr:nth-child(6) td:first-child::before {content: '3';}
+.norotate tr:nth-child(7) td:first-child::before {content: '2';}
+.norotate tr:nth-child(8) td:first-child::before {content: '1';}
+.rotate tr:nth-child(8) td:last-child::before {content: '8';}
+.rotate tr:nth-child(7) td:last-child::before {content: '7';}
+.rotate tr:nth-child(6) td:last-child::before {content: '6';}
+.rotate tr:nth-child(5) td:last-child::before {content: '5';}
+.rotate tr:nth-child(4) td:last-child::before {content: '4';}
+.rotate tr:nth-child(3) td:last-child::before {content: '3';}
+.rotate tr:nth-child(2) td:last-child::before {content: '2';}
+.rotate tr:nth-child(1) td:last-child::before {content: '1';}
+
 /* Pieces */
 
 [data-piece] {
-	margin-left: 2px;
-	width: 48px;
-	height: 48px;
+	width: var(--piece-size);
+	height: var(--piece-size);
+	margin-left: 5px;
 	background-image: url('../assets/chesspieces.svg');
 	image-rendering: crisp-edges;
-	--piece-size: -45px;
+	transform: scale(1.6);
+	--piece-size: 48px;
+	--piece-sep: -45px;
+}
+[data-piece="blank"] {
+	background: none;
 }
 
 [data-piece].black {background-position-y: var(--piece-size);}
 [data-piece].white {background-position-y: 0px;}
 
-[data-piece].king   {background-position-x: calc(0*var(--piece-size));}
-[data-piece].queen  {background-position-x: calc(1*var(--piece-size));}
-[data-piece].bishop {background-position-x: calc(2*var(--piece-size));}
-[data-piece].knight {background-position-x: calc(3*var(--piece-size));}
-[data-piece].rook   {background-position-x: calc(4*var(--piece-size));}
-[data-piece].pawn   {background-position-x: calc(5*var(--piece-size));}
+[data-piece].king   {background-position-x: calc(0*var(--piece-sep));}
+[data-piece].queen  {background-position-x: calc(1*var(--piece-sep));}
+[data-piece].bishop {background-position-x: calc(2*var(--piece-sep));}
+[data-piece].knight {background-position-x: calc(3*var(--piece-sep));}
+[data-piece].rook   {background-position-x: calc(4*var(--piece-sep));}
+[data-piece].pawn   {background-position-x: calc(5*var(--piece-sep));}
 
 .taken-pieces [data-piece] {
 	margin: -8px;

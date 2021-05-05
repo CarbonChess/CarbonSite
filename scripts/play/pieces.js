@@ -30,7 +30,8 @@ function addPiece(name, colour, cell) {
 }
 
 function removePiece(cell, reset) {
-	getCell(cell).innerHTML = reset ? cell : '';
+	if (reset) clearCells(cell);
+	else getCell(cell).innerHTML = '';
 }
 
 function swapPiece(startCell, endCell) {
@@ -52,7 +53,7 @@ function movePiece(startCell, endCell) {
 	const startClasses = getPieceClasses(startCell);
 	addPiece(startClasses[1], startClasses[0], endCell);
 	removePiece(startCell);
-	getCell(startCell).innerText = startCell;
+	clearCells(startCell);
 	updateKingCells();
 }
 
