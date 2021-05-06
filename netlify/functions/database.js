@@ -30,11 +30,13 @@ async function getGameData(gameID) {
 
 async function readData(gameId) {
 	const docs = await getGameData(gameId);
-	if (!docs.length) throw 'No game is in session';
-	createBoardFromFen(docs[0].fen);
+	let success = docs.length > 1;
+	if (success) createBoardFromFen(docs[0].data.fen);
+	return { success, data: docs[0].data };
 }
 
 async function sendData(gameId, fen) {
+	let success, type;
 	let docs = await getGameData(gameID);
 	// Remove duplicates if applicable
 	if (docs.length > 1) {
@@ -47,31 +49,34 @@ async function sendData(gameId, fen) {
 	}
 	// Make new document if no game is in session
 	if (docs.length === 0) {
+		type = 'create';
 		await client.query(
 			Q.Create(
 				Q.Collection(COLLECTION),
 				{ data: { id: gameId, fen, time: +new Date() } }
 			)
-		).then(resolve).catch(rejection);
+		).then(r => success = true).catch(e => success = false);
 	}
 	// Otherwise update existing doc
 	else {
+		type = 'update';
 		await client.query(
 			Q.Update(
 				docs[0].ref,
 				{ data: { id: gameId, fen, time: +new Date() } }
 			)
-		).then(resolve).catch(rejection);
+		).then(r => success = true).catch(e => success = false);
 	}
+	return { type, success, data: { gameId, fen } };
 }
 
 exports.handler = async function (event, context, callback) {
 	const { type, gameId, fen } = event.queryStringParameters;
 	const funcs = {
-		fetch: data => getDocs(),
-		game: data => getGameData(gameId),
-		read: data => readData(gameId),
-		send: data => sendData(gameId, fen),
+		list: () => { 'in': { type, gameId, fen }, 'out': getDocs() },
+		game: () => { 'in': { type, gameId, fen }, 'out': getGameData(gameId) },
+		read: () => { 'in': { type, gameId, fen }, 'out': readData(gameId) },
+		send: () => { 'in': { type, gameId, fen }, 'out': sendData(gameId, fen) },
 	};
 	if (!funcs[type]) return { statusCode: 405, body: `Error: Invalid function name "${type}".` };
 
