@@ -73,10 +73,10 @@ async function sendData(gameId, fen) {
 exports.handler = async function (event, context, callback) {
 	const { type, gameId, fen } = event.queryStringParameters;
 	const funcs = {
-		list: () => { 'in': { type, gameId, fen }, 'out': getDocs() },
-		game: () => { 'in': { type, gameId, fen }, 'out': getGameData(gameId) },
-		read: () => { 'in': { type, gameId, fen }, 'out': readData(gameId) },
-		send: () => { 'in': { type, gameId, fen }, 'out': sendData(gameId, fen) },
+		list: () => ({ 'in': { type, gameId, fen }, 'out': getDocs() }),
+		game: () => ({ 'in': { type, gameId, fen }, 'out': getGameData(gameId) }),
+		read: () => ({ 'in': { type, gameId, fen }, 'out': readData(gameId) }),
+		send: () => ({ 'in': { type, gameId, fen }, 'out': sendData(gameId, fen) }),
 	};
 	if (!funcs[type]) return { statusCode: 405, body: `Error: Invalid function name "${type}".` };
 
