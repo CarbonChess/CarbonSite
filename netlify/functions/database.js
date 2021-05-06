@@ -13,22 +13,25 @@ const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
 
 async function getDocs() {
+	console.debug('Retrieving documents');
 	const docs = await client.query(
 		Q.Map(
-			Q.Paginate(Q.Documents(Q.Collection("Games"))),
-			Q.Lambda("X", Q.Get(Q.Var("X"))) //?
+			Q.Paginate(Q.Documents(Q.Collection(COLLECTION))),
+			Q.Lambda(x => Q.Get(x))
 		)
 	);
 	console.log('Documents:', docs.data);
 	return docs.data;
 }
 
-async function getGameData(gameID) {
+async function getGameData(gameId) {
+	console.debug('Retrieving game data of ID', gameId);
 	let docs = await getDocs();
 	return docs.filter(doc => doc.data.id === gameId);
 }
 
 async function readData(gameId) {
+	console.debug('Reading game data of ID', gameId);
 	const docs = await getGameData(gameId);
 	let success = docs.length > 1;
 	if (success) createBoardFromFen(docs[0].data.fen);
@@ -36,6 +39,7 @@ async function readData(gameId) {
 }
 
 async function sendData(gameId, fen) {
+	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameID);
 	// Remove duplicates if applicable
@@ -71,19 +75,23 @@ async function sendData(gameId, fen) {
 }
 
 exports.handler = async function (event, context, callback) {
-	const { type, gameId, fen } = event.queryStringParameters;
+	console.debug('Function activated', event, context, callback);
+	const input = event.queryStringParameters;
+	const { type, gameId, fen } = input;
 	const funcs = {
-		list: () => ({ 'in': { type, gameId, fen }, 'out': getDocs() }),
-		game: () => ({ 'in': { type, gameId, fen }, 'out': getGameData(gameId) }),
-		read: () => ({ 'in': { type, gameId, fen }, 'out': readData(gameId) }),
-		send: () => ({ 'in': { type, gameId, fen }, 'out': sendData(gameId, fen) }),
+		help: () => ['help', 'list', 'game', 'read', 'send'],
+		list: () => getDocs(),
+		game: () => getGameData(gameId),
+		read: () => readData(gameId),
+		send: () => sendData(gameId, fen),
 	};
 	if (!funcs[type]) return { statusCode: 405, body: `Error: Invalid function name "${type}".` };
 
-	let resp;
+	let response;
 	try {
-		resp = await funcs[type](data);
-		return { statusCode: 200, body: JSON.stringify(resp) };
+		let output = await funcs[type](data);
+		response = { input, output };
+		return { statusCode: 200, body: JSON.stringify(response) };
 	}
 	catch (err) {
 		return { statusCode: err.statusCode || 500, body: JSON.stringify(err) };
