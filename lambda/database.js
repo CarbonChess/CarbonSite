@@ -79,21 +79,20 @@ exports.handler = async function (event, context, callback) {
 	const input = event.queryStringParameters;
 	const { type, gameId, fen } = input;
 	const funcs = {
-		help: () => ['help', 'list', 'game', 'read', 'send'],
-		list: () => getDocs(),
-		game: () => getGameData(gameId),
-		read: () => readData(gameId),
-		send: () => sendData(gameId, fen),
+		help: async () => ['help', 'list', 'game', 'read', 'send'],
+		list: async () => await getDocs(),
+		game: async () => await getGameData(gameId),
+		read: async () => await readData(gameId),
+		send: async () => await sendData(gameId, fen),
 	};
-	if (!funcs[type]) return { statusCode: 405, body: `Error: Invalid function name "${type}".` };
+	if (!funcs[type]) return { statusCode: 405, body: JSON.stringify(`Error: Invalid function name "${type}".`) };
 
 	let response;
 	try {
-		let output = await funcs[type](data);
+		const output = await funcs[type](data);
 		response = { input, output };
 		return { statusCode: 200, body: JSON.stringify(response) };
-	}
-	catch (err) {
+	} catch (err) {
 		return { statusCode: err.statusCode || 500, body: JSON.stringify(err) };
 	}
 }
