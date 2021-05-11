@@ -119,11 +119,16 @@ a {
 
 .card.play,
 .card#back {
-	bottom: 7em;
 	position: absolute;
 	border-radius: 3em;
 	text-transform: uppercase;
     font-weight: bold;
+}
+@media (min-width: 600px) {
+	.card.play,
+	.card#back {
+		bottom: 7em;
+	}
 }
 .card.play:hover,
 .card#back:hover {
@@ -141,9 +146,13 @@ a {
 }
 
 .card.play {
-	right: 5em;
 	padding-right: 2em;
 	background: var(--accent-colour);
+}
+@media (min-width: 600px) {
+	.card.play {
+		right: 5em;
+	}
 }
 .card.play::after {
 	margin-left: 3em;
@@ -151,8 +160,12 @@ a {
 }
 
 .card#back {
-	left: 5em;
 	padding-left: 2em;
+}
+@media (min-width: 600px) {
+	.card#back {
+		left: 5em;
+	}
 }
 .card#back::before {
 	margin-right: 3em;

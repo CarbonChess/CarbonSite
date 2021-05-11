@@ -2,7 +2,7 @@
 
 ![Pieces](assets/chesspieces.svg)
 
-CarbonChess is a versatile singleplayer chess client.
+CarbonChess is a versatile singleplayer chess client currently in Beta.
 
 Play legitimately or turn rules off to play as you want!
 
