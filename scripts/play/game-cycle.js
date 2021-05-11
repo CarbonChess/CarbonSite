@@ -210,7 +210,7 @@ function undoLastMove() {
 	if (autoFlip) flipBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
 		if (elem.parentNode) elem.parentNode.innerHTML = '';
-		});
+	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
 	if (autoPing) sendCurrentTurn();

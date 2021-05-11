@@ -33,15 +33,14 @@ async function getGameData(gameId) {
 async function readData(gameId) {
 	console.debug('Reading game data of ID', gameId);
 	const docs = await getGameData(gameId);
-	let success = docs.length > 1;
-	if (success) createBoardFromFen(docs[0].data.fen);
-	return { success, data: docs[0].data };
+	const success = docs.length > 1;
+	return { success, data: docs[0] && docs[0].data };
 }
 
 async function sendData(gameId, fen) {
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
-	let docs = await getGameData(gameID);
+	let docs = await getGameData(gameId);
 	// Remove duplicates if applicable
 	if (docs.length > 1) {
 		await docs.slice(1).forEach(doc => {
@@ -85,11 +84,13 @@ exports.handler = async function (event, context, callback) {
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
 	};
-	if (!funcs[type]) return { statusCode: 405, body: JSON.stringify(`Error: Invalid function name "${type}".`) };
+	if (!funcs[type]) {
+		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
+	}
 
 	let response;
 	try {
-		const output = await funcs[type](data);
+		const output = await funcs[type]();
 		response = { input, output };
 		return { statusCode: 200, body: JSON.stringify(response) };
 	} catch (err) {
