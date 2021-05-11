@@ -25,13 +25,8 @@ function createPiece(name, colour, cell) {
 }
 
 function addPiece(name, colour, cell) {
-	removePiece(cell);
+	clearCell(cell);
 	getCell(cell).appendChild(createPiece(name, colour, cell));
-}
-
-function removePiece(cell, reset) {
-	if (reset) clearCells(cell);
-	else getCell(cell).innerHTML = '';
 }
 
 function swapPiece(startCell, endCell) {
@@ -39,11 +34,11 @@ function swapPiece(startCell, endCell) {
 	const endClasses = getPieceClasses(endCell);
 	if (startClasses.length) {
 		addPiece(startClasses[1], startClasses[0], endCell);
-		if (!endClasses.length) removePiece(startCell, true);
+		if (!endClasses.length) resetCell(startCell);
 	}
 	if (endClasses.length) {
 		addPiece(endClasses[1], endClasses[0], startCell);
-		if (!startClasses.length) removePiece(endCell, true);
+		if (!startClasses.length) resetCell(endCell);
 	}
 	updateKingCells();
 }
@@ -52,8 +47,7 @@ function movePiece(startCell, endCell) {
 	if (startCell === endCell) return;
 	const startClasses = getPieceClasses(startCell);
 	addPiece(startClasses[1], startClasses[0], endCell);
-	removePiece(startCell);
-	clearCells(startCell);
+	resetCell(startCell);
 	updateKingCells();
 }
 
