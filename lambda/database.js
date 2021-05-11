@@ -33,8 +33,8 @@ async function getGameData(gameId) {
 async function readData(gameId) {
 	console.debug('Reading game data of ID', gameId);
 	const docs = await getGameData(gameId);
-	const success = docs.length > 1;
-	return { success, data: docs[0] && docs[0].data };
+	const success = docs.length >= 1;
+	return { success, data: success ? docs[0].data : {} };
 }
 
 async function sendData(gameId, fen) {
@@ -43,8 +43,8 @@ async function sendData(gameId, fen) {
 	let docs = await getGameData(gameId);
 	// Remove duplicates if applicable
 	if (docs.length > 1) {
-		await docs.slice(1).forEach(doc => {
-			client.query(
+		await docs.slice(1).forEach(async (doc) => {
+			await client.query(
 				Q.Delete(doc.ref)
 			).then(resolve).catch(rejection);
 		});
@@ -78,9 +78,8 @@ exports.handler = async function (event, context, callback) {
 	const input = event.queryStringParameters;
 	const { type, gameId, fen } = input;
 	const funcs = {
-		help: async () => ['help', 'list', 'game', 'read', 'send'],
-		list: async () => await getDocs(),
-		game: async () => await getGameData(gameId),
+		help: async () => ['help', 'list', 'read', 'send'],
+		list: async () => await getDocs().map(obj => obj.data),
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
 	};
