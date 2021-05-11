@@ -79,7 +79,7 @@ exports.handler = async function (event, context, callback) {
 	const { type, gameId, fen } = input;
 	const funcs = {
 		help: async () => ['help', 'list', 'read', 'send'],
-		list: async () => await getDocs().map(obj => obj.data),
+		list: async () => await getDocs(),
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
 	};

@@ -13,6 +13,7 @@
 	<script src="scripts/play/bot.js"></script>
 	<script src="scripts/play/fen.js"></script>
 	<script src="scripts/play/game-cycle.js"></script>
+	<script src="scripts/play/online.js"></script>
 	<script src="scripts/play/pagelog.js"></script>
 	<script src="scripts/play/pieces.js"></script>
 	<script src="scripts/play/validation.js"></script>
@@ -25,6 +26,11 @@
 			<img id="logo" src="/assets/logo.svg" height="65px">
 		</a>
 	</h1>
+
+	<div onload="document.cookie='gameId=11521'">
+		<button onclick="readDB()">Read</button>
+		<button onclick="sendDB()">Send</button>
+	</div>
 
 	<div id="winner" class="resettable"></div>
 
