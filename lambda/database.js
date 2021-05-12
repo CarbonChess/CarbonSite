@@ -93,12 +93,13 @@ exports.handler = async function (event, context, callback) {
 	const input = event.queryStringParameters;
 	const { type, gameId, fen } = input;
 	const funcs = {
-		help: async () => ['help', 'list', 'prune', 'read', 'send'],
 		list: async () => await getDocs(),
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
+		version: async () => 0.10,
 	};
+	funcs[help] = { commands: Object.keys(funcs), version: await funcs.version() };
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

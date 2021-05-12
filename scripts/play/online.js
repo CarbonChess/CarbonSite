@@ -1,7 +1,7 @@
 const apiUrl = '/.netlify/functions/database';
-const ms = 1000;
-const TIMEOUT_AGE = 5 * 60 * ms;
-const READ_INTERVAL = 5 * ms;
+const sec = 1000;
+const TIMEOUT_AGE = 3 * 60 * sec;
+const READ_INTERVAL = 5 * sec;
 
 let lastReceivedFen, lastSentFen;
 let idleTime = 0;
@@ -16,10 +16,10 @@ async function readDB() {
 }
 
 async function sendDB() {
-    console.debug(`Attempting to send data to game ID ${gameID}...`);
+    console.debug(`Attempting to send data to game ID ${gameId}...`);
     const fen = createFen();
     if (fen === lastSentFen) {
-        console.debug(`No new FEN data to send for game ID ${gameID}.`);
+        console.debug(`No new FEN data to send for game ID ${gameId}.`);
         return;
     }
     lastSentFen = fen;
