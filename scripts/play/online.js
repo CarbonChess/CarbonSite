@@ -11,6 +11,8 @@ async function readDB() {
     const json = await resp.json();
     const data = json.output.data;
     const fen = data.fen || createFen();
+    if (fen === lastReceivedFen) return;
+    lastReceivedFen = fen;
     console.debug(`Retrieved FEN data for game ID ${gameId}: ${fen}.`);
     createBoardFromFen(fen);
 }

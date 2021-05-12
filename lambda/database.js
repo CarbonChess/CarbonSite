@@ -97,7 +97,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
-		version: async () => 0.10,
+		version: async () => 0.11,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
