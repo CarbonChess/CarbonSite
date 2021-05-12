@@ -66,7 +66,7 @@
 		<section id="online-settings" class="hide">
 			<h2>Online</h2>
 			<h3>Game Code</h3>
-			<input type="number" min="10000" max="99999" id="game-code" placeholder="Game Code" onchange="updateOnlinePlay();">
+			<input type="number" min="10000" max="99999" id="game-code" placeholder="Game Code" pattern="^\d{5}$" onchange="cleanGameCode();updateOnlinePlay();">
 			<a onclick="createGameCode();updateOnlinePlay();">
 				↻ Create
 			</a>

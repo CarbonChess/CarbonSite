@@ -99,7 +99,7 @@ exports.handler = async function (event, context, callback) {
 		send: async () => await sendData(gameId, fen),
 		version: async () => 0.10,
 	};
-	funcs[help] = { commands: Object.keys(funcs), version: await funcs.version() };
+	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

@@ -47,6 +47,10 @@ function updateBotIntelligence() {
 	$('#bot-intelligence-dots').innerHTML = ' • '.repeat(level - 1) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(4 - level);
 }
 
+function cleanGameCode() {
+	$('#game-code').value = $('#game-code').value.replace(/[^\d]/g, '').padStart(5, '0').substr(0, 5);
+}
+
 function createGameCode() {
 	$('#game-code').value = Math.random().toString().substr(2, 5);
 }
