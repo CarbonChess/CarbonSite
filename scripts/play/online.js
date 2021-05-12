@@ -1,14 +1,39 @@
 const apiUrl = '/.netlify/functions/database';
+const ms = 1000;
+const TIMEOUT_AGE = 5 * 60 * ms;
+const READ_INTERVAL = 5 * ms;
+
+let lastReceivedFen, lastSentFen;
+let idleTime = 0;
 
 async function readDB() {
     const resp = await fetch(`${apiUrl}?type=read&gameId=${gameId}`);
     const json = await resp.json();
     const data = json.output.data;
-    console.debug(`Retrieved FEN data for game ID ${gameId}.`);
-    createBoardFromFen(data.fen);
+    const fen = data.fen || createFen();
+    console.debug(`Retrieved FEN data for game ID ${gameId}: ${fen}.`);
+    createBoardFromFen(fen);
 }
 
 async function sendDB() {
-    await fetch(`${apiUrl}?type=send&gameId=${gameId}&fen=${encodeURIComponent(createFen())}`);
-    console.debug(`Sent FEN data for game ID ${gameId}.`);
+    console.debug(`Attempting to send data to game ID ${gameID}...`);
+    const fen = createFen();
+    if (fen === lastSentFen) {
+        console.debug(`No new FEN data to send for game ID ${gameID}.`);
+        return;
+    }
+    lastSentFen = fen;
+    idleTime = 0;
+    await fetch(`${apiUrl}?type=send&gameId=${gameId}&fen=${encodeURIComponent(fen)}`);
+    console.debug(`Sent FEN data for game ID ${gameId}: ${fen}.`);
 }
+
+setInterval(() => {
+    if (idleTime > TIMEOUT_AGE) {
+        alert('Session timed out');
+        location.pathname = '/home.html';
+        return;
+    }
+    idleTime += READ_INTERVAL;
+    readDB();
+}, READ_INTERVAL);

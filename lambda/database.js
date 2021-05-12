@@ -11,6 +11,7 @@ const MAX_AGE = 7 * 86.4e6;
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
+const randomID = () => +Math.random().toString().substr(2, 5);
 
 async function getDocs() {
 	console.debug('Retrieving documents');
@@ -36,10 +37,14 @@ async function deleteDoc(doc) {
 
 async function pruneDocs() {
 	const docs = await getDocs();
+	let deletedDocs = [];
 	for (const doc of docs) {
-		// Delete doc if it has an invalid ID or is older than MAX_AGE
-		if (!+doc.data.id || new Date() - doc.ts > MAX_AGE) deleteDoc(doc);
+		deletedDocs.push(doc.data)
+		const invalidID = !/^\d{5}$/.test(doc.data.id);
+		const oldSession = new Date() - doc.ts > MAX_AGE;
+		if (invalidID || oldSession) deleteDoc(doc);
 	}
+	return { success: docs.length > 1, data: { deleted: deletedDocs } };
 }
 
 async function readData(gameId) {
@@ -50,7 +55,8 @@ async function readData(gameId) {
 }
 
 async function sendData(gameId, fen) {
-    if (!+gameId) gameId = Math.random().toString().substr(2,5);
+	if (!+gameId) gameId = randomID();
+	fen = fen.replace(/[^-\w\/ ]+/g, '');
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);

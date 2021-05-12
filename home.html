@@ -66,11 +66,11 @@
 		<section id="online-settings" class="hide">
 			<h2>Online</h2>
 			<h3>Game Code</h3>
-			<input type="number" size="5" id="game-code" placeholder="Game Code" onchange="updateOnlinePlay();">
+			<input type="number" min="10000" max="99999" id="game-code" placeholder="Game Code" onchange="updateOnlinePlay();">
 			<a onclick="createGameCode();updateOnlinePlay();">
 				↻ Create
 			</a>
-			<a id="online-play" href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=0" class="card wide play">
+			<a id="online-play" href="play.html?bot=0&amp;multiplayer=1&amp;gamecode=0" class="card wide play">
 				Play
 			</a>
 		</section>
