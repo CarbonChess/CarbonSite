@@ -32,7 +32,7 @@ function run() {
 	window.autoFlip = gameOptions.autoFlip;
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
-	window.gameID = gameOptions.gamecode;
+	window.gameId = gameOptions.gamecode;
 
 	flipBoard(gameOptions.botColour === 'white');
 
