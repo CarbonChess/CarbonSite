@@ -138,7 +138,7 @@ function hasClicked(cell) {
 		}
 
 		// send to server
-		if (autoPing) sendCurrentTurn();
+		if (autoPing) sendDB(gameId, createFen());
 
 	}
 

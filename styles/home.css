@@ -39,8 +39,8 @@ h2 {
 	cursor: pointer;
 }
 
-input[type="number"] {
-	width: 7em;
+input[type="text"] {
+	width: 6em;
 	height: 3em;
 	padding: 0.5em;
 }
@@ -89,9 +89,9 @@ input[type="number"] {
 }
 
 .card.big {
-	margin: 1em;
 	height: 250px;
 	width: 250px;
+	border-radius: 0;
 }
 @media (min-width: 600px) {
 	.card.big {

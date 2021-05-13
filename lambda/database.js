@@ -1,16 +1,17 @@
 /*
-	Database typing: {'id': string, 'fen': string, 'time': Date}
+	Database typing: {'id': string, 'fen': string}
 */
 const faunadb = require('faunadb');
 
 const Q = faunadb.query;
 const { FAUNA_CLIENT_KEY } = process.env;
-
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
+const MAX_AGE = 7 * 86.4e6;
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
+const randomID = () => +Math.random().toString().substr(2, 5);
 
 async function getDocs() {
 	console.debug('Retrieving documents');
@@ -30,6 +31,22 @@ async function getGameData(gameId) {
 	return docs.filter(doc => doc.data.id === gameId);
 }
 
+async function deleteDoc(doc) {
+	await client.query(Q.Delete(doc.ref)).then(resolve).catch(rejection);
+}
+
+async function pruneDocs() {
+	const docs = await getDocs();
+	let deletedDocs = [];
+	for (const doc of docs) {
+		deletedDocs.push(doc.data)
+		const invalidID = !/^\d{5}$/.test(doc.data.id);
+		const oldSession = new Date() - doc.ts > MAX_AGE;
+		if (invalidID || oldSession) deleteDoc(doc);
+	}
+	return { success: docs.length > 1, data: { deleted: deletedDocs } };
+}
+
 async function readData(gameId) {
 	console.debug('Reading game data of ID', gameId);
 	const docs = await getGameData(gameId);
@@ -38,16 +55,14 @@ async function readData(gameId) {
 }
 
 async function sendData(gameId, fen) {
+	if (!+gameId) gameId = randomID();
+	fen = fen.replace(/[^-\w\/ ]+/g, '');
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
 	// Remove duplicates if applicable
 	if (docs.length > 1) {
-		await docs.slice(1).forEach(async (doc) => {
-			await client.query(
-				Q.Delete(doc.ref)
-			).then(resolve).catch(rejection);
-		});
+		docs.slice(1).forEach(deleteDoc);
 		docs = [docs[0]];
 	}
 	// Make new document if no game is in session
@@ -56,9 +71,9 @@ async function sendData(gameId, fen) {
 		await client.query(
 			Q.Create(
 				Q.Collection(COLLECTION),
-				{ data: { id: gameId, fen, time: +new Date() } }
+				{ data: { id: gameId, fen } }
 			)
-		).then(r => success = true).catch(e => success = false);
+		).then(() => success = true).catch(() => success = false);
 	}
 	// Otherwise update existing doc
 	else {
@@ -66,9 +81,9 @@ async function sendData(gameId, fen) {
 		await client.query(
 			Q.Update(
 				docs[0].ref,
-				{ data: { id: gameId, fen, time: +new Date() } }
+				{ data: { id: gameId, fen } }
 			)
-		).then(r => success = true).catch(e => success = false);
+		).then(() => success = true).catch(() => success = false);
 	}
 	return { type, success, data: { gameId, fen } };
 }
@@ -78,11 +93,13 @@ exports.handler = async function (event, context, callback) {
 	const input = event.queryStringParameters;
 	const { type, gameId, fen } = input;
 	const funcs = {
-		help: async () => ['help', 'list', 'read', 'send'],
-		list: async () => await getDocs().map(obj => obj.data),
+		list: async () => await getDocs(),
+		prune: async () => await pruneDocs(),
 		read: async () => await readData(gameId),
 		send: async () => await sendData(gameId, fen),
+		version: async () => 0.11,
 	};
+	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

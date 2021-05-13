@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	<img id="logo" src="/assets/logo.svg" height="65px">
+	<img id="logo" src="/assets/logo.svg" height="65px" onclick="back()">
 
 	<form id="main" action="/play" method="GET">
 
@@ -30,7 +30,7 @@
 					<span class="card-heading">Offline</span>
 					<span class="card-description">Play against someone on the same device</span>
 				</a>
-				<a class="card big hide" onclick="showSection('online')">
+				<a class="card big" onclick="showSection('online')">
 					<img src="assets/icons/online.svg" class="card-image" height="100px">
 					<span class="card-heading">Online</span>
 					<span class="card-description">Play against someone anywhere in the world</span>
@@ -40,7 +40,8 @@
 
 		<!-- Offline -->
 		<section id="offline-settings" class="hide">
-			<h2>Game options</h2>
+			<h2>Offline</h2>
+			<h3>Game options</h3>
 			<div>
 				<label class="toggle">
 					<strong>Rules</strong>
@@ -58,18 +59,20 @@
 		<!-- Online -->
 		<input readonly type="checkbox" name="multiplayer" class="hide">
 		<section id="online-settings" class="hide">
-			<h2>Game Code</h2>
-			<input type="numeric" size="5" name="gamecode" placeholder="Game Code">
-			<a onclick="createGameCode();">
+			<h2>Online</h2>
+			<h3>Game Code</h3>
+			<input required type="text" pattern="^\d{5}$" name="gamecode" title="Enter a 5-digit game code"><br>
+			<button type="button" onclick="createGameCode();">
 				↻ Create
-			</a>
+			</button>
 		</section>
 
 		<!-- Computer -->
 		<input readonly type="checkbox" name="bot" class="hide">
 		<input readonly type="text" name="botColour" id="botColour" class="hide">
 		<section id="bot-settings" class="hide">
-			<h2>Bot intelligence</h2>
+			<h2>Computer</h2>
+			<h3>Bot intelligence</h3>
 			<div id="bot-intelligence" class="cards">
 				<a class="card small" data-level="1">
 					<img src="assets/icons/none.svg" class="card-image" height="100px">
@@ -99,7 +102,7 @@
 				</div>
 			</div>
 
-			<h2>Bot colour</h2>
+			<h3>Bot colour</h3>
 			<div id="bot-colour" class="cards">
 				<a class="card wide selected" onclick="updateSelection(this);$('#botColour').value='random';">
 					<span class="card-heading">Random</span>

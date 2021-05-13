@@ -52,7 +52,7 @@ function createBoard(size, initial) {
 
 	}
 	if (initial) movesList.push(createFen());
-	clearCells(...emptyCells);
+	emptyCells.forEach(cell => resetCell(cell));
 }
 
 function createBoardFromFen(fenString) {
@@ -64,7 +64,7 @@ function createBoardFromFen(fenString) {
 	let currentColumn = 1;
 
 	createBoard(8, false);
-	$$('td').forEach(elem => clearCells(elem));
+	$$('td').forEach(elem => resetCell(elem.id));
 
 	if (fenString.match(/\//g).length !== 7) {
 		console.error('Incorrect FEN');
@@ -86,7 +86,7 @@ function createBoardFromFen(fenString) {
 			let colour = char === char.toUpperCase() ? 'white' : 'black';
 			let piece = pieces[char.toLowerCase()];
 			const cell = indexToLetter(currentColumn) + currentRow;
-			clearCells(cell);
+			clearCell(cell);
 			getCell(cell).appendChild(createPiece(piece, colour, cell));
 			currentColumn++;
 		}
@@ -116,13 +116,9 @@ function createBoardFromFen(fenString) {
 
 }
 
-function clearCells(...cells) {
-	for (let cell of cells) {
-		getCell(cell).innerHTML = '<img src="assets/transparent.gif" data-piece="blank">';
-	}
-}
-
 const getCell = cell => $.id(cell);
+const clearCell = cell => getCell(cell).innerHTML = '';
+const resetCell = cell => getCell(cell).innerHTML = '<img src="assets/transparent.gif" data-piece="blank">';
 
 // Options functions //
 
