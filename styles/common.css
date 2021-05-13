@@ -5,6 +5,10 @@
 	box-sizing: border-box;
 }
 
+html {
+	min-height: 100vh;
+}
+
 body {
 	--background: url('/assets/backgrounds/variety.svg');
 	background-color: var(--bg-colour);
@@ -16,16 +20,24 @@ body {
 	font-family: 'Century Gothic', 'Trebuchet MS', Vedana, Arial, sans-serif;
 }
 
+@media (max-width: 600px) {
+	body {
+		background-repeat: repeat;
+		background-size: 200%;
+	}
+}
+
 footer {
+	width: 100%;
 	padding: 1em;
 	text-align: center;
 	font-family: 'Source Sans Pro', sans-serif;
+	z-index: -1;
 }
-@media (min-width: 600px) { 
+@media (min-width: 601px) {
 	footer {
-		right: 0;
-		bottom: 0;
-		position: absolute;
+		position: relative;
+		bottom: 0.5em;
 	}
 }
 

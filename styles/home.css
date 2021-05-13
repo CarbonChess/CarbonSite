@@ -8,45 +8,41 @@
 
 body {
 	margin: 0;
-	height: 100vh;
+	text-align: center;
 	font-family: 'Century Gothic', sans-serif;
 }
 
-main {
-	min-height: 100%;
-	padding-bottom: 11em;
-	display: flex;
-	flex-direction: column;
-	place-content: center;
-	text-align: center;
-}
-@media (max-width: 600px) {
-	main {
-		background: none;
+@media (min-width: 601px) {
+	body {
+		height: 100vh;
+		display: grid;
+		grid-template-areas: "header" "main" "footer";
+	 	place-items: center;
+		grid-template-rows: auto 1fr auto;
+		min-height: 100vh;
 	}
-	main::before {
-		content: "";
-		position: absolute;
-		width: 200%;
-		height: 200%;
-		top: -50%;
-		left: -50%;
-		background: var(--background);
-		transform: rotate(90deg);
-		z-index: -1;
-	}
+	#logo {grid-area: header;}
+	#main {grid-area: main;}
+	footer {grid-area: footer;}
+
 }
 
 h2 {
-	margin: 2em 0 1em;
+	margin: 1em 0 0.5em;
 	font-size: 2em;
 	text-transform: uppercase;
 }
 
-a {
+:any-link {
 	color: inherit;
 	text-decoration: inherit;
 	cursor: pointer;
+}
+
+input[type="number"] {
+	width: 7em;
+	height: 3em;
+	padding: 0.5em;
 }
 
 /* Cards */
@@ -63,6 +59,7 @@ a {
 	place-content: center;
 	border-radius: 12px;
 	background: var(--cell-colour);
+	cursor: pointer;
 	transition: 50ms;
 }
 
@@ -117,25 +114,29 @@ a {
 	height: 70px;
 }
 
-.card.play,
+.card#play,
 .card#back {
-	position: absolute;
+	position: relative;
+	border: none;
 	border-radius: 3em;
 	text-transform: uppercase;
-    font-weight: bold;
+	font-size: 1em;
+	font-weight: bold;
+	color: #fff;
 }
 @media (min-width: 600px) {
-	.card.play,
+	.card#play,
 	.card#back {
-		bottom: 7em;
+		position: absolute;
+		bottom: 2em;
 	}
 }
-.card.play:hover,
+.card#play:hover,
 .card#back:hover {
 	transform: none;
 	background: var(--accent-colour);
 }
-.card.play::after,
+.card#play::after,
 .card#back::before {
 	content: '';
 	height: 1em;
@@ -145,16 +146,16 @@ a {
 	background-repeat: no-repeat;
 }
 
-.card.play {
+.card#play {
 	padding-right: 2em;
 	background: var(--accent-colour);
 }
 @media (min-width: 600px) {
-	.card.play {
+	.card#play {
 		right: 5em;
 	}
 }
-.card.play::after {
+.card#play::after {
 	margin-left: 3em;
 	margin-top: 0.5em;
 }
@@ -174,8 +175,8 @@ a {
 }
 
 .card-image {
-	margin: 1em;
-	height: 7em;
+	margin: 2em 1em 1em;
+	height: 6em;
 }
 .card.small .card-image {
 	height: 2em;
@@ -199,7 +200,7 @@ a {
 	width: 55px;
 	background: #c8c8c8;
 	display: block;
-	margin-left: 72px;
+	margin-left: 74px;
 	margin-bottom: 1em;
 }
 .card.small .card-heading::before {
@@ -213,11 +214,12 @@ a {
 }
 
 .card-description {
-	width: 200px;
+	width: 150px;
 	font-family:'Source Sans Pro', sans-serif;
 	color: rgb(200,200,200);
 	padding-top: 0.5em;
 	display: block;
+	font-size: initial;
 	line-height: 1.15em
 }
 
@@ -240,18 +242,17 @@ a {
 	font-size: 1.2em;
 }
 
-#game-code {
-	width: 7em;
-	height: 3em;
-	padding: 0.5em;
-}
-
 #bot-intelligence-dots {
 	--spacing: 72px;
 	margin-left: var(--spacing);
 	letter-spacing: var(--spacing);
 	font-size: 38px;
 	user-select: none;
+}
+@media (max-width: 600px) {
+	#bot-intelligence-dots {
+		display: none;
+	}
 }
 
 #dot-highlighted {
@@ -303,14 +304,14 @@ a {
 }
 
 input:checked + .slider {
-  background: var(--accent-colour);
+	background: var(--accent-colour);
 }
 input:checked + .slider:before {
-  transform: translateX(26px);
+	transform: translateX(26px);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--accent-colour);
+	box-shadow: 0 0 1px var(--accent-colour);
 }
 
 input:disabled + .slider {
@@ -321,6 +322,17 @@ input:disabled + .slider::before {
 }
 
 /* Bot slider */
+
+input[type="range"] {
+	width: 548px;
+	height: 8px;
+	border-radius: 30px;
+}
+@media (max-width: 600px) {
+	input[type="range"] {
+		width: 80vw;
+	}
+}
 
 input[type="range"]::-moz-range-progress {
 	background-color: var(--accent-colour);
@@ -340,16 +352,10 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  width: 9px;
-  height: 9px;
-  background: var(--accent-colour);
-  cursor: pointer;
-  border-radius: 30px;
-}
-
-input[type="range"] {
-	width: 550px;
-	height: 8px;
+	appearance: none;
+	width: 9px;
+	height: 9px;
+	background: var(--accent-colour);
+	cursor: pointer;
 	border-radius: 30px;
 }

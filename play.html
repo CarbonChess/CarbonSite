@@ -18,10 +18,10 @@
 	<script src="scripts/play/validation.js"></script>
 </head>
 
-<body onload="run()">
+<body onload="run()" class="norotate">
 
 	<h1>
-		<a href="/home.html">
+		<a href="/home">
 			<img id="logo" src="/assets/logo.svg" height="65px">
 		</a>
 	</h1>
@@ -35,13 +35,13 @@
 			<button id="flip-board" onclick="flipBoard(true)">
 				<img class="hd" src="assets/icons/flip.png">
 			</button>
-			<button id="reset" onclick="run();sendCurrentTurn(defaultFen);">
-				Reset
-			</button>
 			<button id="undo" onclick="undoLastMove()">
 				<img class="hd" src="assets/icons/undo.png">
 			</button>
-			<button onclick="createLink()" title="Copy to clipboard">
+			<button id="reset" onclick="run();sendCurrentTurn(defaultFen);">
+				Reset
+			</button>
+			<button onclick="copyFen()" title="Copy to clipboard">
 				Share
 			</button>
 		</div>
@@ -56,22 +56,20 @@
 			<span id="white-points" class="resettable"></span>
 		</div>
 
-		<div id="log" class="resettable"></div>
-	</div>
-
-	<div id="foot">
 		<div id="promotion" class="hide">
 			<img src="assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white bishop">
 			<img src="assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white rook">
 			<img src="assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white knight">
 			<img src="assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
 		</div>
+
+		<div id="log" class="resettable"></div>
 	</div>
 
 	<footer>
 		<div>Copyright &copy; 2021 CarbonChess</div>
 	</footer>
-	
+
 </body>
 
 </html>

@@ -18,7 +18,7 @@ function createFen() {
 		currentFen.replace(/\/$/, '').replace(/\d+/g, m => m.length),
 		currentTurn[0],
 		(castling.w.k ? 'K' : '') + (castling.w.q ? 'Q' : '') + (castling.b.k ? 'k' : '') + (castling.b.q ? 'q' : ''),
-		enpassantCell ?.toLowerCase() || '-',
+		enpassantCell?.toLowerCase() || '-',
 		fmrMoves,
 		Math.ceil(totalMoves / 2),
 	].join(' ');
@@ -46,7 +46,7 @@ function getPointsFromFen(fenString) {
 }
 
 function getTakenPiecesFromFen(fenString) {
-	let pieces = {b: 'pppppppprnbqkbnr', w: 'PPPPPPPPRNBQKBNR' };
+	let pieces = { b: 'pppppppprnbqkbnr', w: 'PPPPPPPPRNBQKBNR' };
 	for (let i in decodeURIComponent(fenString).split(' ')[0]) {
 		const c = fenString[i];
 		const col = c.toLowerCase() === c ? 'b' : 'w';
@@ -77,13 +77,6 @@ function getFenFromURL() {
 	return url.searchParams.get('fen')?.replace(/_/g, ' ');
 }
 
-function createLink() {
-	history.pushState({}, '', location.href.replace(/\?.*/, '') + '?fen=' + createFen().replace(/ /g, '_'));
-	
-	const input = document.body.appendChild(document.createElement("input"));
-  input.value = location.href;
-  input.focus();
-  input.select();
-  document.execCommand('copy');
-  input.parentNode.removeChild(input);
+function copyFen() {
+	navigator.clipboard.writeText(createFen());
 }

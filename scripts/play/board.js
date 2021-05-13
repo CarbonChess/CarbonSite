@@ -72,7 +72,7 @@ function createBoardFromFen(fenString) {
 	}
 
 	// Create pieces
-	let [rows, ...data] = fenString.split(' ');
+	const rows = fenString.split(' ')[0];
 	for (let i = 0; i < rows.length; i++) {
 		const char = rows[i];
 		if (char === '\/') {

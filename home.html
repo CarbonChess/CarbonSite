@@ -12,12 +12,11 @@
 </head>
 
 <body>
-	<a href="/home.html">
-		<img id="logo" src="/assets/logo.svg" height="65px">
-	</a>
+	<img id="logo" src="/assets/logo.svg" height="65px">
 
-	<main>
+	<form id="main" action="/play" method="GET">
 
+		<!-- Main menu -->
 		<section id="select-opponent">
 			<h2>Select opponent</h2>
 			<div class="cards">
@@ -45,59 +44,55 @@
 			<div>
 				<label class="toggle">
 					<strong>Rules</strong>
-					<input checked type="checkbox" autocomplete="off" oninput="updatePlay('rules', this)">
+					<input checked type="checkbox" autocomplete="off" name="rules" onchange="$('#offline-autoflip').disabled=!this.checked">
 					<span class="slider"></span>
 				</label>
 				<label class="toggle" id="offline-autoflip-wrapper">
 					<strong>Auto Rotate</strong>
-					<input checked type="checkbox" autocomplete="off" id="offline-autoflip" oninput="updatePlay('autoflip', this)">
+					<input type="checkbox" autocomplete="off" id="offline-autoflip" name="autoflip">
 					<span class="slider"></span>
 				</label>
 			</div>
-
-			<a id="offline-play" class="card wide play" href="play.html?bot=0&amp;multiplayer=0&amp;autoflip=1&amp;free=0">
-				Play
-			</a>
 		</section>
 
 		<!-- Online -->
+		<input readonly type="checkbox" name="multiplayer" class="hide">
 		<section id="online-settings" class="hide">
 			<h2>Game Code</h2>
-			<input type="numeric" size="5" id="game-code" placeholder="Game Code" onchange="updateOnlinePlay();">
-			<a onclick="createGameCode();updateOnlinePlay();">
+			<input type="numeric" size="5" name="gamecode" placeholder="Game Code">
+			<a onclick="createGameCode();">
 				↻ Create
-			</a>
-			<a id="online-play" href="play.html?bot=0&amp;multiplayer=0&amp;gamecode=0" class="card wide play">
-				Play
 			</a>
 		</section>
 
 		<!-- Computer -->
+		<input readonly type="checkbox" name="bot" class="hide">
+		<input readonly type="text" name="botColour" id="botColour" class="hide">
 		<section id="bot-settings" class="hide">
 			<h2>Bot intelligence</h2>
 			<div id="bot-intelligence" class="cards">
 				<a class="card small" data-level="1">
 					<img src="assets/icons/none.svg" class="card-image" height="100px">
 					<span class="card-heading">None</span>
-					<span>Computer plays random moves</span>
+					<span class="card-description">Bot plays random moves</span>
 				</a>
 				<a class="card small hide" data-level="2">
 					<img src="assets/icons/march.svg" class="card-image" height="100px">
 					<span class="card-heading">March</span>
-					<span>Computer moves pieces forward</span>
+					<span class="card-description">Bot moves pieces forward</span>
 				</a>
 				<a class="card small hide" data-level="3">
 					<img src="assets/icons/charge.svg" class="card-image" height="100px">
 					<span class="card-heading">Charge</span>
-					<span>Computer prioritises taking pieces</span>
+					<span class="card-description">Bot prioritises taking pieces</span>
 				</a>
 				<a class="card small hide" data-level="4">
 					<img src="assets/icons/attack.svg" class="card-image" height="100px">
 					<span class="card-heading">Attack</span>
-					<span>Computer takes pieces intelligently</span>
+					<span class="card-description">Bot takes pieces intelligently</span>
 				</a>
 				<div style="width:100%">
-					<input type="range"autocomplete="off" id="bot-intelligence-level" value="1" min="1" max="4" oninput="updateBotIntelligence();updatePlay('intelligence', this)">
+					<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="1" max="4" oninput="updateBotIntelligence();">
 					<div id="bot-intelligence-dots">
 						<span id="dot-highlighted">•</span> • • •
 					</div>
@@ -106,29 +101,28 @@
 
 			<h2>Bot colour</h2>
 			<div id="bot-colour" class="cards">
-				<a class="card wide selected" onclick="updatePlay('colour', this)">
+				<a class="card wide selected" onclick="updateSelection(this);$('#botColour').value='random';">
 					<span class="card-heading">Random</span>
 				</a>
-				<a class="card wide" onclick="updatePlay('colour', this)">
+				<a class="card wide" onclick="updateSelection(this);$('#botColour').value='black';">
 					<span class="card-heading">Black</span>
 				</a>
-				<a class="card wide" onclick="updatePlay('colour', this)">
+				<a class="card wide" onclick="updateSelection(this);$('#botColour').value='white';">
 					<span class="card-heading">White</span>
-				</a>
-			</div>
-
-			<div id="bot-play" class="cards">
-				<a href="play.html?bot=1&amp;botColour=black&amp;botIntelligence=0" class="card wide play">
-					Play
 				</a>
 			</div>
 		</section>
 
-		<a id="back" class="card wide hide" onclick="back()">
-			Back
-		</a>
+		<div style="display: flex;">
+			<a href="javascript:back();" id="back" class="card wide hide">
+				Back
+			</a>
+			<button type="submit" id="play" class="card wide hide">
+				Play
+			</button>
+		</div>
 
-	</main>
+	</form>
 
 	<div id="donate">
 		<script src="https://ko-fi.com/widgets/widget_2.js"></script>
