@@ -128,10 +128,10 @@ tr td::before {
 	user-select: none;
 }
 
-.last-move {background: rgb(228, 230, 129) !important;}
-.valid {background: rgb(155, 207, 144) !important;}
-.check {background: rgb(231, 70, 70) !important;}
-.selected {background: rgb(124, 192, 214) !important;}
+.last-move {background-color: rgb(228, 230, 129) !important;}
+.valid {background-color: rgb(155, 207, 144) !important;}
+.check {background-color: rgb(231, 70, 70) !important;}
+.selected {background-color: rgb(124, 192, 214) !important;}
 
 /* Options */
 
@@ -214,6 +214,11 @@ button.disabled {
 	text-align: center;
 }
 
+#promotion {
+	text-align: center;
+	letter-spacing: 20px;
+}
+
 #black-points,
 #white-points {
   vertical-align: super;
@@ -248,9 +253,8 @@ button.disabled {
 @media (min-width: 801px) {
 
 	body {
-		height: 100vh;
 		margin: 0 auto;
-		padding: 50px 0;
+		padding: 50px 0 0;
 		display: flex;
 		flex-direction: column;
 	}
@@ -266,7 +270,7 @@ button.disabled {
 
 	#game-content {
 		display: grid;
-		grid-template-areas: ". white ." "icons table log" ". black .";
+		grid-template-areas: ". white ." "icons table log" ". black ." ". promotion .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: 48px auto 48px;
 	}
@@ -281,6 +285,10 @@ button.disabled {
 
 	#taken-white-pieces {
 		grid-area: white;
+	}
+
+	#promotion {
+		grid-area: promotion;
 	}
 
 	#icon-options {
@@ -301,11 +309,6 @@ button.disabled {
 
 	:root {
 		--cell-size: -50px;
-	}
-
-	#game-content {
-		display: flex;
-		flex-direction: column;
 	}
 
 	table {

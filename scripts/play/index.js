@@ -2,17 +2,18 @@ function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
 	const params = (new URL(location.href)).searchParams;
-	const booleanParam = opt => ['1', 'true'].includes(params.get(opt));
-	const hasOptions = /[?&](bot|multi|rules|auto|gamecode)/.test(location.search);
+	const booleanParam = opt => params.get(opt) === 'on';
 	window.gameOptions = {
 		bot: booleanParam('bot'),
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
-		rules: !booleanParam('free'),
+		rules: booleanParam('rules') || !location.search,
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
 	}
+	console.log(location.href)
+	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
 	window.totalMoves = 0;
