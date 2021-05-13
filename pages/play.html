@@ -1,0 +1,80 @@
+---
+permalink: /play/
+---
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Play &ndash; CarbonChess</title>
+	<link href="/styles/common.css" rel="stylesheet">
+	<link href="/styles/play.css" rel="stylesheet">
+	<script src="/scripts/helpers.js"></script>
+	<script src="/scripts/play/index.js"></script>
+	<script src="/scripts/play/board.js"></script>
+	<script src="/scripts/play/bot.js"></script>
+	<script src="/scripts/play/fen.js"></script>
+	<script src="/scripts/play/game-cycle.js"></script>
+	<script src="/scripts/play/pagelog.js"></script>
+	<script src="/scripts/play/pieces.js"></script>
+	<script src="/scripts/play/validation.js"></script>
+</head>
+
+<body class="norotate">
+
+	<h1>
+		<a href="/menu/">
+			<img id="logo" src="/assets/logo.svg" height="65px">
+		</a>
+	</h1>
+
+	<div id="winner" class="resettable"></div>
+
+	<div id="game-content">
+		<table></table>
+
+		<div id="icon-options">
+			<button id="flip-board" onclick="flipBoard(true)">
+				<img class="hd" src="/assets/icons/flip.png">
+			</button>
+			<button id="undo" onclick="undoLastMove()">
+				<img class="hd" src="/assets/icons/undo.png">
+			</button>
+			<button id="reset" onclick="run();sendDB(gameId,defaultFen);">
+				Reset
+			</button>
+			<button onclick="copyFen()" title="Copy to clipboard">
+				Share
+			</button>
+		</div>
+
+		<div id="taken-black-pieces" class="taken-pieces">
+			<span id="black-pieces" class="resettable"></span>
+			<span id="black-points" class="resettable"></span>
+		</div>
+
+		<div id="taken-white-pieces" class="taken-pieces">
+			<span id="white-pieces" class="resettable"></span>
+			<span id="white-points" class="resettable"></span>
+		</div>
+
+		<div id="promotion" class="hide">
+			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white bishop">
+			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white rook">
+			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white knight">
+			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
+		</div>
+
+		<div id="log" class="resettable"></div>
+	</div>
+
+	<footer>
+		<div>Copyright &copy; 2021 CarbonChess</div>
+	</footer>
+
+	<script>run()</script>
+
+</body>
+
+</html>

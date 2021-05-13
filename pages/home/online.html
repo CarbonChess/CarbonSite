@@ -1,0 +1,26 @@
+---
+permalink: /menu/online/
+layout: menu.njk
+---
+
+<form action="/play" method="GET">
+
+	<input readonly type="checkbox" name="multiplayer" class="hide">
+
+	<h2>Online</h2>
+	<h3>Game Code</h3>
+	<input required type="text" pattern="^\d{5}$" name="gamecode" title="Enter a 5-digit game code"><br>
+	<button type="button" onclick="createGameCode();">
+		↻ Create
+	</button>
+
+	<div style="display: flex;">
+		<a href="/menu/" id="back" class="card wide">
+			Back
+		</a>
+		<button type="submit" id="play" class="card wide">
+			Play
+		</button>
+	</div>
+
+</form>

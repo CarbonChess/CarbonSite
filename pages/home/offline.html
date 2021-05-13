@@ -1,0 +1,32 @@
+---
+permalink: /menu/offline/
+layout: menu.njk
+---
+
+<form action="/play" method="GET">
+
+	<h2>Offline</h2>
+	<h3>Game options</h3>
+	<div>
+		<label class="toggle">
+			<strong>Rules</strong>
+			<input checked type="checkbox" autocomplete="off" name="rules" onchange="$('#offline-autoflip').disabled=!this.checked">
+			<span class="slider"></span>
+		</label>
+		<label class="toggle" id="offline-autoflip-wrapper">
+			<strong>Auto Rotate</strong>
+			<input type="checkbox" autocomplete="off" id="offline-autoflip" name="autoflip">
+			<span class="slider"></span>
+		</label>
+	</div>
+
+	<div style="display: flex;">
+		<a href="/menu/" id="back" class="card wide">
+			Back
+		</a>
+		<button type="submit" id="play" class="card wide">
+			Play
+		</button>
+	</div>
+
+</form>

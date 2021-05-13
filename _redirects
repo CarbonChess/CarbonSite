@@ -1,1 +1,4 @@
-/   /home
+/ menu=bot          /menu/bot/
+/ menu=offline      /menu/offline/
+/ menu=online       /menu/online/
+/                   /menu/

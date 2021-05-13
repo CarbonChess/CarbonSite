@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Home &ndash; CarbonChess</title>
+	<link rel="stylesheet" href="/styles/common.css">
+	<link rel="stylesheet" href="/styles/home.css">
+	<script src="/scripts/helpers.js"></script>
+	<script src="/scripts/home.js"></script>
+</head>
+
+<body>
+	<a href="/menu/">
+		<img id="logo" src="/assets/logo.svg" height="65px">
+	</a>
+
+    <main id="main">
+        {{ content | safe }}
+    </main>
+
+	<div id="donate">
+		<script src="https://ko-fi.com/widgets/widget_2.js"></script>
+		<script>kofiwidget2.init('Donate', '#6b93ce', 'Q5Q644C1B'); kofiwidget2.draw();</script>
+	</div>
+
+	<footer>
+		<div>Copyright &copy; 2021 CarbonChess</div>
+		<small>Icons by <a href="https://www.freepik.com">Freepik</a> from <a href="https://www.flaticon.com/">Flaticon</a></small>
+	</footer>
+
+</body>
+
+</html>

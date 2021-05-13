@@ -1,17 +1,3 @@
-function showSection(section) {
-	$$('#back, #play').forEach(elem => elem.classList.remove('hide'));
-	$('#select-opponent').classList.add('hide');
-	$('#' + section + '-settings').classList.remove('hide');
-	if (section === 'bot') $(`[name="bot"]`).checked = true;
-	if (section === 'online') $(`[name="multiplayer"]`).checked = true;
-}
-
-function back() {
-	$$('#back, #play').forEach(elem => elem.classList.add('hide'));
-	$('#select-opponent').classList.remove('hide');
-	$$('[id*="settings"]').forEach(elem => elem.classList.add('hide'));
-}
-
 function updateSelection(elem) {
 	$$('#bot-colour .card').forEach(a => a.classList.remove('selected'));
 	elem.classList.add('selected');

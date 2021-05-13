@@ -9,5 +9,8 @@
 	"license": "ISC",
 	"dependencies": {
 		"faunadb": "^4.2.0"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "^0.12.1"
 	}
 }

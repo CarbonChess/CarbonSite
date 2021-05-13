@@ -1,0 +1,64 @@
+---
+permalink: /menu/bot/
+layout: menu.njk
+---
+
+<form action="/play" method="GET">
+
+	<input readonly type="checkbox" name="bot" class="hide">
+	<input readonly type="text" name="botColour" id="botColour" class="hide">
+
+	<h2>Bot intelligence</h2>
+	<div id="bot-intelligence" class="cards">
+		<a class="card small" data-level="1">
+			<img src="/assets/icons/none.svg" class="card-image" height="100px">
+			<span class="card-heading">None</span>
+			<span class="card-description">Bot plays random moves</span>
+		</a>
+		<a class="card small hide" data-level="2">
+			<img src="/assets/icons/march.svg" class="card-image" height="100px">
+			<span class="card-heading">March</span>
+			<span class="card-description">Bot moves pieces forward</span>
+		</a>
+		<a class="card small hide" data-level="3">
+			<img src="/assets/icons/charge.svg" class="card-image" height="100px">
+			<span class="card-heading">Charge</span>
+			<span class="card-description">Bot prioritises taking pieces</span>
+		</a>
+		<a class="card small hide" data-level="4">
+			<img src="/assets/icons/attack.svg" class="card-image" height="100px">
+			<span class="card-heading">Attack</span>
+			<span class="card-description">Bot takes pieces intelligently</span>
+		</a>
+		<div style="width: 100%;">
+			<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="1" max="4"
+				oninput="updateBotIntelligence();">
+			<div id="bot-intelligence-dots">
+				<span id="dot-highlighted">•</span> • • •
+			</div>
+		</div>
+	</div>
+
+	<h2>Bot colour</h2>
+	<div id="bot-colour" class="cards">
+		<a class="card wide selected" onclick="updateSelection(this);botColour.value='random';">
+			<span class="card-heading">Random</span>
+		</a>
+		<a class="card wide" onclick="updateSelection(this);botColour.value='black';">
+			<span class="card-heading">Black</span>
+		</a>
+		<a class="card wide" onclick="updateSelection(this);botColour.value='white';">
+			<span class="card-heading">White</span>
+		</a>
+	</div>
+
+	<div style="display: flex;">
+		<a href="/menu/" id="back" class="card wide">
+			Back
+		</a>
+		<button type="submit" id="play" class="card wide">
+			Play
+		</button>
+	</div>
+
+</form>

@@ -12,7 +12,6 @@ function run() {
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
 	}
-	console.log(location.href)
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
