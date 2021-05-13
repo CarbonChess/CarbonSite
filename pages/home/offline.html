@@ -9,8 +9,8 @@ layout: menu.njk
 	<h3>Game options</h3>
 	<div>
 		<label class="toggle">
-			<strong>Rules</strong>
-			<input checked type="checkbox" autocomplete="off" name="rules" onchange="$('#offline-autoflip').disabled=!this.checked">
+			<strong>Free Play</strong>
+			<input type="checkbox" autocomplete="off" name="free" onchange="$('#offline-autoflip').disabled=this.checked">
 			<span class="slider"></span>
 		</label>
 		<label class="toggle" id="offline-autoflip-wrapper">

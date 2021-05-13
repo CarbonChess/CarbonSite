@@ -8,7 +8,7 @@ function run() {
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
-		rules: booleanParam('rules') || !location.search,
+		rules: !booleanParam('free'),
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
 	}
