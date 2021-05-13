@@ -1,7 +1,7 @@
 const apiUrl = '/.netlify/functions/database';
 const sec = 1000;
-const TIMEOUT_AGE = 3 * 60 * sec;
-const READ_INTERVAL = 5 * sec;
+const TIMEOUT_AGE = 5 * 60 * sec;
+const READ_INTERVAL = 2.5 * sec;
 
 let lastReceivedFen, lastSentFen;
 let idleTime = 0;
