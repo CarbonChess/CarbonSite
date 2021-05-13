@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	<img id="logo" src="/assets/logo.svg" height="65px">
+	<img id="logo" src="/assets/logo.svg" height="65px" onclick="back()">
 
 	<form id="main" action="/play" method="GET">
 
@@ -61,10 +61,10 @@
 		<section id="online-settings" class="hide">
 			<h2>Online</h2>
 			<h3>Game Code</h3>
-			<input type="number" max="99999" name="gamecode" placeholder="Game Code" pattern="^\d{5}$" onchange="cleanGameCode();">
-			<a onclick="createGameCode();">
+			<input required type="text" pattern="^\d{5}$" name="gamecode" title="Enter a 5-digit game code"><br>
+			<button type="button" onclick="createGameCode();">
 				↻ Create
-			</a>
+			</button>
 		</section>
 
 		<!-- Computer -->

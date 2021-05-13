@@ -45,6 +45,10 @@ footer a {
 	text-decoration: underline;
 }
 
+a {
+	cursor: pointer;
+}
+
 .hide {
 	display: none !important;
 }
