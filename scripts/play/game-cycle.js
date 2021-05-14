@@ -1,5 +1,6 @@
 function hasClicked(cell) {
-	if (!ingame) return;
+	if (!window.ingame) return;
+	if (window.multiplayer && window.currentTurn !== window.playerTurn) return;
 
 	const $cell = $.id('piece' + cell);
 	const cellClasses = $cell ? Array.from($cell.classList) : [];
@@ -134,7 +135,7 @@ function hasClicked(cell) {
 		// switch turn
 		if (hasRules) {
 			currentTurn = invertColour(currentTurn);
-			if (autoFlip) flipBoard();
+			if (autoFlip) alignBoard();
 		}
 
 		// send to server
@@ -207,7 +208,7 @@ function undoLastMove() {
 	totalMoves--;
 	currentTurn = invertColour(currentTurn);
 	logPoints();
-	if (autoFlip) flipBoard();
+	if (autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
 		if (elem.parentNode) elem.parentNode.innerHTML = '';
 	});

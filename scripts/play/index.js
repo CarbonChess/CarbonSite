@@ -19,6 +19,7 @@ function run() {
 	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
 	window.currentTurn = 'white';
+	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
 	window.kingCell = { w: 'E1', b: 'E8' };
 	window.castling = { w: { k: true, q: true }, b: { k: true, q: true } };
@@ -35,7 +36,7 @@ function run() {
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
 
-	flipBoard(gameOptions.botColour === 'white');
+	alignBoard();
 
 	let urlFen = getFenFromURL();
 	if (urlFen) createBoardFromFen(urlFen);

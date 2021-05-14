@@ -124,25 +124,22 @@ const resetCell = cell => getCell(cell).innerHTML = '<img src="/assets/transpare
 
 function toggleRules(button) {
 	hasRules = !hasRules;
-	button.classList.toggle("enabled");
-	button.classList.toggle("disabled");
+	['enabled', 'disabled'].forEach(c => button.classList.toggle(c));
 	currentTurn = invertColour(currentTurn);
 }
 
-function flipBoard(force) {
-	const elem = $('body');
-	if (force) {
-		elem.classList.toggle('rotate');
-		elem.classList.toggle('norotate');
-	}
-	else {
-		if (currentTurn === 'black') {
-			elem.classList.add('rotate');
-			elem.classList.remove('norotate');
-		} else {
-			elem.classList.remove('rotate');
-			elem.classList.add('norotate');
-		}
+function flipBoard() {
+	['rotate', 'norotate'].forEach(c => document.body.classList.toggle(c));
+}
+
+function alignBoard() {
+	const classes = document.body.classList;
+	if (currentTurn === 'black') {
+		classes.add('rotate');
+		classes.remove('norotate');
+	} else {
+		classes.remove('rotate');
+		classes.add('norotate');
 	}
 }
 

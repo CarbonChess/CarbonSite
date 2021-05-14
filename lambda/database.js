@@ -2,15 +2,14 @@
 	Database typing: {'id': string, 'fen': string, 'lastMove': string}
 */
 const faunadb = require('faunadb');
-const Q = faunadb.query;
 const { FAUNA_CLIENT_KEY } = process.env;
+const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
-const MAX_AGE = 7 * 86.4e6;
+const MAX_AGE = 3 * 86.4e6;
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
-const randomID = () => +Math.random().toString().substr(2, 5);
 
 async function getDocs() {
 	console.debug('Retrieving documents');
@@ -38,10 +37,12 @@ async function pruneDocs() {
 	const docs = await getDocs();
 	let deletedDocs = [];
 	for (const doc of docs) {
-		deletedDocs.push(doc.data)
 		const invalidID = !/^\d{5}$/.test(doc.data.id);
 		const oldSession = new Date() - doc.ts > MAX_AGE;
-		if (invalidID || oldSession) deleteDoc(doc);
+		if (invalidID || oldSession) {
+			deleteDoc(doc);
+			deletedDocs.push(doc.data);
+		}
 	}
 	return { success: docs.length > 1, data: { deleted: deletedDocs } };
 }
@@ -54,7 +55,6 @@ async function readData({ gameId }) {
 }
 
 async function sendData({ gameId, fen, lastMove }) {
-	if (!+gameId) gameId = randomID();
 	const data = { id: gameId, fen, lastMove };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
@@ -90,7 +90,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: 0.14,
+		version: async () => await 0.15,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: funcs.version() });
 	if (!funcs[type]) {
