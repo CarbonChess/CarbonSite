@@ -16,6 +16,7 @@ function run() {
 
 	window.ingame = true;
 	window.totalMoves = 0;
+	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
 	window.currentTurn = 'white';
 	window.promotionPiece = 'queen';

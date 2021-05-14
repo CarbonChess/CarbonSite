@@ -9,12 +9,15 @@ let idleTime = 0;
 async function readDB() {
     const resp = await fetch(`${apiUrl}?type=read&gameId=${gameId}`);
     const json = await resp.json();
-    const data = json.output.data;
-    const fen = data.fen || createFen();
+    const { fen = createFen(), lastMove } = json.output.data;
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     console.debug(`Retrieved FEN data for game ID ${gameId}: ${fen}.`);
     createBoardFromFen(fen);
+    if (lastMove) {
+        lastMove.split('-').forEach(cell => $('#' + cell).classList.add('last-move'));
+        $('#log').innerHTML += lastMove.split('-')[1];
+    }
 }
 
 async function sendDB() {
@@ -26,14 +29,21 @@ async function sendDB() {
     }
     lastSentFen = fen;
     idleTime = 0;
-    await fetch(`${apiUrl}?type=send&gameId=${gameId}&fen=${encodeURIComponent(fen)}`);
+    let queryParams = [
+        'type=send',
+        `gameId=${encodeURIComponent(gameId)}`,
+        `fen=${encodeURIComponent(fen)}`,
+        `lastMove=${window.lastMove.start}-${window.lastMove.end}`,
+    ];
+    await fetch(`${apiUrl}?${queryParams.join('&')}`);
     console.debug(`Sent FEN data for game ID ${gameId}: ${fen}.`);
 }
 
 setInterval(() => {
+    if (!gameOptions.multiplayer) return;
     if (idleTime > TIMEOUT_AGE) {
         alert('Session timed out');
-        location.pathname = '/home.html';
+        location.pathname = '/';
         return;
     }
     idleTime += READ_INTERVAL;

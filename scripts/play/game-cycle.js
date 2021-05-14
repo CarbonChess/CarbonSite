@@ -213,5 +213,5 @@ function undoLastMove() {
 	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
-	if (autoPing) sendCurrentTurn();
+	if (autoPing) sendDB(gameId, createFen());
 }

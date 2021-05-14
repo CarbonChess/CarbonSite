@@ -1,8 +1,7 @@
 /*
-	Database typing: {'id': string, 'fen': string}
+	Database typing: {'id': string, 'fen': string, 'lastMove': string}
 */
 const faunadb = require('faunadb');
-
 const Q = faunadb.query;
 const { FAUNA_CLIENT_KEY } = process.env;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
@@ -47,16 +46,16 @@ async function pruneDocs() {
 	return { success: docs.length > 1, data: { deleted: deletedDocs } };
 }
 
-async function readData(gameId) {
+async function readData({ gameId }) {
 	console.debug('Reading game data of ID', gameId);
 	const docs = await getGameData(gameId);
 	const success = docs.length >= 1;
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData(gameId, fen) {
+async function sendData({ gameId, fen, lastMove }) {
 	if (!+gameId) gameId = randomID();
-	fen = fen.replace(/[^-\w\/ ]+/g, '');
+	const data = { id: gameId, fen, lastMove };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
@@ -69,37 +68,31 @@ async function sendData(gameId, fen) {
 	if (docs.length === 0) {
 		type = 'create';
 		await client.query(
-			Q.Create(
-				Q.Collection(COLLECTION),
-				{ data: { id: gameId, fen } }
-			)
+			Q.Create(Q.Collection(COLLECTION), { data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	// Otherwise update existing doc
 	else {
 		type = 'update';
 		await client.query(
-			Q.Update(
-				docs[0].ref,
-				{ data: { id: gameId, fen } }
-			)
+			Q.Update(docs[0].ref, { data })
 		).then(() => success = true).catch(() => success = false);
 	}
-	return { type, success, data: { gameId, fen } };
+	return { type, success, data };
 }
 
 exports.handler = async function (event, context, callback) {
 	console.debug('Function activated', event, context, callback);
 	const input = event.queryStringParameters;
-	const { type, gameId, fen } = input;
+	const { type } = input;
 	const funcs = {
 		list: async () => await getDocs(),
 		prune: async () => await pruneDocs(),
-		read: async () => await readData(gameId),
-		send: async () => await sendData(gameId, fen),
-		version: async () => 0.11,
+		read: async () => await readData(input),
+		send: async () => await sendData(input),
+		version: 0.14,
 	};
-	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
+	funcs.help = async () => ({ commands: Object.keys(funcs), version: funcs.version() });
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

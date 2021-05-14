@@ -1,5 +1,5 @@
 {
-	"name": "CarbonChess",
+	"name": "@carbonchess/carbonsite",
 	"version": "1.0.0-Beta",
 	"description": "Play CarbonChess online",
 	"private": true,
