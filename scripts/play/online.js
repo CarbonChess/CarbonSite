@@ -54,7 +54,7 @@ async function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 setInterval(function () {
-    if (!gameOptions.multiplayer) return;
+    if (!window.autoPing) return;
     if (idleTime > TIMEOUT_AGE) {
         alert('Session timed out');
         location.pathname = '/';

@@ -1,6 +1,9 @@
 function hasClicked(cell) {
-	if (!window.ingame) return;
-	if (window.multiplayer && window.currentTurn !== window.playerTurn) return;
+	if (
+		!window.ingame
+		|| window.spectating
+		|| window.multiplayer && window.currentTurn !== window.playerTurn
+	) return;
 
 	const $cell = $.id('piece' + cell);
 	const cellClasses = $cell ? Array.from($cell.classList) : [];

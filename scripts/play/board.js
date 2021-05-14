@@ -148,3 +148,10 @@ function changeAutoflip(button) {
 	button.classList.toggle('enabled');
 	button.classList.toggle('disabled');
 }
+
+function shareGame() {
+	if (!window.multiplayer) window.gameId = random(0, 99999).toString().padStart(5, '0');
+	const newUrl = location.href.replace(location.search || /$/, `?multiplayer=on&static=on&gamecode=${window.gameId}`);
+	sendDB();
+	copy(newUrl);
+}

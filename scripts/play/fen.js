@@ -76,7 +76,3 @@ function getFenFromURL() {
 	const url = new URL(location.href);
 	return url.searchParams.get('fen')?.replace(/_/g, ' ');
 }
-
-function copyFen() {
-	navigator.clipboard.writeText(createFen());
-}

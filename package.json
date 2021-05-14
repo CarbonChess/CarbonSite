@@ -3,8 +3,8 @@
 	"version": "1.0.0-Beta",
 	"description": "Play CarbonChess online",
 	"private": true,
-	"repository": "git+https://github.com/CarbonChess/CarbonChess.git",
-	"bugs": "https://github.com/CarbonChess/CarbonChess/issues",
+	"repository": "git+https://github.com/CarbonChess/CarbonSite.git",
+	"bugs": "https://github.com/CarbonChess/CarbonSite/issues",
 	"homepage": "https://carbonchess.com",
 	"license": "ISC",
 	"dependencies": {

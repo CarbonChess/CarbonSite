@@ -11,6 +11,8 @@ function run() {
 		rules: !booleanParam('free'),
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
+		static: booleanParam('static'),
+		spectating: booleanParam('spectating'),
 	}
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
@@ -35,8 +37,21 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
+	window.spectating = gameOptions.spectating;
 
 	alignBoard();
+
+	if (window.gameId) {
+		$('#gameid').innerText = 'Game ID: ' + window.gameId;
+	}
+	if (gameOptions.static) {
+		autoPing = false;
+		$('#gameid').innerText = 'Loaded move from game ID ' + window.gameId;
+	}
+	if (gameOptions.spectating) {
+		ingame = false;
+		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
+	}
 
 	let urlFen = getFenFromURL();
 	if (urlFen) createBoardFromFen(urlFen);

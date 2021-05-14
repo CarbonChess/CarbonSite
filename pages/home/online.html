@@ -8,11 +8,20 @@ layout: menu.njk
 	<input readonly type="checkbox" checked name="multiplayer" class="hide">
 
 	<h2>Online</h2>
-	<h3>Game Code</h3>
-	<input required type="text" pattern="^\d{5}$" name="gamecode" autocomplete="off" title="Enter a 5-digit game code"><br>
-	<button type="button" onclick="createGameCode();">
-		↻ Create
-	</button>
+	<label>
+		<strong>Game Code</strong>
+		<br>
+		<input required type="text" pattern="^\d{5}$" autocomplete="off" name="gamecode" title="Enter a 5-digit game code">
+		<br>
+		<button type="button" onclick="createGameCode();">
+			↻ Create
+		</button>
+	</label>
+	<label class="toggle">
+		<strong>Spectating?</strong>
+		<input type="checkbox" autocomplete="off" name="spectating">
+		<span class="slider"></span>
+	</label>
 
 	<div style="display: flex;">
 		<a href="/" id="back" class="card wide">

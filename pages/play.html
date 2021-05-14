@@ -30,6 +30,7 @@ permalink: /play/
 		</a>
 	</h1>
 
+	<div id="gameid"></div>
 	<div id="winner" class="resettable"></div>
 
 	<div id="game-content">
@@ -45,7 +46,7 @@ permalink: /play/
 			<button id="reset" onclick="run();sendDB(gameId,defaultFen);">
 				Reset
 			</button>
-			<button onclick="copyFen()" title="Copy to clipboard">
+			<button onclick="shareGame()" title="Copy to clipboard">
 				Share
 			</button>
 		</div>

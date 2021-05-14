@@ -185,6 +185,10 @@ select {
 	margin-bottom: 1em;
 }
 
+#gameid {
+	text-align: center;
+}
+
 #winner {
 	text-align: center;
 	text-transform: uppercase;
