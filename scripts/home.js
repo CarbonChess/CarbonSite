@@ -9,7 +9,3 @@ function updateBotIntelligence() {
 	$(`[data-level="${level}"]`).classList.remove('hide');
 	$('#bot-intelligence-dots').innerHTML = ' • '.repeat(level - 1) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(4 - level);
 }
-
-function createGameCode() {
-	$('[name="gamecode"]').value = Math.random().toString().substr(2, 5);
-}

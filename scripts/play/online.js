@@ -49,6 +49,7 @@ async function init() {
     // Assign colour to player: white if P1, black if P2
     window.playerTurn = Object.is(data, {}) ? 'white' : 'black';
     if (window.playerTurn === 'black') flipBoard();
+    sendDB();
 }
 
 document.addEventListener('DOMContentLoaded', init);

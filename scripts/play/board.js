@@ -150,7 +150,7 @@ function changeAutoflip(button) {
 }
 
 function shareGame() {
-	if (!window.multiplayer) window.gameId = random(0, 99999).toString().padStart(5, '0');
+	if (!window.multiplayer) window.gameId = randomID();
 	const newUrl = location.href.replace(location.search || /$/, `?multiplayer=on&static=on&gamecode=${window.gameId}`);
 	sendDB();
 	copy(newUrl);

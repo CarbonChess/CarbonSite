@@ -37,7 +37,6 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.spectating = gameOptions.spectating;
 
 	alignBoard();
 

@@ -3,19 +3,44 @@ permalink: /menu/online/
 layout: menu.njk
 ---
 
-<form action="/play" method="GET">
+<script>
+	let toggled = false;
+	function toggle() {
+		toggled = !toggled;
+		['#online-menu', '#join-game'].forEach(id => $(id).classList.toggle('hide'));
+	}
+	document.addEventListener('DOMContentLoaded', function () {
+		$('#new-game').href = $('#new-game').href.replace('{gameId}', randomID());
+	});
+</script>
+
+<section id="online-menu">
+	<h2>Online</h2>
+	<div class="cards">
+		<a href="/play?multiplayer=on&gamecode={gameId}" id="new-game" class="card big">
+			<img src="/assets/icons/offline.svg" class="card-image" height="100px">
+			<span class="card-heading">New Game</span>
+			<span class="card-description">Create a new game for an opponent to join</span>
+		</a>
+		<a href="javascript:toggle();" class="card big">
+			<img src="/assets/icons/online.svg" class="card-image" height="100px">
+			<span class="card-heading">Join Game</span>
+			<span class="card-description">Join an existing chess game</span>
+		</a>
+	</div>
+	<a href="/" id="back" class="card wide">
+		Back
+	</a>
+</section>
+
+<form action="/play" method="GET" id="join-game" class="hide">
 
 	<input readonly type="checkbox" checked name="multiplayer" class="hide">
 
-	<h2>Online</h2>
+	<h2>Join Game</h2>
 	<label>
-		<strong>Game Code</strong>
-		<br>
+		<strong>Game Code</strong><br>
 		<input required type="text" pattern="^\d{5}$" autocomplete="off" name="gamecode" title="Enter a 5-digit game code">
-		<br>
-		<button type="button" onclick="createGameCode();">
-			↻ Create
-		</button>
 	</label>
 	<label class="toggle">
 		<strong>Spectating?</strong>
@@ -24,7 +49,7 @@ layout: menu.njk
 	</label>
 
 	<div style="display: flex;">
-		<a href="/" id="back" class="card wide">
+		<a href="javascript:toggle();" id="back" class="card wide">
 			Back
 		</a>
 		<button type="submit" id="play" class="card wide">

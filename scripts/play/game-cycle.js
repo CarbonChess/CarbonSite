@@ -1,8 +1,8 @@
 function hasClicked(cell) {
 	if (
 		!window.ingame
-		|| window.spectating
-		|| window.multiplayer && window.currentTurn !== window.playerTurn
+		|| gameOptions.spectating
+		|| gameOptions.multiplayer && window.currentTurn !== window.playerTurn
 	) return;
 
 	const $cell = $.id('piece' + cell);
