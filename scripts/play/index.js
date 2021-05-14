@@ -17,6 +17,7 @@ function run() {
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
+	window.sessionLost = false;
 	window.totalMoves = 0;
 	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
