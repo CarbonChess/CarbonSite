@@ -6,7 +6,7 @@ const { FAUNA_CLIENT_KEY } = process.env;
 const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
-const MAX_AGE = 3 * 86.4e6;
+const MAX_AGE = 3 * 86.4e6; // 3 days
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
@@ -38,7 +38,7 @@ async function pruneDocs() {
 	let deletedDocs = [];
 	for (const doc of docs) {
 		const invalidID = !/^\d{5}$/.test(doc.data.id);
-		const oldSession = new Date() - doc.ts > MAX_AGE;
+		const oldSession = +new Date() - doc.ts / 1e3 > MAX_AGE;
 		if (invalidID || oldSession) {
 			deleteDoc(doc);
 			deletedDocs.push(doc.data);

@@ -1,14 +1,15 @@
 const apiUrl = '/.netlify/functions/database';
 const sec = 1000;
 const TIMEOUT_AGE = 3 * 60 * sec;
-const READ_INTERVAL = 2.5 * sec;
+const READ_INTERVAL = 4 * sec;
 
-let lastReceivedFen, lastSentFen;
+let lastReceivedFen;
 let idleTime = 0;
 
 async function getGameData() {
     const resp = await fetch(`${apiUrl}?type=read&gameId=${window.gameId}`);
     const json = await resp.json();
+    console.debug(`Retrieved data for game ID ${window.gameId}.`);
     return json.output.data;
 }
 
@@ -16,7 +17,6 @@ async function readDB() {
     const { fen = createFen(), lastMove } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
-    console.debug(`Retrieved FEN data for game ID ${window.gameId}: ${fen}.`);
     createBoardFromFen(fen);
     if (lastMove) {
         if (lastMove === 'x') {
@@ -24,20 +24,15 @@ async function readDB() {
             ingame = false;
         }
         else {
-            lastMove.split('-').forEach(cell => $.id(cell).classList.add('last-move'));
+            lastMove.split('-').forEach(cell => cell && $.id(cell).classList.add('last-move'));
             $('#log').innerHTML += lastMove.split('-')[1];
         }
     }
 }
 
-async function sendDB(force) {
+async function sendDB() {
     console.debug(`Attempting to send data to game ID ${window.gameId}...`);
     const fen = createFen();
-    if (!force && fen === lastSentFen) {
-        console.debug(`No new FEN data to send for game ID ${window.gameId}.`);
-        return;
-    }
-    lastSentFen = fen;
     idleTime = 0;
     let queryParams = [
         'type=send',
@@ -50,12 +45,13 @@ async function sendDB(force) {
 }
 
 async function init() {
-    if (!window.multiplayer) return;
+    if (!gameOptions.multiplayer) return;
     const data = await getGameData();
     // Assign colour to player: white if P1, black if P2
-    window.playerTurn = Object.is(data, {}) ? 'white' : 'black';
+    const gameExists = Object.keys(data).length > 0;
+    window.playerTurn = gameExists ? 'black' : 'white';
     if (window.playerTurn === 'black') flipBoard();
-    sendDB('force');
+    if (!gameExists) sendDB();
 }
 
 document.addEventListener('DOMContentLoaded', init);
@@ -64,7 +60,7 @@ setInterval(function () {
     if (!window.autoPing || !window.ingame) return;
     if (idleTime > TIMEOUT_AGE) {
         window.sessionLost = true;
-        sendDB('force');
+        sendDB();
         alert('Session timed out');
         location.pathname = '/';
         return;

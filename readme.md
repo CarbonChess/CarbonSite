@@ -2,7 +2,7 @@
 
 ![Netlify Status](https://api.netlify.com/api/v1/badges/8cb9672a-5e8e-4071-9e68-ecd2443fe643/deploy-status)
 
-![Pieces](assets/chesspieces.svg)
+![Pieces](images/chesspieces.svg)
 
 CarbonChess is an upcoming chess client currently in late beta.
 

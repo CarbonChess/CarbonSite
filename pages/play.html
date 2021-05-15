@@ -26,7 +26,7 @@ permalink: /play/
 
 	<h1>
 		<a href="/menu/">
-			<img id="logo" src="/assets/logo.svg" height="65px">
+			<img id="logo" src="/images/logo.svg" height="65px">
 		</a>
 	</h1>
 
@@ -38,10 +38,10 @@ permalink: /play/
 
 		<div id="icon-options">
 			<button id="flip-board" onclick="flipBoard(true)">
-				<img class="hd" src="/assets/icons/flip.png">
+				<img class="hd" src="/images/icons/flip.png">
 			</button>
 			<button id="undo" onclick="undoLastMove()">
-				<img class="hd" src="/assets/icons/undo.png">
+				<img class="hd" src="/images/icons/undo.png">
 			</button>
 			<button id="reset" onclick="run();sendDB(gameId,defaultFen);">
 				Reset
@@ -62,10 +62,10 @@ permalink: /play/
 		</div>
 
 		<div id="promotion" class="hide">
-			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white bishop">
-			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white rook">
-			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white knight">
-			<img src="/assets/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
+			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white bishop">
+			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white rook">
+			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white knight">
+			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
 		</div>
 
 		<div id="log" class="resettable"></div>

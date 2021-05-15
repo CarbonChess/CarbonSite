@@ -10,7 +10,7 @@ html {
 }
 
 body {
-	--background: url('/assets/backgrounds/variety.svg');
+	--background: url('/images/backgrounds/variety.svg');
 	background-color: var(--bg-colour);
 	background-image: var(--background);
 	background-repeat: no-repeat;
