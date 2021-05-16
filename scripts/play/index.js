@@ -53,6 +53,9 @@ function run() {
 		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
 	}
 
+	window.global = {};
+	FenFurnace();
+
 	let urlFen = getFenFromURL();
 	if (urlFen) createBoardFromFen(urlFen);
 	else createBoard(8, true);
