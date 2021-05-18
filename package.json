@@ -1,10 +1,10 @@
 {
-	"name": "@carbonchess/carbonsite",
+	"name": "@carbonchess/website",
 	"version": "1.0.0-Beta",
 	"description": "Play CarbonChess online",
 	"private": true,
-	"repository": "git+https://github.com/CarbonChess/CarbonSite.git",
-	"bugs": "https://github.com/CarbonChess/CarbonSite/issues",
+	"repository": "git+https://github.com/CarbonChess/Website.git",
+	"bugs": "https://github.com/CarbonChess/Website/issues",
 	"homepage": "https://carbonchess.com",
 	"license": "ISC",
 	"scripts": {

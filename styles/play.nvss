@@ -1,0 +1,308 @@
+/* Page */
+
+@var BREAKPOINT = 800px
+
+:root {
+	/* Variables */
+	--light-color: #dcdcdc;
+	--dark-color: #afafaf;
+	--bg-colour: #191919;
+	--cell-size: 80px;
+	--board-size: calc(var(--cell-size) * 8 );
+	@ ..$(BREAKPOINT) {
+		--cell-size: -50px;
+	}
+}
+
+body {
+	max-width: 900px;
+
+	@ $(BREAKPOINT).. {
+		margin: 0 auto;
+		padding: 50px 0 0;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+h1 {
+	text-align: center;
+
+	a {
+		color: inherit;
+	}
+}
+
+/* Chess board */
+
+table {
+	height: var(--board-size);
+	border-collapse: collapse;
+	user-select: none;
+	color: #000;
+}
+$(@breakpoint | $(BREAKPOINT) | table | margin: auto; | grid-area: table; )
+
+td {
+	background: var(--light-color);
+	width: var(--cell-size);
+	height: var(--cell-size);
+	text-align: center;
+	cursor: pointer;
+
+	&::after,
+	&::before {
+		position: absolute;
+		font-weight: bold;
+	}
+
+	&::after {
+		margin-top: calc(var(--cell-size) / 2 );
+		padding-top: 6px;
+	}
+
+	&::before {
+		margin-top: -12px;
+		margin-left: -12px;
+	}
+}
+
+tr:nth-child(odd) td: nth-child(even),
+tr: nth-child(even) td: nth-child(odd) {
+	background: var(--dark-color);
+}
+
+.rotate table,
+.rotate td {
+	transform: rotate(180deg);
+}
+
+/* Chess board labels */
+$( @each | abcdefgh |  |
+.norotate tr: last-child td: nth-child($i)::after {content: '$v';}
+.norotate tr:nth-child($i) td: first-child: :before {content: '9-$i';}
+.rotate tr:first-child td:nth-child((9-$i))::after {content: '$v';}
+.rotate tr:nth-child((9-$i)) td: last-child: :before {content: '9-$i';}
+)
+
+/* Pieces */
+
+[data-piece] {
+	width: var(--piece-size);
+	height: var(--piece-size);
+	margin-left: 5px;
+	background-image: url('/images/chesspieces.svg');
+	image-rendering: crisp-edges;
+	transform: scale(1.6);
+	--piece-size: 48px;
+	--piece-sep: -45px;
+
+	&.black {background-position-y: var(--piece-size);}
+
+	&.white {background-position-y: 0px;}
+
+	$( @each | king, queen, bishop, knight, rook, pawn |
+		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
+	)
+	
+	.taken-pieces & {
+		margin: -8px;
+		transform: scale(0.75);
+		filter: contrast(0);
+		user-select: none;
+	}
+
+	@ ..$(BREAKPOINT) {
+		transform: none;
+	}
+}
+
+[data-piece="blank"] {
+	background: none;
+}
+
+.last-move {background-color: rgb(228, 230, 129) !important;}
+.valid {background-color: rgb(155, 207, 144) !important;}
+.check {background-color: rgb(231, 70, 70) !important;}
+.selected {background-color: rgb(124, 192, 214) !important;}
+
+/* Options */
+
+button,
+select {
+	display: inline-block;
+	width: max-content;
+	height: 2em;
+	padding: 4px 8px;
+	background: #4e5f79;
+	vertical-align: middle;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 16px;
+	color: white;
+	border: none;
+	font-family: 'Century Gothic';
+	cursor: pointer;
+
+	@ $(BREAKPOINT).. {
+		margin-bottom: 6px;
+	}
+}
+
+button {
+
+	&:hover {
+		background: #4481dd;
+	}
+
+	&.enabled {
+		background: rgb(48, 170, 48);
+
+		&::after {
+			content: 'On';
+			color: white;
+		}
+	}
+
+	&.disabled {
+		background: rgb(168, 62, 80);
+
+		&::after {
+			content: 'Off';
+			color: white;
+		}
+	}
+
+	img {
+		filter: invert(1);
+	}
+}
+
+select {
+	width: 90px;
+	padding: 2px 4px;
+	font-size: 90%;
+}
+
+.label {
+	display: inline-block;
+	width: 140px;
+}
+
+/* Sections */
+
+#game-content {
+	margin-bottom: 1em;
+
+	@ $(BREAKPOINT).. {
+		display: grid;
+		grid-template-areas: ". white .""icons table log"". black ."". promotion .";
+		grid-template-columns: 1fr var(--board-size) 1fr;
+		grid-template-rows: 48px auto 48px;
+	}
+
+	.rotate & @ $(BREAKPOINT).. {
+		grid-template-areas: ". black .""icons table log"". white .";
+	}
+}
+
+#gameid {
+	text-align: center;
+}
+
+#winner {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.5em;
+}
+
+#icon-options,
+#foot {
+	margin: 0.5em auto;
+	text-align: center;
+}
+
+#icon-options {
+	button {
+		width: 50px;
+		height: 50px;
+		padding: 2px 4px;
+	}
+
+	@ $(BREAKPOINT).. {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		grid-area: icons;
+	}
+}
+
+button.enabled,
+button.disabled {
+	width: 60px;
+}
+
+#points {
+	padding: 1em;
+	min-height: 1.2em;
+	text-align: center;
+}
+
+#promotion {
+	text-align: center;
+	letter-spacing: 20px;
+	grid-area: promotion;
+}
+
+#black-points,
+#white-points {
+	vertical-align: super;
+	font-size: large;
+}
+
+#taken-black-pieces,
+#taken-white-pieces {
+	padding: 5px 0;
+	min-height: 32px;
+	height: max-content;
+}
+
+#taken-black-pieces {grid-area: black;}
+#taken-white-pieces {grid-area: white;}
+
+#log {
+	margin: 0 auto;
+	padding: 1em 0.5em;
+	width: 150px;
+	height: var(--board-size);
+	border: 2px solid #111;
+	overflow-wrap: break-word;
+	text-align: center;
+	background-color: #dcdcdc;
+	color: black;
+
+	.move {
+		padding: 1px 2px;
+	}
+
+	@ ..$(BREAKPOINT) {
+		width: 80%;
+		height: 100px;
+		padding: 0;
+
+		br {
+			display: none;
+		}
+	}
+
+	@ $(BREAKPOINT).. {
+		overflow: auto;
+		grid-area: log;
+	}
+}
+
+/* Visibility */
+
+.hide {
+	display: none;
+}
