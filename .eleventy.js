@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 
 module.exports = function (cfg) {
     const passThruPaths = [
@@ -9,7 +9,7 @@ module.exports = function (cfg) {
     passThruPaths.forEach(file => cfg.addPassthroughCopy(file));
 
     cfg.on('afterBuild', () => {
-        exec('npm run novasheets', (err, stdout, stderr) => console.log(err || stdout));
+        execSync('npm run novasheets', (err, stdout, stderr) => console.log(err || stdout));
     });
 
     return {
