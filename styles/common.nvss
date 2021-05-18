@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato: wght@300&family=Source+Sans+Pro: wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro: wght@300&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	min-height: 100vh;
+}
+
+body {
+	--background: url('/images/backgrounds/variety.svg');
+	background-color: var(--bg-colour);
+	background-image: var(--background);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	color: #eee;
+	font-family: 'Century Gothic', 'Trebuchet MS', Vedana, Arial, sans-serif;
+    @ ..600px {
+		background-repeat: repeat;
+		background-size: 200%;
+    }
+}
+
+footer {
+	padding: 1em;
+	text-align: center;
+	font-family: 'Source Sans Pro', sans-serif;
+    @ 600px.. {
+		position: relative;
+		bottom: 0.5em;
+	}
+    a {
+	text-decoration: underline;
+    }
+}
+
+a {
+	cursor: pointer;
+}
+
+.hide {
+	display: none !important;
+}

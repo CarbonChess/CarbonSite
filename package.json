@@ -7,10 +7,14 @@
 	"bugs": "https://github.com/CarbonChess/CarbonSite/issues",
 	"homepage": "https://carbonchess.com",
 	"license": "ISC",
+	"scripts": {
+		"build": "eleventy && novasheets -c _site/**/*.nvss"
+	},
 	"dependencies": {
 		"faunadb": "^4.2.0"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^0.12.1"
+		"@11ty/eleventy": "^0.12.1",
+		"novasheets": "^1.0.0-rc1"
 	}
 }
