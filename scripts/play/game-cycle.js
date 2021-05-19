@@ -77,7 +77,7 @@ function hasClicked(cell) {
 	}
 
 	// Select piece //
-	else if ($cell && (!hasRules || (cellClasses.includes(window.currentTurn)))) {
+	else if ($cell && (!hasRules || (cellClasses.includes(global.currentTurn === 'w' ? 'white' : 'black')))) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
@@ -90,7 +90,7 @@ function hasClicked(cell) {
 
 		selectPiece(cell);
 		if (hasRules) {
-			findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
+			validation.findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
 		}
 		console.log('\n' + (totalMoves + 1));
 		console.log('T', ...cellClasses);
