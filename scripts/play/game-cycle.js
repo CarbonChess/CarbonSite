@@ -67,7 +67,7 @@ function hasClicked(cell) {
 
 		// switch turn
 		if (window.hasRules) {
-			window.currentTurn = invertColour(window.currentTurn);
+
 			if (autoFlip) alignBoard();
 		}
 
