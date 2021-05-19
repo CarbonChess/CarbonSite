@@ -92,15 +92,8 @@ function createBoardFromFen(fenString) {
 		}
 	}
 
-	// Update metadata
-	window.enpassantCell = getEnpassantFromFen(fenString);
-	window.castling = getCastlingFromFen(fenString);
-	window.points = getPointsFromFen(fenString);
-	window.fmrMoves = getFmrFromFen(fenString);
-	if (!movesList.length) movesList = [fenString];
-	updateKingCells();
-	currentTurn = getCurrentTurnFromFen(fenString);
-	checkKingStatus(currentTurn);
+	// Update current turn
+	window.currentTurn = global.currentTurn === 'w' ? 'white' : 'black';
 
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');

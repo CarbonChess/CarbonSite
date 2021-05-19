@@ -13,7 +13,7 @@ function hasClicked(cell) {
 		// double click: cancel
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$.id(selectedCell).classList.remove('selected');
-		selectedCell = null;
+		window.selectedCell = null;
 		console.log('X', cell);
 	}
 
@@ -46,7 +46,7 @@ function hasClicked(cell) {
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
-		selectedCell = null;
+		window.selectedCell = null;
 
 		// display taken piece on side
 		if (endClasses.length && (moveOutput || !window.hasRules)) {
@@ -67,7 +67,7 @@ function hasClicked(cell) {
 
 		// switch turn
 		if (window.hasRules) {
-			window.currentTurn = invertColour(currentTurn);
+			window.currentTurn = invertColour(window.currentTurn);
 			if (autoFlip) alignBoard();
 		}
 
@@ -77,7 +77,7 @@ function hasClicked(cell) {
 	}
 
 	// Select piece //
-	else if ($cell && (!hasRules || (cellClasses.includes(currentTurn)))) {
+	else if ($cell && (!hasRules || (cellClasses.includes(window.currentTurn)))) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
@@ -113,10 +113,10 @@ function undoLastMove() {
 	movesList.pop();
 	const movesListLast = movesList[movesList.length - 1];
 	createBoardFromFen(movesListLast);
-	currentTurn = invertColour(currentTurn);
-	kingCell[currentTurn[0]] = $(`.${currentTurn}.king`).parentNode.id;
+	window.currentTurn = invertColour(window.currentTurn);
+	kingCell[window.currentTurn[0]] = $(`.${window.currentTurn}.king`).parentNode.id;
 	totalMoves--;
-	currentTurn = invertColour(currentTurn);
+	window.currentTurn = invertColour(window.currentTurn);
 	logPoints();
 	if (autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
