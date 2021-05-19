@@ -36,14 +36,8 @@ function hasClicked(cell) {
 
 		if (!startClasses) return; // exit if the cell does not has metadata
 
-		// display taken piece on side
-		if (endClasses.length && (validMove || !hasRules)) {
-			taken = true;
-			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
-		}
-
 		// move the piece
-		const valid = validation.movePiece(startCell, endCell);
+		const validMove = validation.movePiece(startCell, endCell);
 		if (!valid) {
 			console.log('I', startCell, '->', endCell);
 			return;
@@ -52,6 +46,12 @@ function hasClicked(cell) {
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
 		selectedCell = null;
+
+		// display taken piece on side
+		if (endClasses.length && (validMove || !window.hasRules)) {
+			taken = true;
+			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
+		}
 
 		// log the move
 		console.log('M', startCell, '->', endCell);
@@ -65,8 +65,8 @@ function hasClicked(cell) {
 		$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 
 		// switch turn
-		if (hasRules) {
-			currentTurn = invertColour(currentTurn);
+		if (window.hasRules) {
+			window.currentTurn = invertColour(currentTurn);
 			if (autoFlip) alignBoard();
 		}
 
@@ -81,13 +81,10 @@ function hasClicked(cell) {
 		// mark this piece as being in process of moving
 
 		const isPawn = cellClasses.includes('pawn');
-		const isInSecondRow = (
-			(cellClasses.includes('white') && +cell[1] === 7)
-			||
-			(cellClasses.includes('black') && +cell[1] === 2)
-		);
-		if (isPawn && (!hasRules || isInSecondRow)) {
-			document.getElementById('promotion').classList.remove('hide');
+		const whiteRow2 = cellClasses.includes('white') && +cell[1] === 7;
+		const blackRow2 = cellClasses.includes('black') && +cell[1] === 2;
+		if (isPawn && (!hasRules || whiteRow2 || blackRow2)) {
+			$.id('promotion').classList.remove('hide');
 		}
 
 		selectPiece(cell);
