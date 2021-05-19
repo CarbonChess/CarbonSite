@@ -37,18 +37,19 @@ function hasClicked(cell) {
 		if (!startClasses) return; // exit if the cell does not has metadata
 
 		// move the piece
-		const validMove = validation.movePiece(startCell, endCell);
-		if (!valid) {
+		const moveOutput = validation.makeMove(startCell, endCell);
+		if (!moveOutput) {
 			console.log('I', startCell, '->', endCell);
 			return;
 		}
+		createBoardFromFen(moveOutput);
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
 		selectedCell = null;
 
 		// display taken piece on side
-		if (endClasses.length && (validMove || !window.hasRules)) {
+		if (endClasses.length && (moveOutput || !window.hasRules)) {
 			taken = true;
 			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
 		}
