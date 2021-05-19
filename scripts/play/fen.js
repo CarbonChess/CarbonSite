@@ -25,53 +25,6 @@ function createFen() {
 	return currentFen;
 }
 
-function getCurrentTurnFromFen(fenString) {
-	return fenString.split(' ')[1] === 'w' ? 'white' : 'black';
-}
-
-function getPointsFromFen(fenString) {
-	let points = { w: 39, b: 39 };
-	for (let i in fenString.split(' ')[0]) {
-		const c = fenString[i];
-		const col = c.toLowerCase() !== c ? 'b' : 'w';
-		switch (c.toLowerCase()) {
-			case 'p': points[col] -= 1; break;
-			case 'n': points[col] -= 3; break;
-			case 'b': points[col] -= 3; break;
-			case 'r': points[col] -= 5; break;
-			case 'q': points[col] -= 9; break;
-		}
-	}
-	return points;
-}
-
-function getTakenPiecesFromFen(fenString) {
-	let pieces = { b: 'pppppppprnbqkbnr', w: 'PPPPPPPPRNBQKBNR' };
-	for (let i in decodeURIComponent(fenString).split(' ')[0]) {
-		const c = fenString[i];
-		const col = c.toLowerCase() === c ? 'b' : 'w';
-		pieces[col] = pieces[col].replace(c, '');
-	}
-	return pieces;
-}
-
-function getCastlingFromFen(fenString) {
-	const str = fenString.split(' ')[2];
-	const castling = {
-		w: { k: str.includes('K'), q: str.includes('Q') },
-		b: { k: str.includes('k'), q: str.includes('q') },
-	};
-	return castling;
-}
-
-function getEnpassantFromFen(fenString) {
-	return fenString.split(' ')[3].replace('-', '').toUpperCase() || null;
-}
-
-function getFmrFromFen(fenString) {
-	return fenString.split(' ')[4];
-}
-
 function getFenFromURL() {
 	const url = new URL(location.href);
 	return url.searchParams.get('fen')?.replace(/_/g, ' ');

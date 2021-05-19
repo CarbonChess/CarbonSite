@@ -56,7 +56,6 @@ function run() {
 	window.global = {};
 	FenFurnace();
 	Object.assign(window, { ...fenFuncs, ...global });
-	validation.setupBoard();
-
+	setupBoard();
 	newBoard(8, true);
 }
