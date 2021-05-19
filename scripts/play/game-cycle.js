@@ -24,12 +24,10 @@ function hasClicked(cell) {
 
 		const startCell = selectedCell;
 		const endCell = cell;
-
 		const $startCell = $.id(selectedCell);
 		const $endCell = $.id(endCell);
 		const $startPiece = $.id('piece' + selectedCell);
 		const $endPiece = $.id('piece' + endCell);
-
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
 
@@ -38,87 +36,22 @@ function hasClicked(cell) {
 
 		if (!startClasses) return; // exit if the cell does not has metadata
 
-		let [colour, piece] = startClasses;
-		const originalPiece = piece;
-		let taken = false;
-		window.lastEnpassantCell = enpassantCell;
-
-		const isSameColour = (
-			(startClasses.includes('white') && endClasses.includes('white'))
-			||
-			(startClasses.includes('black') && endClasses.includes('black'))
-		);
-
-		if (isSameColour) {
-			// replace selected piece
-			selectPiece(cell);
-			findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
-			console.log('T', ...startClasses);
-			return;
-		}
-
-		// Special moves //
-
-		// castling
-		let hasCastled = false;
-		if (piece === 'king') {
-			const { castlingValid, cells: newCells } = checkCastling(new Validation(colour, 'king', startCell, endCell));
-			if (castlingValid) {
-				hasCastled = true;
-				const queenside = endCell[0] < startCell[0];
-				const row = colour === 'white' ? 1 : 8;
-				movePiece('E' + row, newCells.king);
-				movePiece(queenside ? 'A' + row : 'H' + row, newCells.rook);
-			}
-			castling[currentTurn[0]] = { k: false, q: false };
-		}
-		else if (piece === 'rook') {
-			if (startCell.includes('A')) castling[currentTurn[0]].q = false;
-			else if (startCell.includes('H')) castling[currentTurn[0]].k = false;
-		}
-
-		// promotion
-		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-		if (canPromote) {
-			piece = promotionPiece;
-			clearCells(startCell);
-			addPiece(piece, colour, startCell);
-		}
-
-		// Move piece //
-
-		// validate move
-		const validMove = validateMove(colour, originalPiece, startCell, endCell);
-		if (!validMove && hasRules && !hasCastled) {
-			$startCell.classList.add('selected');
-			findAllMoves(startCell).forEach(cell => getCell(cell).classList.add('valid'));
-			console.log('I', startCell, '->', endCell);
-			return;
-		}
-
 		// display taken piece on side
-		if (enpassantTaken || endClasses.length && (validMove || !hasRules)) {
+		if (endClasses.length && (validMove || !hasRules)) {
 			taken = true;
 			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
 		}
 
 		// move the piece
-		if (!hasCastled) movePiece(startCell, endCell);
+		const valid = validation.movePiece(startCell, endCell);
+		if (!valid) {
+			console.log('I', startCell, '->', endCell);
+			return;
+		}
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
 		selectedCell = null;
-
-		// check en passant
-		if (enpassantTaken && enpassantCell) {
-			clearCells(enpassantCell);
-			taken = true;
-		}
-		enpassantCell = piece === 'pawn' && Math.abs(endCell[1] - startCell[1]) === 2 ? endCell : null;
-
-		// check fifty move rule
-		fmrMoves++;
-		if (piece === 'pawn' || taken) fmrMoves = 0;
 
 		// log the move
 		console.log('M', startCell, '->', endCell);
@@ -126,10 +59,6 @@ function hasClicked(cell) {
 			colour, originalPiece, startCell, endCell, endClasses, totalMoves++,
 			{ taken: taken, promoted: canPromote, castled: hasCastled, check: isCheck(colour) }
 		);
-		movesList.push(createFen());
-
-		// check if in check
-		checkKingStatus(colour);
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
@@ -180,26 +109,6 @@ function hasClicked(cell) {
 	}
 }
 
-function checkKingStatus(colour) {
-	// highlight if in check
-	const opposingColour = invertColour(colour);
-	updateKingCells();
-	if (isCheck(colour) && hasRules) undoLastMove();
-	$$(`td`).forEach(elem => elem.classList.remove('check'));
-	if (isCheck(colour)) getCell(kingCell[colour[0]]).classList.add('check');
-	if (isCheck(opposingColour)) getCell(kingCell[opposingColour[0]]).classList.add('check');
-
-	// game ending
-	let winner = undefined;
-	if (gameEndingStatus(colour) === 'checkmate') winner = opposingColour;
-	else if (gameEndingStatus(opposingColour) === 'checkmate') winner = colour;
-	else if (gameEndingStatus(opposingColour) === 'stalemate' || threefoldRepetition()) winner = false;
-	if (winner !== undefined) {
-		ingame = false;
-		$('#winner').innerText = winner ? winner + ' wins' : 'Stalemate';
-	}
-}
-
 function undoLastMove() {
 	if (totalMoves === 0 || movesList.length === 0) return;
 	ingame = true;
@@ -218,4 +127,14 @@ function undoLastMove() {
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
 	if (autoPing) sendDB(gameId, createFen());
+}
+
+function threefoldRepetition() {
+	const lastFen = movesList[movesList.length - 1].replace(/ . .$/, '');
+	let repetitions = 0;
+	for (let i in movesList) {
+		if (movesList[i].replace(/ . .$/, '') === lastFen)
+			repetitions++;
+	}
+	return repetitions >= 3;
 }
