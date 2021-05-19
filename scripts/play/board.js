@@ -1,6 +1,6 @@
 // Board functions //
 
-function createBoard(size, initial) {
+function newBoard(size, initial) {
 	$('table').innerHTML = '';
 	let emptyCells = [];
 	for (i = 1; i <= size; i++) {
@@ -63,7 +63,7 @@ function createBoardFromFen(fenString) {
 	let currentRow = 8;
 	let currentColumn = 1;
 
-	createBoard(8, false);
+	newBoard(8, false);
 	$$('td').forEach(elem => resetCell(elem.id));
 
 	if (fenString.match(/\//g).length !== 7) {

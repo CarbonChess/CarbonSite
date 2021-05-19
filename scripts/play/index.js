@@ -55,8 +55,7 @@ function run() {
 
 	window.global = {};
 	FenFurnace();
+	Object.assign(window, fenFuncs);
 
-	let urlFen = getFenFromURL();
-	if (urlFen) createBoardFromFen(urlFen);
-	else createBoard(8, true);
+	newBoard(8, true);
 }
