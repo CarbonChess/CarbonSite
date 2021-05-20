@@ -6,6 +6,9 @@ const getPieceColour = cell => getPieceClasses(cell)[0];
 function selectPiece(cell) {
 	window.selectedCell = cell;
 	$.id(cell)?.classList.add('selected');
+	if (hasRules) {
+		findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
+	}
 	console.log('S', selectedCell);
 }
 
