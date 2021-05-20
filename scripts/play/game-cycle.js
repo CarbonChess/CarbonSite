@@ -30,23 +30,25 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
+		const colour = global.currentTurn === 'w' ? 'white' : 'black';
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
 
-		window.selectedCell = null;
 		if (!startClasses) return; // exit if the cell does not has metadata
 
 		// move the piece
 		const moveOutput = validation.makeMove(startCell, endCell);
 		if (!moveOutput) {
 			console.log('I', startCell, '->', endCell);
+			if (endClasses.includes(colour)) selectedCell = endCell;
 			return;
 		}
 		createBoardFromFen(moveOutput);
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
+		window.selectedCell = null;
 
 		// display taken piece on side
 		if (endClasses.length && (moveOutput || !window.hasRules)) {
