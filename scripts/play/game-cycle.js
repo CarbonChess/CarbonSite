@@ -90,7 +90,7 @@ function hasClicked(cell) {
 
 		selectPiece(cell);
 		if (hasRules) {
-			validation.findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
+			findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
 		}
 		console.log('\n' + (totalMoves + 1));
 		console.log('T', ...cellClasses);
