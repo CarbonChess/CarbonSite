@@ -58,10 +58,7 @@ function hasClicked(cell) {
 
 		// log the move
 		console.log('M', startCell, '->', endCell);
-		log(
-			colour, originalPiece, startCell, endCell, endClasses, totalMoves++,
-			{ taken: taken, promoted: canPromote, castled: hasCastled, check: isCheck(colour) }
-		);
+		// TODO FenFurnace logging
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');

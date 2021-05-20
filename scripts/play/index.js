@@ -59,3 +59,8 @@ function run() {
 	setupBoard();
 	newBoard(8, true);
 }
+
+function reset() {
+	run();
+	if (gameOptions.multiplayer) sendDB(gameId, defaultFen);
+}
