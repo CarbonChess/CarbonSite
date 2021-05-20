@@ -1,11 +1,11 @@
 const defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
 
 function createFen() {
-	return global.moveslist.slice(-1)[0];
+	return global.moveList.slice(-1)[0];
 }
 
 function getTakenPiecesFromFen() {
-	const fenString = global.moveslist.slice(-1)[0];
+	const fenString = global.moveList.slice(-1)[0];
 	let pieces = { b: 'pppppppprnbqkbnr', w: 'PPPPPPPPRNBQKBNR' };
 	for (let i in fenString.split(' ')[0]) {
 		const c = fenString[i];
