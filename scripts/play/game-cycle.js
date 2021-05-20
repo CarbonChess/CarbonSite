@@ -65,11 +65,8 @@ function hasClicked(cell) {
 		$('#promotion').classList.add('hide');
 		$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 
-		// switch turn
-		if (window.hasRules) {
-
-			if (autoFlip) alignBoard();
-		}
+		// align board
+		if (window.hasRules && window.autoFlip) alignBoard();
 
 		// send to server
 		if (autoPing) sendDB(gameId, createFen());
@@ -77,14 +74,14 @@ function hasClicked(cell) {
 	}
 
 	// Select piece //
-	else if ($cell && (!hasRules || (cellClasses.includes(global.currentTurn === 'w' ? 'white' : 'black')))) {
+	else if ($cell && (!window.hasRules || cellClasses.includes(global.currentTurn === 'w' ? 'white' : 'black'))) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
 		const isPawn = cellClasses.includes('pawn');
 		const whiteRow2 = cellClasses.includes('white') && +cell[1] === 7;
 		const blackRow2 = cellClasses.includes('black') && +cell[1] === 2;
-		if (isPawn && (!hasRules || whiteRow2 || blackRow2)) {
+		if (isPawn && (!window.hasRules || whiteRow2 || blackRow2)) {
 			$.id('promotion').classList.remove('hide');
 		}
 

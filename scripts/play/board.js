@@ -97,7 +97,7 @@ function createBoardFromFen(fenString) {
 
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
-	const takenPieces = getTakenPiecesFromFen(fenString);
+	const takenPieces = getTakenPiecesFromFen();
 	for (let i = 0; i < takenPieces.w.length; i++) {
 		const c = takenPieces.w[i];
 		logTakenPiece('white', pieces[c.toLowerCase()]);
