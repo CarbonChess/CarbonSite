@@ -56,8 +56,9 @@ function newBoard(size, initial) {
 }
 
 function createBoardFromFen(fenString) {
-	fenString = decodeURIComponent(fenString);
-	history.pushState({}, '', location.href.replace(/\?.*$/, ''));
+	createBoard(fenString);
+	// fenString = decodeURIComponent(fenString);
+	// history.pushState({}, '', location.href.replace(/\?.*$/, ''));
 
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
