@@ -27,6 +27,8 @@ function run() {
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
 	window.currentBoard = [];
+	window.enpassantCell = null
+	window.enpassantTaken = false;;
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
