@@ -50,6 +50,10 @@ function hasClicked(cell) {
 		$endCell.classList.add('last-move');
 		window.selectedCell = null;
 
+		// check if in check
+		if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
+		if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+
 		// display taken piece on side
 		if (endClasses.length && (moveOutput || !window.hasRules)) {
 			taken = true;
