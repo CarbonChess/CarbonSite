@@ -64,7 +64,7 @@ function hasClicked(cell) {
 		// log the move
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
-		log({ startCell, endCell, count: totalMoves, taken, /*promoted, castled,*/ check: isCheck(global.currentTurn) });
+		log({ startCell, endCell, classes:endClasses, count: totalMoves, taken, /*promoted, castled,*/ check: isCheck(global.currentTurn) });
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');

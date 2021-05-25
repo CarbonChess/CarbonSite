@@ -1,7 +1,7 @@
-function log({ startCell, endCell, count, taken, promoted, castled, check }) {
+function log({ startCell, endCell, classes, count, taken, promoted, castled, check }) {
 
 	window.lastMove = { start: startCell, end: endCell };
-	const [colour, piece] = getPieceClasses(endCell);
+	const [colour, piece] = classes;
 
 	if (taken) points[colour[0]] += getPointsEquivalent(piece);
 	if (promoted) points[colour[0]] += getPointsEquivalent(piece);
