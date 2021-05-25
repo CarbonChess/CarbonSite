@@ -148,4 +148,5 @@ function shareGame() {
 	const newUrl = location.href.replace(location.search || /$/, `?multiplayer=on&static=on&gamecode=${window.gameId}`);
 	sendDB();
 	copy(newUrl);
+	alert('A link to this board has been copied to your clipboard');
 }
