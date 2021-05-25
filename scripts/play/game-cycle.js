@@ -30,7 +30,6 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
-		const colour = global.currentTurn === 'w' ? 'white' : 'black';
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
@@ -41,7 +40,7 @@ function hasClicked(cell) {
 		const moveOutput = validation.makeMove(startCell, endCell);
 		if (!moveOutput) {
 			console.log('I', startCell, '->', endCell);
-			if (endClasses.includes(colour)) selectPiece(endCell);
+			selectPiece(endCell);
 			return;
 		}
 		createBoardFromFen(moveOutput);
