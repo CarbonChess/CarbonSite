@@ -24,7 +24,7 @@ async function readDB() {
             ingame = false;
         }
         else {
-            lastMove.split('-').forEach(cell => cell && $.id(cell).classList.add('last-move'));
+            lastMove.split('-').forEach(cell => cell && $.id(cell)?.classList.add('last-move'));
             $('#log').innerHTML += lastMove.split('-')[1];
         }
     }
