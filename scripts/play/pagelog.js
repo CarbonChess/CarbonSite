@@ -8,7 +8,7 @@ function log({ startCell, endCell, count, taken, promoted, castled, check }) {
 	logPoints();
 
 	let code = ' ';
-	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2);
+	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2) + '. ';
 	if (castled) {
 		code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
 	}
