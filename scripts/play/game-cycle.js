@@ -41,7 +41,7 @@ function hasClicked(cell) {
 		const moveOutput = validation.makeMove(startCell, endCell);
 		if (!moveOutput) {
 			console.log('I', startCell, '->', endCell);
-			selectPiece(endCell);
+			if (getPieceClasses(endCell).length > 0) selectPiece(endCell);
 			return;
 		}
 		createBoardFromFen(moveOutput);
