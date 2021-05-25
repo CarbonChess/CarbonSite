@@ -30,6 +30,7 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
+		const colour = global.currentTurn === 'w' ? 'white' : 'black';
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
@@ -60,9 +61,9 @@ function hasClicked(cell) {
 		}
 
 		// log the move
-		console.log('M', startCell, '->', endCell);
 		window.totalMoves++;
-		// TODO FenFurnace logging
+		console.log('M', startCell, '->', endCell);
+		log({ colour, piece, startCell, endCell, endClasses, count: totalMoves, taken, /*promoted, castled,*/ check: isCheck(global.currentTurn) });
 
 		// hide promotion box
 		$('#promotion').classList.add('hide');
