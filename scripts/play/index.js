@@ -18,6 +18,7 @@ function run() {
 
 	window.ingame = true;
 	window.sessionLost = false;
+	window.totalMoves = 0;
 	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
 	window.currentTurn = 'white';

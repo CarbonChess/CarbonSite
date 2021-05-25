@@ -61,6 +61,7 @@ function hasClicked(cell) {
 
 		// log the move
 		console.log('M', startCell, '->', endCell);
+		window.totalMoves++;
 		// TODO FenFurnace logging
 
 		// hide promotion box
@@ -88,7 +89,7 @@ function hasClicked(cell) {
 		}
 
 		selectPiece(cell);
-		console.log('\n');
+		console.log('\n' + (totalMoves + 1));
 		console.log('T', ...cellClasses);
 
 		$$('#promotion img').forEach(elem => {
@@ -107,6 +108,7 @@ function undoLastMove() {
 	if (totalMoves === 0 || movesList.length === 0) return;
 	createBoardFromFen(undoMove());
 	ingame = true;
+	window.totalMoves--;
 	logPoints();
 	if (autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
