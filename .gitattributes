@@ -1,3 +1,4 @@
 * text=auto
 *.svg binary
 package-lock.json -diff
+ext/* linguist-vendored

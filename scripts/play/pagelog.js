@@ -1,14 +1,14 @@
-function log(colour, piece, startCell, endCell, endClasses, count, { taken, promoted, castled, check }) {
+function log({ startCell, endCell, classes, count, taken, promoted, castled, check }) {
 
 	window.lastMove = { start: startCell, end: endCell };
-	
-	const col = colour[0];
-	if (taken) points[col] += getPointsEquivalent(endClasses[1]);
-	if (promoted) points[col] += getPointsEquivalent(endClasses[1]);
+	const [colour, piece] = classes;
+
+	if (taken) points[colour[0]] += getPointsEquivalent(piece);
+	if (promoted) points[colour[0]] += getPointsEquivalent(piece);
 	logPoints();
 
 	let code = ' ';
-	if (count % 2 === 0 && hasRules) code += '<br>' + (count / 2 + 1) + '. ';
+	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2) + '. ';
 	if (castled) {
 		code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
 	}

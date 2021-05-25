@@ -24,13 +24,11 @@ function run() {
 	window.currentTurn = 'white';
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
-	window.kingCell = { w: 'E1', b: 'E8' };
-	window.castling = { w: { k: true, q: true }, b: { k: true, q: true } };
-	window.enpassantCell = null;
-	window.enpassantTaken = false;
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
 	window.currentBoard = [];
+	window.enpassantCell = null
+	window.enpassantTaken = false;
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
@@ -53,7 +51,14 @@ function run() {
 		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
 	}
 
-	let urlFen = getFenFromURL();
-	if (urlFen) createBoardFromFen(urlFen);
-	else createBoard(8, true);
+	window.global = {};
+	FenFurnace();
+	Object.assign(window, { ...fenFuncs, ...global });
+	setupBoard();
+	newBoard(8, true);
+}
+
+function reset() {
+	run();
+	if (gameOptions.multiplayer) sendDB(gameId, defaultFen);
 }

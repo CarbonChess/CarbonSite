@@ -1,6 +1,6 @@
 // Board functions //
 
-function createBoard(size, initial) {
+function newBoard(size, initial) {
 	$('table').innerHTML = '';
 	let emptyCells = [];
 	for (i = 1; i <= size; i++) {
@@ -56,14 +56,15 @@ function createBoard(size, initial) {
 }
 
 function createBoardFromFen(fenString) {
-	fenString = decodeURIComponent(fenString);
-	history.pushState({}, '', location.href.replace(/\?.*$/, ''));
+	createBoard(fenString);
+	// fenString = decodeURIComponent(fenString);
+	// history.pushState({}, '', location.href.replace(/\?.*$/, ''));
 
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
 	let currentColumn = 1;
 
-	createBoard(8, false);
+	newBoard(8, false);
 	$$('td').forEach(elem => resetCell(elem.id));
 
 	if (fenString.match(/\//g).length !== 7) {
@@ -92,19 +93,12 @@ function createBoardFromFen(fenString) {
 		}
 	}
 
-	// Update metadata
-	window.enpassantCell = getEnpassantFromFen(fenString);
-	window.castling = getCastlingFromFen(fenString);
-	window.points = getPointsFromFen(fenString);
-	window.fmrMoves = getFmrFromFen(fenString);
-	if (!movesList.length) movesList = [fenString];
-	updateKingCells();
-	currentTurn = getCurrentTurnFromFen(fenString);
-	checkKingStatus(currentTurn);
+	// Update current turn
+	window.currentTurn = global.currentTurn === 'w' ? 'white' : 'black';
 
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
-	const takenPieces = getTakenPiecesFromFen(fenString);
+	const takenPieces = getTakenPiecesFromFen();
 	for (let i = 0; i < takenPieces.w.length; i++) {
 		const c = takenPieces.w[i];
 		logTakenPiece('white', pieces[c.toLowerCase()]);
@@ -154,4 +148,5 @@ function shareGame() {
 	const newUrl = location.href.replace(location.search || /$/, `?multiplayer=on&static=on&gamecode=${window.gameId}`);
 	sendDB();
 	copy(newUrl);
+	alert('A link to this board has been copied to your clipboard');
 }
