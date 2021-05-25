@@ -31,7 +31,7 @@ function logPoints() {
 
 function logTakenPiece(colour, piece) {
 	const takenPiece = createPiece(piece, colour);
-	takenPiece.setAttribute('data-move', totalMoves);
+	// takenPiece.setAttribute('data-move', 'totalMoves');
 	$.id(colour + '-pieces').appendChild(takenPiece);
 	logPoints();
 }

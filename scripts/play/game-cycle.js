@@ -88,7 +88,7 @@ function hasClicked(cell) {
 		}
 
 		selectPiece(cell);
-		console.log('\n' + (totalMoves + 1));
+		console.log('\n');
 		console.log('T', ...cellClasses);
 
 		$$('#promotion img').forEach(elem => {
