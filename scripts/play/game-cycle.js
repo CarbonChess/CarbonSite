@@ -30,7 +30,7 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
-		const colour = global.currentTurn === 'w' ? 'white' : 'black';
+		// const colour = global.currentTurn === 'w' ? 'white' : 'black';
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
@@ -55,6 +55,7 @@ function hasClicked(cell) {
 		if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
 
 		// display taken piece on side
+		let taken = false;
 		if (endClasses.length && (moveOutput || !window.hasRules)) {
 			taken = true;
 			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
