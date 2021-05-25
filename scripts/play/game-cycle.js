@@ -105,14 +105,8 @@ function hasClicked(cell) {
 
 function undoLastMove() {
 	if (totalMoves === 0 || movesList.length === 0) return;
+	createBoardFromFen(undoMove());
 	ingame = true;
-	global.moveList.pop();
-	const movesListLast = global.moveList[global.moveList.length - 1];
-	createBoardFromFen(movesListLast);
-	window.currentTurn = invertColour(window.currentTurn);
-	kingCell[window.currentTurn[0]] = $(`.${window.currentTurn}.king`).parentNode.id;
-	totalMoves--;
-	window.currentTurn = invertColour(window.currentTurn);
 	logPoints();
 	if (autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {

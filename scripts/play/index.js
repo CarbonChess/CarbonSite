@@ -18,7 +18,6 @@ function run() {
 
 	window.ingame = true;
 	window.sessionLost = false;
-	window.totalMoves = 0;
 	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
 	window.currentTurn = 'white';
@@ -28,7 +27,7 @@ function run() {
 	window.movesList = [];
 	window.currentBoard = [];
 	window.enpassantCell = null
-	window.enpassantTaken = false;;
+	window.enpassantTaken = false;
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
