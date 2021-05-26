@@ -93,9 +93,6 @@ function createBoardFromFen(fenString) {
 		}
 	}
 
-	// Update current turn
-	window.currentTurn = global.currentTurn === 'w' ? 'white' : 'black';
-
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
 	const takenPieces = getTakenPiecesFromFen();
@@ -116,31 +113,19 @@ const resetCell = cell => getCell(cell).innerHTML = '<img src="/images/transpare
 
 // Options functions //
 
-function toggleRules(button) {
-	hasRules = !hasRules;
-	['enabled', 'disabled'].forEach(c => button.classList.toggle(c));
-	currentTurn = invertColour(currentTurn);
-}
-
 function flipBoard() {
 	['rotate', 'norotate'].forEach(c => document.body.classList.toggle(c));
 }
 
 function alignBoard() {
 	const classes = document.body.classList;
-	if (currentTurn === 'black') {
+	if (global.currentTurn === 'b') {
 		classes.add('rotate');
 		classes.remove('norotate');
 	} else {
 		classes.remove('rotate');
 		classes.add('norotate');
 	}
-}
-
-function changeAutoflip(button) {
-	autoflip = !autoflip;
-	button.classList.toggle('enabled');
-	button.classList.toggle('disabled');
 }
 
 function shareGame() {

@@ -30,25 +30,33 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
-		// const colour = global.currentTurn === 'w' ? 'white' : 'black';
+		//  const colour = global.currentTurn === 'w' ? 'white' : 'black';
+		const [colour, piece] = startClasses;
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
 		$startCell.classList.remove('selected');
+		window.selectedCell = null;
 
 		if (!startClasses) return; // exit if the cell does not has metadata
+
+		// promotion
+		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
+		if (canPromote) {
+			global.promotionPiece = getPieceID(window.promotionPiece).toLowerCase();
+		}
 
 		// move the piece
 		const moveOutput = validation.makeMove(startCell, endCell);
 		if (!moveOutput) {
 			console.log('I', startCell, '->', endCell);
-			if (getPieceClasses(endCell).length > 0) selectPiece(endCell);
+			if (getPieceClasses(endCell)[0] === colour) selectPiece(endCell);
+			else selectPiece(startCell);
 			return;
 		}
 		createBoardFromFen(moveOutput);
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
-		window.selectedCell = null;
 
 		// check if in check
 		if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
@@ -64,14 +72,24 @@ function hasClicked(cell) {
 		// log the move
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
-		log({ startCell, endCell, classes:endClasses, count: totalMoves, taken, /*promoted, castled,*/ check: isCheck(global.currentTurn) });
+		log({ startCell, endCell, classes: startClasses, count: totalMoves, taken, promoted: canPromote, /*castled,*/ check: isCheck(global.currentTurn) });
 
 		// hide promotion box
+		window.promotionPiece = 'queen';
 		$('#promotion').classList.add('hide');
 		$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 
 		// align board
 		if (window.hasRules && window.autoFlip) alignBoard();
+
+		// check game ending status
+		const endingStatus = gameEndingStatus(global.currentTurn);
+		if (endingStatus) {
+			let winText = global.currentTurn !== 'w' ? 'White' : 'Black' + ' Wins';
+			let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
+			$('#winner').innerText = statusMsg;
+			ingame = false;
+		}
 
 		// send to server
 		if (autoPing) sendDB(gameId, createFen());
