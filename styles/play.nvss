@@ -59,9 +59,12 @@ td {
 	&::after {
 		margin-top: calc(var(--cell-size) / 2 );
 		padding-top: 6px;
+		@ ..$(BREAKPOINT) {
+			margin-left: -3em;
+		}
 	}
 
-	&::before {
+	&::before @ $(BREAKPOINT).. {
 		margin-top: -12px;
 		margin-left: -12px;
 	}
