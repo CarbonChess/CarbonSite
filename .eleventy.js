@@ -10,7 +10,7 @@ module.exports = function (cfg) {
 
     cfg.on('afterBuild', () => {
         ['common', 'home', 'main'].forEach(name => {
-            execSync(`npx novasheets -c styles/${name}.nvss`, (err, stdout, stderr) => console.log(err || stdout));
+            execSync(`npx novasheets -c _site/styles/${name}.nvss`, (err, stdout, stderr) => console.log(err || stdout));
         });
     });
 
