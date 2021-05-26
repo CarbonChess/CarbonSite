@@ -1,3 +1,5 @@
+window.global = {};
+
 function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
@@ -49,8 +51,6 @@ function run() {
 		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
 	}
 
-	window.global = {};
-	FenFurnace();
 	Object.assign(window, { ...fenFuncs, ...global });
 	setupBoard();
 	newBoard(8, true);
