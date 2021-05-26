@@ -8,9 +8,9 @@ module.exports = function (cfg) {
 
     passThruPaths.forEach(file => cfg.addPassthroughCopy(file));
 
-    cfg.on('afterBuild', () => {
+    cfg.on('beforeBuild', () => {
         ['common', 'home', 'main'].forEach(name => {
-            execSync(`npx novasheets -c _site/styles/${name}.nvss`, (err, stdout, stderr) => console.log(err || stdout));
+            execSync(`npx novasheets -c styles/${name}.nvss`, (err, stdout, stderr) => console.log(err || stdout));
         });
     });
 
