@@ -9,7 +9,7 @@
 	"license": "ISC",
 	"scripts": {
 		"build": "npm run novasheets && eleventy",
-		"novasheets": "novasheets -c **/*.nvss"
+		"novasheets": "novasheets -c styles/common.nvss && novasheets -c styles/home.nvss && novasheets -c styles/play.nvss"
 	},
 	"dependencies": {
 		"faunadb": "^4.2.0"
