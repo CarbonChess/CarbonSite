@@ -8,8 +8,7 @@
 	"homepage": "https://carbonchess.com",
 	"license": "ISC",
 	"scripts": {
-		"build": "npm run novasheets && eleventy",
-		"novasheets": "novasheets -c styles/common.nvss && novasheets -c styles/home.nvss && novasheets -c styles/play.nvss"
+		"build": "eleventy"
 	},
 	"dependencies": {
 		"faunadb": "^4.2.0"
