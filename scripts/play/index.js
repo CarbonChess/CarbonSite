@@ -37,8 +37,6 @@ function run() {
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
 
-	alignBoard();
-
 	if (window.gameId) {
 		$('#gameid').innerText = 'Game ID: ' + window.gameId;
 	}
@@ -56,6 +54,8 @@ function run() {
 	Object.assign(window, { ...fenFuncs, ...global });
 	setupBoard();
 	newBoard(8, true);
+	alignBoard();
+
 }
 
 function reset() {
