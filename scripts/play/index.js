@@ -39,16 +39,17 @@ function run() {
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
 
-	if (window.gameId) {
-		$('#gameid').innerText = 'Game ID: ' + window.gameId;
-	}
+	const gameData = $('#game-data dl');
+	gameData.innerHTML += `<dt>Opponent</dt><dd>${gameOptions.bot ? 'Bot' : gameOptions.multiplayer ? 'Online' : 'Local'}</dd>`;
+	if (window.gameId) gameData.innerHTML += `<dt>Game ID</dt><dd>${window.gameId}</dd>`;
+	if (gameOptions.multiplayer) gameData.innerHTML += `<dt>Multiplayer</dt><dd>Yes</dd>`;
 	if (gameOptions.static) {
 		autoPing = false;
-		$('#gameid').innerText = 'Loaded move from game ID ' + window.gameId;
+		gameData.innerHTML += `<dt>Replay</dt><dd>Yes</dd>`;
 	}
 	if (gameOptions.spectating) {
 		ingame = false;
-		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
+		gameData.innerHTML += `<dt>Spectating</dt><dd>Yes</dd>`;
 	}
 
 	Object.assign(window, { ...fenFuncs, ...global });

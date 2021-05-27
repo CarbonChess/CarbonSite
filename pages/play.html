@@ -30,7 +30,6 @@ permalink: /play/
 		</a>
 	</h1>
 
-	<div id="gameid"></div>
 	<div id="winner" class="resettable"></div>
 
 	<div id="game-content">
@@ -68,7 +67,14 @@ permalink: /play/
 			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
 		</div>
 
-		<div id="log" class="resettable"></div>
+		<aside id="sidebar">
+    		<div id="game-data">
+    			<strong>Session</strong>
+				<dl></dl>
+			</div>
+			<strong>Moves</strong>
+			<div id="log" class="resettable"></div>
+		</aside>
 	</div>
 
 	<footer>
