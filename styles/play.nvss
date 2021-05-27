@@ -33,6 +33,18 @@ h1 {
 	}
 }
 
+dd, dt @ ..$(BREAKPOINT) {
+    display: inline;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	text-align: right;
+}
+
 /* Chess board */
 
 table {
@@ -209,10 +221,6 @@ select {
 	}
 }
 
-#gameid {
-	text-align: center;
-}
-
 #winner {
 	text-align: center;
 	text-transform: uppercase;
@@ -273,39 +281,48 @@ button.disabled {
 #taken-black-pieces {grid-area: black;}
 #taken-white-pieces {grid-area: white;}
 
-#log {
-	margin: 0 auto;
-	padding: 1em 0.5em;
+#sidebar {
 	width: 150px;
-	height: var(--board-size);
 	border: 2px solid #111;
-	overflow-wrap: break-word;
-	text-align: center;
 	background-color: #dcdcdc;
 	color: black;
 
-	.move {
-		padding: 1px 2px;
+	strong {
+		margin-bottom: 0.5em;
+		display: block;
+		text-align: center;
+		font-size: 120%;
+		text-decoration: underline;
 	}
 
-	@ ..$(BREAKPOINT) {
-		width: 80%;
-		height: 100px;
-		padding: 0;
+	#game-data {
+		padding: 1em 1em 0;
+		height: min-content;
+	}
 
-		br {
-			display: none;
+	#log {
+		overflow-wrap: break-word;
+		text-align: center;
+
+		.move {
+			padding: 1px 2px;
 		}
-	}
 
-	@ $(BREAKPOINT).. {
-		overflow: auto;
-		grid-area: log;
+		@ $(BREAKPOINT).. {
+			overflow: auto;
+			grid-area: log;
+		}
 	}
 }
 
 /* Visibility */
 
 .hide {
+	display: none;
+}
+.mobileonly @ $(BREAKPOINT).. {
+	display: none;
+}
+.desktoponly @ ..$(BREAKPOINT) {
 	display: none;
 }
