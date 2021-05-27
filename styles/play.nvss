@@ -2,11 +2,12 @@
 
 @var BREAKPOINT = 800px
 
+@var light-color = #dcdcdc
+@var dark-color = #afafaf
+
 :root {
 	/* Variables */
-	--light-color: #dcdcdc;
-	--dark-color: #afafaf;
-	--bg-colour: #191919;
+	--bg-color: #191919;
 	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8 );
 	@ ..$(BREAKPOINT) {
@@ -56,7 +57,7 @@ table {
 $(@breakpoint | $(BREAKPOINT) | table | margin: auto; | grid-area: table; )
 
 td {
-	background: var(--light-color);
+	background: $(light-color);
 	width: var(--cell-size);
 	height: var(--cell-size);
 	text-align: center;
@@ -84,7 +85,7 @@ td {
 
 tr:nth-child(odd) td: nth-child(even),
 tr: nth-child(even) td: nth-child(odd) {
-	background: var(--dark-color);
+	background: $(dark-color);
 }
 
 .rotate table,
