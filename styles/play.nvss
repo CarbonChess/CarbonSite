@@ -53,8 +53,13 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
+	@ ..$(BREAKPOINT) {
+		margin: auto;
+	}
+	@ $(BREAKPOINT).. {
+		grid-area: table;
+	}
 }
-$(@breakpoint | $(BREAKPOINT) | table | margin: auto; | grid-area: table; )
 
 td {
 	background: $(light-color);
