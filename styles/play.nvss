@@ -1,7 +1,5 @@
 /* Page */
 
-@var BREAKPOINT = 800px
-
 @var light-color = #dcdcdc
 @var dark-color = #afafaf
 
@@ -10,7 +8,7 @@
 	--bg-color: #191919;
 	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8 );
-	@ ..$(BREAKPOINT) {
+	@ ..800px {
 		--cell-size: -50px;
 	}
 }
@@ -18,7 +16,7 @@
 body {
 	max-width: 900px;
 
-	@ $(BREAKPOINT).. {
+	@ 800px.. {
 		margin: 0 auto;
 		padding: 50px 0 0;
 		display: flex;
@@ -34,7 +32,7 @@ h1 {
 	}
 }
 
-dd, dt @ ..$(BREAKPOINT) {
+dd, dt @ ..800px {
     display: inline;
 }
 
@@ -53,10 +51,10 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
-	@ ..$(BREAKPOINT) {
+	@ ..800px {
 		margin: auto;
 	}
-	@ $(BREAKPOINT).. {
+	@ 800px.. {
 		grid-area: table;
 	}
 }
@@ -77,12 +75,12 @@ td {
 	&::after {
 		margin-top: calc(var(--cell-size) / 2 );
 		padding-top: 6px;
-		@ ..$(BREAKPOINT) {
+		@ ..800px {
 			margin-left: -3em;
 		}
 	}
 
-	&::before @ $(BREAKPOINT).. {
+	&::before @ 800px.. {
 		margin-top: -12px;
 		margin-left: -12px;
 	}
@@ -133,7 +131,7 @@ $( @each | abcdefgh |  |
 		user-select: none;
 	}
 
-	@ ..$(BREAKPOINT) {
+	@ ..800px {
 		transform: none;
 	}
 }
@@ -165,7 +163,7 @@ select {
 	font-family: 'Century Gothic';
 	cursor: pointer;
 
-	@ $(BREAKPOINT).. {
+	@ 800px.. {
 		margin-bottom: 6px;
 	}
 }
@@ -215,14 +213,14 @@ select {
 #game-content {
 	margin-bottom: 1em;
 
-	@ $(BREAKPOINT).. {
+	@ 800px.. {
 		display: grid;
 		grid-template-areas: ". white .""icons table log"". black ."". promotion .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: 48px auto 48px;
 	}
 
-	.rotate & @ $(BREAKPOINT).. {
+	.rotate & @ 800px.. {
 		grid-template-areas: ". black .""icons table log"". white .";
 	}
 }
@@ -246,7 +244,7 @@ select {
 		padding: 2px 4px;
 	}
 
-	@ $(BREAKPOINT).. {
+	@ 800px.. {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -314,7 +312,7 @@ button.disabled {
 			padding: 1px 2px;
 		}
 
-		@ $(BREAKPOINT).. {
+		@ 800px.. {
 			overflow: auto;
 			grid-area: log;
 		}
@@ -326,9 +324,9 @@ button.disabled {
 .hide {
 	display: none;
 }
-.mobileonly @ $(BREAKPOINT).. {
+.mobileonly @ 800px.. {
 	display: none;
 }
-.desktoponly @ ..$(BREAKPOINT) {
+.desktoponly @ ..800px {
 	display: none;
 }
