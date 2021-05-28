@@ -86,8 +86,8 @@ td {
 	}
 }
 
-tr:nth-child(odd) td: nth-child(even),
-tr: nth-child(even) td: nth-child(odd) {
+tr:nth-child(odd) td:nth-child(even),
+tr:nth-child(even) td:nth-child(odd) {
 	background: $(dark-color);
 }
 
@@ -98,10 +98,10 @@ tr: nth-child(even) td: nth-child(odd) {
 
 /* Chess board labels */
 $( @each | abcdefgh |  |
-.norotate tr: last-child td: nth-child($i)::after {content: '$v';}
-.norotate tr:nth-child($i) td: first-child: :before {content: '9-$i';}
+.norotate tr:last-child td:nth-child($i)::after {content: '$v';}
+.norotate tr:nth-child($i) td:first-child::before {content: '9-$i';}
 .rotate tr:first-child td:nth-child((9-$i))::after {content: '$v';}
-.rotate tr:nth-child((9-$i)) td: last-child: :before {content: '9-$i';}
+.rotate tr:nth-child((9-$i)) td:last-child::before {content: '9-$i';}
 )
 
 /* Pieces */
