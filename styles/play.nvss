@@ -5,7 +5,7 @@
 
 :root {
 	/* Variables */
-	--bg-color: #191919;
+	--bg-colour: #191919;
 	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8 );
 	@ ..800px {
