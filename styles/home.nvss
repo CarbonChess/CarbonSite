@@ -70,13 +70,13 @@ input[type="text"] {
 	cursor: pointer;
 	transition: 50ms;
 
-	&.selected {
+	&.selected,
+	&:hover {
+		border: 2.5px solid var(--accent-colour);
+		transform: scale(1.05);
+	}
 
-		&,
-		&:hover {
-			border: 2.5px solid var(--accent-colour);
-			transform: scale(1.05);
-		}
+	&.selected {
 
 		&::before {
 			content: '';
