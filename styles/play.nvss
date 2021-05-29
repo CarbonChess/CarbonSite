@@ -8,7 +8,7 @@
 	--bg-colour: #191919;
 	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8 );
-	@ ..800px {
+	@ .. 800px {
 		--cell-size: -50px;
 	}
 }
@@ -32,7 +32,7 @@ h1 {
 	}
 }
 
-dd, dt @ ..800px {
+dd, dt @ .. 800px {
     display: inline;
 }
 
@@ -51,7 +51,7 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
-	@ ..800px {
+	@ .. 800px {
 		margin: auto;
 	}
 	@ 800px.. {
@@ -75,7 +75,7 @@ td {
 	&::after {
 		margin-top: calc(var(--cell-size) / 2 );
 		padding-top: 6px;
-		@ ..800px {
+		@ .. 800px {
 			margin-left: -3em;
 		}
 	}
@@ -105,7 +105,7 @@ $( @each | a,b,c,d,e,f,g,h |
 .rotate tr:nth-child((9-$i)) td:last-child::before {content: '9-$i';}
 )
 */
-/**/
+/*begin workaround*/
 .norotate tr:last-child td:nth-child(1)::after {content: 'a';}
 .norotate tr:last-child td:nth-child(2)::after {content: 'b';}
 .norotate tr:last-child td:nth-child(3)::after {content: 'c';}
@@ -138,7 +138,7 @@ $( @each | a,b,c,d,e,f,g,h |
 .rotate tr:nth-child(3) td:last-child::before {content: '3';}
 .rotate tr:nth-child(2) td:last-child::before {content: '2';}
 .rotate tr:nth-child(1) td:last-child::before {content: '1';}
-/**/
+/*end workaround*/
 
 /* Pieces */
 
@@ -156,13 +156,9 @@ $( @each | a,b,c,d,e,f,g,h |
 
 	&.white {background-position-y: 0px;}
 
-	@var piece pos = &.$[1] {background-position-x: calc($[2]*var(--piece-sep));}
-	$(piece pos | king | 1)
-	$(piece pos | queen | 2)
-	$(piece pos | bishop | 3)
-	$(piece pos | knight | 4)
-	$(piece pos | rook | 5)
-	$(piece pos | pawn | 6)
+	$( @each | king,queen,bishop,knight,rook,pawn | , | |
+		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
+	)
 
 	.taken-pieces & {
 		margin: -8px;
@@ -171,7 +167,7 @@ $( @each | a,b,c,d,e,f,g,h |
 		user-select: none;
 	}
 
-	@ ..800px {
+	@ .. 800px {
 		transform: none;
 	}
 }
@@ -367,6 +363,6 @@ button.disabled {
 .mobileonly @ 800px.. {
 	display: none;
 }
-.desktoponly @ ..800px {
+.desktoponly @ .. 800px {
 	display: none;
 }
