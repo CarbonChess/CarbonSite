@@ -97,15 +97,18 @@ tr:nth-child(even) td:nth-child(odd) {
 }
 
 /* Chess board labels */
-$( @each | abcdefgh |  |
-.norotate tr:last-child td:nth-child($i)::after {content: '$v';}
 /* Code is currently broken as of 1.0.0-rc4
+$( @each | a,b,c,d,e,f,g,h |
+.norotate tr:last-child td:nth-child($i)::after {content: '$v';}
 .norotate tr:nth-child($i) td:first-child::before {content: '9-$i';}
 .rotate tr:first-child td:nth-child((9-$i))::after {content: '$v';}
 .rotate tr:nth-child((9-$i)) td:last-child::before {content: '9-$i';}
-*/
 )
+*/
 /**/
+$( @each | a,b,c,d,e,f,g,h |
+.norotate tr:last-child td:nth-child($i)::after {content: '$v';}
+)
 .rotate tr:first-child td:nth-child(8)::after {content: 'a';}
 .rotate tr:first-child td:nth-child(7)::after {content: 'b';}
 .rotate tr:first-child td:nth-child(6)::after {content: 'c';}
@@ -114,22 +117,10 @@ $( @each | abcdefgh |  |
 .rotate tr:first-child td:nth-child(3)::after {content: 'f';}
 .rotate tr:first-child td:nth-child(2)::after {content: 'g';}
 .rotate tr:first-child td:nth-child(1)::after {content: 'h';}
-.norotate tr:nth-child(1) td:first-child::before {content: '8';}
-.norotate tr:nth-child(2) td:first-child::before {content: '7';}
-.norotate tr:nth-child(3) td:first-child::before {content: '6';}
-.norotate tr:nth-child(4) td:first-child::before {content: '5';}
-.norotate tr:nth-child(5) td:first-child::before {content: '4';}
-.norotate tr:nth-child(6) td:first-child::before {content: '3';}
-.norotate tr:nth-child(7) td:first-child::before {content: '2';}
-.norotate tr:nth-child(8) td:first-child::before {content: '1';}
-.rotate tr:nth-child(8) td:last-child::before {content: '8';}
-.rotate tr:nth-child(7) td:last-child::before {content: '7';}
-.rotate tr:nth-child(6) td:last-child::before {content: '6';}
-.rotate tr:nth-child(5) td:last-child::before {content: '5';}
-.rotate tr:nth-child(4) td:last-child::before {content: '4';}
-.rotate tr:nth-child(3) td:last-child::before {content: '3';}
-.rotate tr:nth-child(2) td:last-child::before {content: '2';}
-.rotate tr:nth-child(1) td:last-child::before {content: '1';}
+$(@each | 8,7,6,5,4,3,2,1 |
+.norotate tr:nth-child($i) td:first-child::before {content: '$v';}
+.rotate tr:nth-child($v) td:last-child::before {content: '$v';}
+)
 /**/
 
 /* Pieces */
