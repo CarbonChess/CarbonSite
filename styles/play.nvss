@@ -120,10 +120,10 @@ $( @each | abcdefgh |  |
 
 	&.white {background-position-y: 0px;}
 
-	$( @each | king, queen, bishop, knight, rook, pawn |
+	$( @each | king,queen,bishop,knight,rook,pawn | , | |
 		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
 	)
-	
+
 	.taken-pieces & {
 		margin: -8px;
 		transform: scale(0.75);
