@@ -1,3 +1,11 @@
+# General
 * text=auto
-*.svg binary
+
+# Project
 package-lock.json -diff
+
+# Assets
+*.svg -text
+
+# Linguist
+*.nvss linguist-language=Less

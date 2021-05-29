@@ -1,23 +1,41 @@
+@option MAX_MATH_RECURSION 20
+
+@var BR = 800px
+@var light-color = #dcdcdc
+@var dark-color = #afafaf
+
 /* Page */
 
-:root { /* Variables */
-	--light-color: #dcdcdc;
-	--dark-color: #afafaf;
+:root {
 	--bg-colour: #191919;
 	--cell-size: 80px;
-	--board-size: calc(var(--cell-size) * 8);
+	--board-size: calc(var(--cell-size) * 8 );
+	@ ..$(BR) {
+		--cell-size: 50px;
+	}
 }
 
 body {
 	max-width: 900px;
+
+	@ $(BR).. {
+		margin: 0 auto;
+		padding: 50px 0 0;
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 h1 {
 	text-align: center;
+
+	a {
+		color: inherit;
+	}
 }
 
-h1 a {
-	color: inherit;
+dd, dt @ ..$(BR) {
+    display: inline;
 }
 
 dt {
@@ -35,36 +53,61 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
+	@ ..$(BR) {
+		margin: auto;
+	}
+	@ $(BR).. {
+		grid-area: table;
+	}
 }
 
 td {
-	background: var(--light-color);
+	background: $(light-color);
 	width: var(--cell-size);
 	height: var(--cell-size);
 	text-align: center;
 	cursor: pointer;
+
+	&::after,
+	&::before {
+		position: absolute;
+		font-weight: bold;
+	}
+
+	&::after {
+		margin-top: calc(var(--cell-size) / 2 );
+		padding-top: 6px;
+		@ ..$(BR) {
+			margin-left: -12px;
+		}
+	}
+
+	&::before @ $(BR).. {
+		margin-top: -12px;
+		margin-left: -12px;
+	}
 }
 
 tr:nth-child(odd) td:nth-child(even),
 tr:nth-child(even) td:nth-child(odd) {
-  background: var(--dark-color);
+	background: $(dark-color);
 }
 
-.rotate table, .rotate td {
+.rotate table,
+.rotate td {
 	transform: rotate(180deg);
 }
 
 /* Chess board labels */
-tr td::after,
-tr td::before {
-	position: absolute;
-	font-weight: bold;
-}
-/* Columns */
-tr td::after {
-	margin-top: calc(var(--cell-size) / 2);
-	padding-top: 6px;
-}
+/* Code is currently broken as of 1.0.0-rc4
+$( @each | a,b,c,d,e,f,g,h |
+.norotate tr:last-child td:nth-child($i)::after {content: '$v';}
+.norotate tr:nth-child($i) td:first-child::before {content: '9-$i';}
+.rotate tr:first-child td:nth-child((9-$i))::after {content: '$v';}
+.rotate tr:nth-child((9-$i)) td:last-child::before {content: '9-$i';}
+)
+*/
+/*begin workaround*/
 .norotate tr:last-child td:nth-child(1)::after {content: 'a';}
 .norotate tr:last-child td:nth-child(2)::after {content: 'b';}
 .norotate tr:last-child td:nth-child(3)::after {content: 'c';}
@@ -81,11 +124,6 @@ tr td::after {
 .rotate tr:first-child td:nth-child(3)::after {content: 'f';}
 .rotate tr:first-child td:nth-child(2)::after {content: 'g';}
 .rotate tr:first-child td:nth-child(1)::after {content: 'h';}
-/* Rows */
-tr td::before {
-	margin-top: -12px;
-	margin-left: -12px;
-}
 .norotate tr:nth-child(1) td:first-child::before {content: '8';}
 .norotate tr:nth-child(2) td:first-child::before {content: '7';}
 .norotate tr:nth-child(3) td:first-child::before {content: '6';}
@@ -102,6 +140,7 @@ tr td::before {
 .rotate tr:nth-child(3) td:last-child::before {content: '3';}
 .rotate tr:nth-child(2) td:last-child::before {content: '2';}
 .rotate tr:nth-child(1) td:last-child::before {content: '1';}
+/*end workaround*/
 
 /* Pieces */
 
@@ -114,26 +153,29 @@ tr td::before {
 	transform: scale(1.6);
 	--piece-size: 48px;
 	--piece-sep: -45px;
+
+	&.black {background-position-y: var(--piece-size);}
+
+	&.white {background-position-y: 0px;}
+
+	$( @each | king,queen,bishop,knight,rook,pawn | , | |
+		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
+	)
+
+	.taken-pieces & {
+		margin: -8px;
+		transform: scale(0.75);
+		filter: contrast(0);
+		user-select: none;
+	}
+
+	@ ..$(BR) {
+		transform: none;
+	}
 }
+
 [data-piece="blank"] {
 	background: none;
-}
-
-[data-piece].black {background-position-y: var(--piece-size);}
-[data-piece].white {background-position-y: 0px;}
-
-[data-piece].king   {background-position-x: calc(0*var(--piece-sep));}
-[data-piece].queen  {background-position-x: calc(1*var(--piece-sep));}
-[data-piece].bishop {background-position-x: calc(2*var(--piece-sep));}
-[data-piece].knight {background-position-x: calc(3*var(--piece-sep));}
-[data-piece].rook   {background-position-x: calc(4*var(--piece-sep));}
-[data-piece].pawn   {background-position-x: calc(5*var(--piece-sep));}
-
-.taken-pieces [data-piece] {
-	margin: -8px;
-	transform: scale(0.75);
-	filter: contrast(0);
-	user-select: none;
 }
 
 .last-move {background-color: rgb(228, 230, 129) !important;}
@@ -158,26 +200,43 @@ select {
 	border: none;
 	font-family: 'Century Gothic';
 	cursor: pointer;
+
+	@ $(BR).. {
+		margin-bottom: 6px;
+	}
 }
 
-button:hover {
-	background: #4481dd;
-}
+button {
 
-button.enabled {background: rgb(48, 170, 48);}
-button.enabled::after {content: 'On'; color: white;}
-button.disabled {background: rgb(168, 62, 80);}
-button.disabled::after {content: 'Off'; color: white;}
+	&:hover {
+		background: #4481dd;
+	}
 
-button img {
-	filter: invert(1);
+	&.enabled {
+		background: rgb(48, 170, 48);
+
+		&::after {
+			content: 'On';
+			color: white;
+		}
+	}
+
+	&.disabled {
+		background: rgb(168, 62, 80);
+
+		&::after {
+			content: 'Off';
+			color: white;
+		}
+	}
+
+	img {
+		filter: invert(1);
+	}
 }
 
 select {
 	width: 90px;
-}
-
-select {
 	padding: 2px 4px;
 	font-size: 90%;
 }
@@ -191,6 +250,17 @@ select {
 
 #game-content {
 	margin-bottom: 1em;
+
+	@ $(BR).. {
+		display: grid;
+		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
+		grid-template-columns: 1fr var(--board-size) 1fr;
+		grid-template-rows: 48px auto 48px;
+
+		.rotate & {
+			grid-template-areas: ". black ." "icons table sidebar" ". white .";
+		}
+	}
 }
 
 #winner {
@@ -205,10 +275,19 @@ select {
 	text-align: center;
 }
 
-#icon-options button {
-	width: 50px;
-	height: 50px;
-	padding: 2px 4px;
+#icon-options {
+	button {
+		width: 50px;
+		height: 50px;
+		padding: 2px 4px;
+	}
+
+	@ $(BR).. {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		grid-area: icons;
+	}
 }
 
 button.enabled,
@@ -225,12 +304,13 @@ button.disabled {
 #promotion {
 	text-align: center;
 	letter-spacing: 20px;
+	grid-area: promotion;
 }
 
 #black-points,
 #white-points {
-  vertical-align: super;
-  font-size: large;
+	vertical-align: super;
+	font-size: large;
 }
 
 #taken-black-pieces,
@@ -240,117 +320,54 @@ button.disabled {
 	height: max-content;
 }
 
+#taken-black-pieces {grid-area: black;}
+#taken-white-pieces {grid-area: white;}
+
 #sidebar {
-	width: 150px;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
-}
-#sidebar strong {
-	margin-bottom: 0.5em;
-	display: block;
-	font-size: 120%;
-	text-align: center;
-	text-decoration: underline;
-}
+	grid-area: sidebar;
 
-#log {
-	overflow-wrap: break-word;
-	text-align: center;
-}
-
-#log .move {
-	padding: 1px 2px;
-}
-
-#game-data {
-	padding: 1em 1em 0;
-	height: min-content;
-}
-
-/* Responsive */
-
-@media (min-width: 801px) {
-
-	body {
-		margin: 0 auto;
-		padding: 50px 0 0;
-		display: flex;
-		flex-direction: column;
+	@ $(BR).. {
+		width: 150px;
 	}
 
-	table {
-		grid-area: table;
+	strong {
+		margin-bottom: 0.5em;
+		display: block;
+		text-align: center;
+		font-size: 120%;
+		text-decoration: underline;
 	}
 
-	button,
-	select {
-		margin-bottom: 6px;
-	}
-
-	#game-content {
-		display: grid;
-		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
-		grid-template-columns: 1fr var(--board-size) 1fr;
-		grid-template-rows: 48px auto 48px;
-	}
-
-	.rotate #game-content {
-		grid-template-areas: ". black ." "icons table sidebar" ". white .";
-	}
-
-	#taken-black-pieces {
-		grid-area: black;
-	}
-
-	#taken-white-pieces {
-		grid-area: white;
-	}
-
-	#promotion {
-		grid-area: promotion;
-	}
-
-	#icon-options {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		grid-area: icons;
-	}
-
-	#sidebar {
-		overflow: auto;
-		grid-area: sidebar;
-	}
-
-}
-
-@media (max-width: 800px) {
-
-	:root {
-		--cell-size: -50px;
-	}
-
-	table {
-		margin: auto;
-	}
-
-	[data-piece] {
-		transform: none;
+	#game-data {
+		padding: 1em 1em 0;
+		height: min-content;
 	}
 
 	#log {
-		width: 80%;
-		height: 100px;
-		padding: 0;
-	}
+		overflow-wrap: break-word;
+		text-align: center;
 
-	#log br {
-		display: none;
-	}
+		.move {
+			padding: 1px 2px;
+		}
 
+		@ $(BR).. {
+			overflow: auto;
+		}
+	}
 }
 
 /* Visibility */
 
-.hide {display: none;}
+.hide {
+	display: none;
+}
+.mobileonly @ $(BR).. {
+	display: none;
+}
+.desktoponly @ ..$(BR) {
+	display: none;
+}
