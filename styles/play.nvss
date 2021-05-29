@@ -1,14 +1,16 @@
-/* Page */
+@option MAX_MATH_RECURSION 20
 
+@var BR = 800px
 @var light-color = #dcdcdc
 @var dark-color = #afafaf
 
+/* Page */
+
 :root {
-	/* Variables */
 	--bg-colour: #191919;
 	--cell-size: 80px;
 	--board-size: calc(var(--cell-size) * 8 );
-	@ .. 800px {
+	@ ..$(BR) {
 		--cell-size: -50px;
 	}
 }
@@ -16,7 +18,7 @@
 body {
 	max-width: 900px;
 
-	@ 800px.. {
+	@ $(BR).. {
 		margin: 0 auto;
 		padding: 50px 0 0;
 		display: flex;
@@ -32,7 +34,7 @@ h1 {
 	}
 }
 
-dd, dt @ .. 800px {
+dd, dt @ ..$(BR) {
     display: inline;
 }
 
@@ -51,10 +53,10 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
-	@ .. 800px {
+	@ ..$(BR) {
 		margin: auto;
 	}
-	@ 800px.. {
+	@ $(BR).. {
 		grid-area: table;
 	}
 }
@@ -73,14 +75,14 @@ td {
 	}
 
 	&::after {
-		margin-top: calc(var(--cell-size) / 2 );
+		margin-top: calc(var(--cell-size) / -2 );
 		padding-top: 6px;
-		@ .. 800px {
+		@ ..$(BR) {
 			margin-left: -3em;
 		}
 	}
 
-	&::before @ 800px.. {
+	&::before @ $(BR).. {
 		margin-top: -12px;
 		margin-left: -12px;
 	}
@@ -167,7 +169,7 @@ $( @each | a,b,c,d,e,f,g,h |
 		user-select: none;
 	}
 
-	@ .. 800px {
+	@ ..$(BR) {
 		transform: none;
 	}
 }
@@ -199,7 +201,7 @@ select {
 	font-family: 'Century Gothic';
 	cursor: pointer;
 
-	@ 800px.. {
+	@ $(BR).. {
 		margin-bottom: 6px;
 	}
 }
@@ -249,14 +251,14 @@ select {
 #game-content {
 	margin-bottom: 1em;
 
-	@ 800px.. {
+	@ $(BR).. {
 		display: grid;
-		grid-template-areas: ". white ." "icons table log" ". black ." ". promotion .";
+		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
-			grid-template-areas: ". black ." "icons table log" ". white .";
+			grid-template-areas: ". black ." "icons table sidebar" ". white .";
 		}
 	}
 }
@@ -280,7 +282,7 @@ select {
 		padding: 2px 4px;
 	}
 
-	@ 800px.. {
+	@ $(BR).. {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -322,10 +324,14 @@ button.disabled {
 #taken-white-pieces {grid-area: white;}
 
 #sidebar {
-	width: 150px;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
+	grid-area: sidebar;
+
+	@ $(BR).. {
+		width: 150px;
+	}
 
 	strong {
 		margin-bottom: 0.5em;
@@ -348,9 +354,8 @@ button.disabled {
 			padding: 1px 2px;
 		}
 
-		@ 800px.. {
+		@ $(BR).. {
 			overflow: auto;
-			grid-area: log;
 		}
 	}
 }
@@ -360,9 +365,9 @@ button.disabled {
 .hide {
 	display: none;
 }
-.mobileonly @ 800px.. {
+.mobileonly @ $(BR).. {
 	display: none;
 }
-.desktoponly @ .. 800px {
+.desktoponly @ ..$(BR) {
 	display: none;
 }
