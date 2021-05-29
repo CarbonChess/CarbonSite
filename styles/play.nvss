@@ -156,9 +156,13 @@ $( @each | a,b,c,d,e,f,g,h |
 
 	&.white {background-position-y: 0px;}
 
-	$( @each | king,queen,bishop,knight,rook,pawn | , | |
-		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
-	)
+	@var piece pos = &.$[1] {background-position-x: calc($[2]*var(--piece-sep));}
+	$(piece pos | king | 1)
+	$(piece pos | queen | 2)
+	$(piece pos | bishop | 3)
+	$(piece pos | knight | 4)
+	$(piece pos | rook | 5)
+	$(piece pos | pawn | 6)
 
 	.taken-pieces & {
 		margin: -8px;
@@ -251,13 +255,13 @@ select {
 
 	@ 800px.. {
 		display: grid;
-		grid-template-areas: ". white .""icons table log"". black ."". promotion .";
+		grid-template-areas: ". white ." "icons table log" ". black ." ". promotion .";
 		grid-template-columns: 1fr var(--board-size) 1fr;
 		grid-template-rows: 48px auto 48px;
-	}
 
-	.rotate & @ 800px.. {
-		grid-template-areas: ". black .""icons table log"". white .";
+		.rotate & {
+			grid-template-areas: ". black ." "icons table log" ". white .";
+		}
 	}
 }
 
