@@ -4,9 +4,11 @@ const pieceInCell = cell => getClasses(getPieceInCell(cell)).length > 0;
 const getPieceColour = cell => getPieceClasses(cell)[0];
 
 function selectPiece(cell) {
-	selectedCell = cell;
-	const $cell = document.getElementById(selectedCell);
-	$cell ?.classList.add('selected');
+	window.selectedCell = cell;
+	$.id(cell)?.classList.add('selected');
+	if (hasRules) {
+		findAllMoves(cell).forEach(cell => getCell(cell).classList.add('valid'));
+	}
 	console.log('S', selectedCell);
 }
 
@@ -60,8 +62,8 @@ function setPromotion(elem) {
 }
 
 function updateKingCells() {
-	kingCell.b = $('.black.king') ?.parentNode.id;
-	kingCell.w = $('.white.king') ?.parentNode.id;
+	kingCell.b = $('.black.king')?.parentNode.id;
+	kingCell.w = $('.white.king')?.parentNode.id;
 }
 
 function getPieceID(piece) {

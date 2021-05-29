@@ -1,20 +1,23 @@
 {
-	"name": "@carbonchess/website",
-	"version": "1.0.0-Beta",
-	"description": "Play CarbonChess online",
+	"name": "carbonchess",
 	"private": true,
-	"repository": "git+https://github.com/CarbonChess/Website.git",
-	"bugs": "https://github.com/CarbonChess/Website/issues",
+	"version": "1.0.0",
+	"description": "Play CarbonChess online",
+	"repository": "git+https://github.com/CarbonChess/CarbonSite.git",
+	"bugs": "https://github.com/CarbonChess/CarbonSite/issues",
 	"homepage": "https://carbonchess.com",
 	"license": "ISC",
 	"scripts": {
-		"build": "eleventy"
+		"build": "npm run deps && eleventy",
+		"deps": "npx webpack --entry ./node_modules/fenfurnace/browser.js -o ./scripts/ext/fenfurnace/"
 	},
 	"dependencies": {
-		"faunadb": "^4.2.0"
+		"faunadb": "^4.3.0",
+		"fenfurnace": ">=0.1.3"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^0.12.1",
-		"novasheets": "^1.0.0-rc1"
+		"webpack": "^5.37.1",
+		"webpack-cli": "^4.7.0"
 	}
 }

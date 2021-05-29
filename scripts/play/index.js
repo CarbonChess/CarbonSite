@@ -1,3 +1,5 @@
+window.global = {};
+
 function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
@@ -24,13 +26,11 @@ function run() {
 	window.currentTurn = 'white';
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
-	window.kingCell = { w: 'E1', b: 'E8' };
-	window.castling = { w: { k: true, q: true }, b: { k: true, q: true } };
-	window.enpassantCell = null;
-	window.enpassantTaken = false;
 	window.points = { w: 0, b: 0 };
 	window.movesList = [];
 	window.currentBoard = [];
+	window.enpassantCell = null
+	window.enpassantTaken = false;
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
@@ -39,21 +39,27 @@ function run() {
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
 
-	alignBoard();
-
-	if (window.gameId) {
-		$('#gameid').innerText = 'Game ID: ' + window.gameId;
-	}
+	const gameData = $('#game-data dl');
+	gameData.innerHTML += `<dt>Opponent</dt><dd>${gameOptions.bot ? 'Bot' : gameOptions.multiplayer ? 'Online' : 'Local'}</dd>`;
+	if (window.gameId) gameData.innerHTML += `<dt>Game ID</dt><dd>${window.gameId}</dd>`;
+	if (gameOptions.multiplayer) gameData.innerHTML += `<dt>Multiplayer</dt><dd>Yes</dd>`;
 	if (gameOptions.static) {
 		autoPing = false;
-		$('#gameid').innerText = 'Loaded move from game ID ' + window.gameId;
+		gameData.innerHTML += `<dt>Replay</dt><dd>Yes</dd>`;
 	}
 	if (gameOptions.spectating) {
 		ingame = false;
-		$('#gameid').innerText = 'Spectating game ID ' + window.gameId;
+		gameData.innerHTML += `<dt>Spectating</dt><dd>Yes</dd>`;
 	}
 
-	let urlFen = getFenFromURL();
-	if (urlFen) createBoardFromFen(urlFen);
-	else createBoard(8, true);
+	Object.assign(window, { ...fenFuncs, ...global });
+	setupBoard();
+	newBoard(8, true);
+	alignBoard();
+
+}
+
+function reset() {
+	run();
+	if (gameOptions.multiplayer) sendDB(gameId, defaultFen);
 }
