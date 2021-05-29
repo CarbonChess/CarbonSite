@@ -5,7 +5,7 @@
 package-lock.json -diff
 
 # Assets
-*.svg binary
+*.svg -text
 
 # Linguist
 *.nvss linguist-language=Less
