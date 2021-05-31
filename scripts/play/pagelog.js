@@ -1,12 +1,12 @@
-function log({ startCell, endCell, classes, count, taken, promoted, castled, check }) {
+function log({ startCell, endCell, startClasses, endClasses, count, taken, promoted, castled, check }) {
 
 	window.lastMove = { start: startCell, end: endCell };
-	const [colour, piece] = classes;
 
-	if (taken) points[colour[0]] += getPointsEquivalent(piece);
-	if (promoted) points[colour[0]] += getPointsEquivalent(piece);
+	if (taken) points[colour[0]] += getPointsEquivalent(endClasses[1]);
+	if (promoted) points[colour[0]] += getPointsEquivalent(getPieceClasses(endCell)[1]);
 	logPoints();
 
+	const [colour, piece] = startClasses;
 	let code = ' ';
 	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2) + '. ';
 	if (castled) {

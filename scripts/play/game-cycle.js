@@ -30,7 +30,6 @@ function hasClicked(cell) {
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
-		//  const colour = global.currentTurn === 'w' ? 'white' : 'black';
 		const [colour, piece] = startClasses;
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
@@ -72,7 +71,7 @@ function hasClicked(cell) {
 		// log the move
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
-		log({ startCell, endCell, classes: startClasses, count: totalMoves, taken, promoted: canPromote, /*castled,*/ check: isCheck(global.currentTurn) });
+		log({ startCell, endCell, startClasses, endClasses, count: totalMoves, taken, promoted: canPromote, /*castled,*/ check: isCheck(global.currentTurn) });
 
 		// hide promotion box
 		window.promotionPiece = 'queen';

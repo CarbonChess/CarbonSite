@@ -1,11 +1,12 @@
 window.global = {};
+window.firstLoad = true;
 
 function run() {
 	$$('.resettable').forEach(elem => elem.innerHTML = '');
 
 	const params = (new URL(location.href)).searchParams;
 	const booleanParam = opt => params.get(opt) === 'on';
-	window.gameOptions = {
+	if (window.firstLoad) window.gameOptions = {
 		bot: booleanParam('bot'),
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
@@ -16,6 +17,7 @@ function run() {
 		static: booleanParam('static'),
 		spectating: booleanParam('spectating'),
 	}
+	window.firstLoad = false;
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
@@ -40,19 +42,20 @@ function run() {
 	window.gameId = gameOptions.gamecode;
 
 	const gameData = $('#game-data dl');
+	gameData.innerHTML = '';
 	gameData.innerHTML += `<dt>Opponent</dt><dd>${gameOptions.bot ? 'Bot' : gameOptions.multiplayer ? 'Online' : 'Local'}</dd>`;
 	if (window.gameId) gameData.innerHTML += `<dt>Game ID</dt><dd>${window.gameId}</dd>`;
 	if (gameOptions.multiplayer) gameData.innerHTML += `<dt>Multiplayer</dt><dd>Yes</dd>`;
 	if (gameOptions.static) {
-		autoPing = false;
+		window.autoPing = false;
 		gameData.innerHTML += `<dt>Replay</dt><dd>Yes</dd>`;
 	}
 	if (gameOptions.spectating) {
-		ingame = false;
+		window.ingame = false;
 		gameData.innerHTML += `<dt>Spectating</dt><dd>Yes</dd>`;
 	}
 
-	Object.assign(window, { ...fenFuncs, ...global });
+	Object.assign(window, { ...fenFuncs });
 	setupBoard();
 	newBoard(8, true);
 	alignBoard();
@@ -61,5 +64,5 @@ function run() {
 
 function reset() {
 	run();
-	if (gameOptions.multiplayer) sendDB(gameId, defaultFen);
+	if (gameOptions.multiplayer) sendDB(window.gameId, defaultFen);
 }

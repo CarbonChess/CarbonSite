@@ -77,7 +77,7 @@ function forceBotMove() {
 }
 
 setInterval(function () {
-	if (window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
+	if (window.gameOptions && window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
 		forceBotMove();
 	}
 }, 650);
