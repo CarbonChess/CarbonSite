@@ -93,10 +93,10 @@ td.valid {background-color: rgb(155, 207, 144) !important;}
 td.check {background-color: rgb(231, 70, 70) !important;}
 td.selected {background-color: rgb(124, 192, 214) !important;}
 
-tr:nth-child(odd) td:nth-child(even),
-tr:nth-child(even) td:nth-child(odd) {
+:is(tr:nth-child(odd) td:nth-child(even),
+tr:nth-child(even) td:nth-child(odd)) {
 	background: $(dark-color);
-	&.valid {background-color: rgb(109, 170, 97) !important;}
+	&.valid {background-color: rgb(129, 187, 117) !important;}
 }
 
 .rotate table,
@@ -312,6 +312,7 @@ button.disabled {
 	}
 
 	#log {
+		max-height: 494px;
 		overflow-wrap: break-word;
 		text-align: center;
 
