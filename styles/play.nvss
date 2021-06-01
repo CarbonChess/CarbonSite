@@ -105,7 +105,7 @@ tr:nth-child(even) td:nth-child(odd)) {
 }
 
 /* Chess board labels */
-$( @each | a,b,c,d,e,f,g,h |
+$( @each | a,b,c,d,e,f,g,h | , | |
 .norotate tr:last-child td:nth-child($i)::after {content: '$v';}
 .rotate tr:first-child td:nth-child($i)::after {content: '$v';}
 .norotate tr:nth-child($i) td:first-child::before {content: '9-$i';}

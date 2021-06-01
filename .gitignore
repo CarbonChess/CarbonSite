@@ -3,3 +3,4 @@ _site/
 ext/
 *.zip
 *.css
+package-lock.json
