@@ -5,34 +5,42 @@ layout: menu.njk
 
 <form action="/play" method="GET">
 
-	<input readonly type="checkbox" checked name="bot" class="hide">
-	<input readonly type="text" name="botColour" id="botColour" class="hide" onload="this.value=Math.random()<0.5?'white':'black'">
+	<label>
+		<span style="display:none;">Bot enabled</span>
+		<input readonly type="checkbox" checked name="bot" class="hide">
+	</label>
+	<label>
+		<span style="display:none;">Bot colour</span>
+		<input readonly type="text" name="botColour" id="botColour" class="hide" onload="this.value=Math.random()<0.5?'white':'black'">
+	</label>
 
 	<h2>Bot intelligence</h2>
 	<div id="bot-intelligence" class="cards">
 		<a class="card small" data-level="1">
-			<img src="/images/icons/none.svg" class="card-image" height="100px">
+			<img src="/images/icons/none.svg" height="100px" alt="None" class="card-image">
 			<span class="card-heading">None</span>
 			<span class="card-description">Bot plays random moves</span>
 		</a>
 		<a class="card small hide" data-level="2">
-			<img src="/images/icons/march.svg" class="card-image" height="100px">
+			<img src="/images/icons/march.svg" height="100px" alt="March" class="card-image">
 			<span class="card-heading">March</span>
 			<span class="card-description">Bot moves pieces forward</span>
 		</a>
 		<a class="card small hide" data-level="3">
-			<img src="/images/icons/charge.svg" class="card-image" height="100px">
+			<img src="/images/icons/charge.svg" height="100px" alt="Charge" class="card-image">
 			<span class="card-heading">Charge</span>
 			<span class="card-description">Bot prioritises taking pieces</span>
 		</a>
 		<a class="card small hide" data-level="4">
-			<img src="/images/icons/attack.svg" class="card-image" height="100px">
+			<img src="/images/icons/attack.svg" height="100px" alt="Attack" class="card-image">
 			<span class="card-heading">Attack</span>
 			<span class="card-description">Bot takes pieces intelligently</span>
 		</a>
 		<div style="width: 100%;">
-			<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="1" max="4"
-				oninput="updateBotIntelligence();">
+			<label>
+				<span style="display:none;">Bot intelligence</span>
+				<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="1" max="4" oninput="updateBotIntelligence();">
+			</label>
 			<div id="bot-intelligence-dots">
 				<span id="dot-highlighted">•</span> • • •
 			</div>
@@ -53,7 +61,7 @@ layout: menu.njk
 	</div>
 
 	<div id="nav-buttons">
-		<a href="/" id="back" class="card wide">
+		<a href="/" id="back" class="card wide" title="Return to menu">
 			Back
 		</a>
 		<button type="submit" id="play" class="card wide">

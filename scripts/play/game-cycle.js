@@ -58,8 +58,7 @@ function hasClicked(cell) {
 		$endCell.classList.add('last-move');
 
 		// check if in check
-		if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
-		if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+		checkHiglight();
 
 		// display taken piece on side
 		let taken = false;
@@ -123,12 +122,18 @@ function hasClicked(cell) {
 	}
 }
 
+function checkHighlight() {
+	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
+	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+}
+
 function undoLastMove() {
 	if (totalMoves === 0 || movesList.length === 0) return;
 	createBoardFromFen(undoMove());
 	ingame = true;
 	window.totalMoves--;
 	logPoints();
+	checkHighlight();
 	if (autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
 		if (elem.parentNode) elem.parentNode.innerHTML = '';

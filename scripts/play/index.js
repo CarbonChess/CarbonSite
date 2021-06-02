@@ -43,10 +43,15 @@ function run() {
 
 	const gameData = $('#game-data dl');
 	gameData.innerHTML = '';
-	gameData.innerHTML += `<dt>Opponent</dt><dd>${gameOptions.bot ? 'Bot' : gameOptions.multiplayer ? 'Online' : 'Local'}</dd>`;
+	let opponent;
+	if (gameOptions.bot) opponent = 'Bot';
+	else if (gameOptions.multiplayer && !gameOptions.static) opponent = 'Online';
+	else opponent = 'Local';
+	gameData.innerHTML += `<dt>Opponent</dt><dd>${opponent}</dd>`;
 	if (window.gameId) gameData.innerHTML += `<dt>Game ID</dt><dd>${window.gameId}</dd>`;
 	if (gameOptions.multiplayer) gameData.innerHTML += `<dt>Multiplayer</dt><dd>Yes</dd>`;
 	if (gameOptions.static) {
+		readDB();
 		window.autoPing = false;
 		gameData.innerHTML += `<dt>Replay</dt><dd>Yes</dd>`;
 	}
