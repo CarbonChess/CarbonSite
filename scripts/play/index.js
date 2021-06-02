@@ -25,11 +25,9 @@ function run() {
 	window.totalMoves = 0;
 	window.lastMove = { start: null, end: null };
 	window.selectedCell = null;
-	window.currentTurn = 'white';
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
 	window.points = { w: 0, b: 0 };
-	window.movesList = [];
 	window.currentBoard = [];
 	window.enpassantCell = null
 	window.enpassantTaken = false;
@@ -42,22 +40,20 @@ function run() {
 	window.gameId = gameOptions.gamecode;
 
 	const gameData = $('#game-data dl');
+	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;
 	gameData.innerHTML = '';
-	let opponent;
-	if (gameOptions.bot) opponent = 'Bot';
-	else if (gameOptions.multiplayer && !gameOptions.static) opponent = 'Online';
-	else opponent = 'Local';
-	gameData.innerHTML += `<dt>Opponent</dt><dd>${opponent}</dd>`;
-	if (window.gameId) gameData.innerHTML += `<dt>Game ID</dt><dd>${window.gameId}</dd>`;
-	if (gameOptions.multiplayer) gameData.innerHTML += `<dt>Multiplayer</dt><dd>Yes</dd>`;
+	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
+	if (gameOptions.bot) addGameData('Bot type', `'Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
+	if (gameOptions.multiplayer) addGameData('Multiplayer', 'Yes');
+	if (window.gameId) addGameData('Game ID', window.gameId);
 	if (gameOptions.static) {
 		readDB();
 		window.autoPing = false;
-		gameData.innerHTML += `<dt>Replay</dt><dd>Yes</dd>`;
+		gameData.innerHTML += addGameData('Replay', 'Yes');
 	}
 	if (gameOptions.spectating) {
 		window.ingame = false;
-		gameData.innerHTML += `<dt>Spectating</dt><dd>Yes</dd>`;
+		gameData.innerHTML += addGameData('Spectating', 'Yes');
 	}
 
 	Object.assign(window, { ...fenFuncs });

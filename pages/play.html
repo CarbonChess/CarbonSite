@@ -36,13 +36,13 @@ permalink: /play/
 		<table></table>
 
 		<div id="icon-options">
-			<button id="flip-board" onclick="flipBoard(true)">
-				<img class="hd" src="/images/icons/flip.png">
+			<button id="flip-board" onclick="flipBoard(true)" title="Flip board">
+				<img src="/images/icons/flip.png" alt="Flip">
 			</button>
-			<button id="undo" onclick="undoLastMove()">
-				<img class="hd" src="/images/icons/undo.png">
+			<button id="undo" onclick="undoLastMove()" title="Undo last move">
+				<img src="/images/icons/undo.png" alt="Undo">
 			</button>
-			<button id="reset" onclick="reset()">
+			<button id="reset" onclick="reset()" title="Reset board">
 				Reset
 			</button>
 			<button onclick="shareGame()" title="Copy to clipboard">
@@ -61,10 +61,10 @@ permalink: /play/
 		</div>
 
 		<div id="promotion" class="hide">
-			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white bishop">
-			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white rook">
-			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white knight">
-			<img src="/images/transparent.gif" data-piece onclick="setPromotion(this)" class="white queen">
+			<img src="/images/transparent.gif" alt="Bishop" data-piece onclick="setPromotion(this)" class="white bishop">
+			<img src="/images/transparent.gif" alt="Rook" data-piece onclick="setPromotion(this)" class="white rook">
+			<img src="/images/transparent.gif" alt="Knight" data-piece onclick="setPromotion(this)" class="white knight">
+			<img src="/images/transparent.gif" alt="Queen" data-piece onclick="setPromotion(this)" class="white queen">
 		</div>
 
 		<aside id="sidebar">

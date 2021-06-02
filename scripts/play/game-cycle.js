@@ -58,7 +58,7 @@ function hasClicked(cell) {
 		$endCell.classList.add('last-move');
 
 		// check if in check
-		checkHiglight();
+		checkHighlight();
 
 		// display taken piece on side
 		let taken = false;
@@ -127,20 +127,22 @@ function checkHighlight() {
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
 }
 
+
 function undoLastMove() {
-	if (totalMoves === 0 || movesList.length === 0) return;
+	if (window.totalMoves === 0 || global.moveList.length === 0) return;
 	createBoardFromFen(undoMove());
-	ingame = true;
+	window.ingame = true;
 	window.totalMoves--;
 	logPoints();
 	checkHighlight();
-	if (autoFlip) alignBoard();
+	if (window.autoFlip) alignBoard();
 	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
 		if (elem.parentNode) elem.parentNode.innerHTML = '';
 	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
-	if (autoPing) sendDB(gameId, createFen());
+	if (window.autoPing) sendDB(gameId, createFen());
+	if (gameOptions.bot && global.currentTurn === gameOptions.botColour[0]) undoLastMove();
 }
 
 function threefoldRepetition() {

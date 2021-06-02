@@ -51,7 +51,6 @@ function newBoard(size, initial) {
 		}
 
 	}
-	if (initial) movesList.push(createFen());
 	emptyCells.forEach(cell => resetCell(cell));
 }
 
@@ -109,7 +108,7 @@ function createBoardFromFen(fenString) {
 
 const getCell = cell => $.id(cell);
 const clearCell = cell => getCell(cell).innerHTML = '';
-const resetCell = cell => getCell(cell).innerHTML = '<img src="/images/transparent.gif" data-piece="blank">';
+const resetCell = cell => getCell(cell).innerHTML = `<img src="/images/transparent.gif" alt="${cell} empty" data-piece="blank">`;
 
 // Options functions //
 
