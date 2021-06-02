@@ -3,7 +3,7 @@ function botMove() {
 
 	var stockfishes = [];
 
-	stockfishes[id] = stockfish();
+	stockfishes[id] = STOCKFISH();
 
 	stockfishes[id].onmessage = function (message) {
 		console.log("received: " + message);
