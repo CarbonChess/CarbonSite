@@ -43,7 +43,7 @@ function run() {
 	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;
 	gameData.innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
-	if (gameOptions.bot) addGameData('Bot type', `'Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
+	if (gameOptions.bot) addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
 	if (gameOptions.multiplayer) addGameData('Multiplayer', 'Yes');
 	if (window.gameId) addGameData('Game ID', window.gameId);
 	if (gameOptions.static) {

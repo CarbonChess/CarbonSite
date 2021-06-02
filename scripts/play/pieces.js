@@ -20,7 +20,7 @@ function createPiece(name, colour, cell) {
 	piece.classList.add(colour);
 	piece.classList.add(name);
 	if (cell) {
-		piece.alt = [cell, colour, name].join(' ');
+		piece.alt = cell;
 		piece.id = 'piece' + cell;
 		piece.setAttribute('draggable', true);
 	}

@@ -142,6 +142,12 @@ $( @each | a,b,c,d,e,f,g,h | , | |
 
 	@ ..$(BR) {
 		transform: none;
+
+		.norotate .black,
+		.rotate .white {
+			transform: scale(1.6) rotate(180deg);
+			margin: 5px 5px 0 0;
+		}
 	}
 }
 
@@ -220,7 +226,7 @@ select {
 	@ $(BR).. {
 		display: grid;
 		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
-		grid-template-columns: 1fr var(--board-size) 1fr;
+		grid-template-columns: 1fr var(--board-size) 2fr;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
@@ -296,10 +302,6 @@ button.disabled {
 	background-color: #dcdcdc;
 	color: black;
 	grid-area: sidebar;
-
-	@ $(BR).. {
-		width: 150px;
-	}
 
 	strong {
 		margin-bottom: 0.5em;

@@ -108,7 +108,7 @@ function createBoardFromFen(fenString) {
 
 const getCell = cell => $.id(cell);
 const clearCell = cell => getCell(cell).innerHTML = '';
-const resetCell = cell => getCell(cell).innerHTML = `<img src="/images/transparent.gif" alt="${cell} empty" data-piece="blank">`;
+const resetCell = cell => getCell(cell).innerHTML = `<img src="/images/transparent.gif" alt="${cell}" data-piece="blank">`;
 
 // Options functions //
 
