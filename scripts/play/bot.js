@@ -1,6 +1,6 @@
-function botMove(botColour) {
+function botMove() {
 	var id = 0;
-	var stockfish = require("stockfish");
+
 	var stockfishes = [];
 
 	stockfishes[id] = stockfish();
