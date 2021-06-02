@@ -2,7 +2,7 @@ function hasClicked(cell) {
 	if (
 		!window.ingame
 		|| gameOptions.spectating
-		|| gameOptions.multiplayer && window.currentTurn !== window.playerTurn
+		|| gameOptions.multiplayer && global.currentTurn !== window.playerTurn[0]
 	) return;
 
 	const $cell = $.id('piece' + cell);
@@ -46,13 +46,18 @@ function hasClicked(cell) {
 
 		// move the piece
 		const moveOutput = validation.makeMove(startCell, endCell);
-		if (!moveOutput) {
-			console.log('I', startCell, '->', endCell);
-			if (getPieceClasses(endCell)[0] === colour) selectPiece(endCell);
-			else selectPiece(startCell);
-			return;
+		if (window.hasRules) {
+			if (!moveOutput) {
+				console.log('I', startCell, '->', endCell);
+				if (getPieceClasses(endCell)[0] === colour) selectPiece(endCell);
+				else selectPiece(startCell);
+				return;
+			}
+			createBoardFromFen(moveOutput);
 		}
-		createBoardFromFen(moveOutput);
+		else {
+			movePiece(startCell, endCell);
+		}
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$startCell.classList.add('last-move');
 		$endCell.classList.add('last-move');
@@ -90,7 +95,7 @@ function hasClicked(cell) {
 		}
 
 		// send to server
-		if (autoPing) sendDB(gameId, createFen());
+		if (window.autoPing) sendDB(window.gameId, createFen());
 
 	}
 
@@ -141,7 +146,7 @@ function undoLastMove() {
 	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
-	if (window.autoPing) sendDB(gameId, createFen());
+	if (window.autoPing) sendDB(window.gameId, createFen());
 	if (gameOptions.bot && global.currentTurn === gameOptions.botColour[0]) undoLastMove();
 }
 

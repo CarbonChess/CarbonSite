@@ -43,7 +43,6 @@ function swapPiece(startCell, endCell) {
 		addPiece(endClasses[1], endClasses[0], startCell);
 		if (!startClasses.length) resetCell(endCell);
 	}
-	updateKingCells();
 }
 
 function movePiece(startCell, endCell) {
@@ -51,7 +50,6 @@ function movePiece(startCell, endCell) {
 	const startClasses = getPieceClasses(startCell);
 	addPiece(startClasses[1], startClasses[0], endCell);
 	resetCell(startCell);
-	updateKingCells();
 }
 
 function setPromotion(elem) {
@@ -60,11 +58,6 @@ function setPromotion(elem) {
 	$$('#promotion img').forEach(elem => elem.classList.remove('selected'));
 	elem.classList.add('selected');
 	window.promotionPiece = piece;
-}
-
-function updateKingCells() {
-	kingCell.b = $('.black.king')?.parentNode.id;
-	kingCell.w = $('.white.king')?.parentNode.id;
 }
 
 function getPieceID(piece) {

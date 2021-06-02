@@ -89,10 +89,10 @@ td {
 	}
 }
 
-td.last-move {background-color: rgb(228, 230, 129) !important;}
-td.valid {background-color: rgb(155, 207, 144) !important;}
-td.check {background-color: rgb(231, 70, 70) !important;}
-td.selected {background-color: rgb(124, 192, 214) !important;}
+.last-move {background-color: rgb(228, 230, 129) !important;}
+.valid {background-color: rgb(155, 207, 144) !important;}
+.check {background-color: rgb(231, 70, 70) !important;}
+.selected {background-color: rgb(124, 192, 214) !important;}
 
 :is(tr:nth-child(odd) td:nth-child(even),
 tr:nth-child(even) td:nth-child(odd)) {
@@ -290,6 +290,8 @@ button.disabled {
 #taken-white-pieces {grid-area: white;}
 
 #sidebar {
+	max-height: var(--board-size);
+	overflow-y: scroll;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
@@ -313,8 +315,6 @@ button.disabled {
 	}
 
 	#log {
-		max-height: 494px;
-		overflow-wrap: break-word;
 		text-align: center;
 
 		.move {

@@ -9,15 +9,13 @@ function log({ startCell, endCell, startClasses, endClasses, count, taken, promo
 
 	let code = ' ';
 	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2) + '. ';
-	if (castled) {
-		code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
-	}
+	if (castled) code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
 	else {
 		code += getPieceID(piece);
 		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();
 		if (taken || enpassantTaken) code += 'x';
 		code += endCell.toLowerCase();
-		if (promoted) code += '=' + getPieceID(promotionPiece);
+		if (promoted) code += '=' + getPieceID(window.promotionPiece);
 	}
 	if (check) code += '+';
 	$('#log').innerHTML += `<span class="move">` + code + '</span>';
@@ -31,7 +29,7 @@ function logPoints() {
 
 function logTakenPiece(colour, piece) {
 	const takenPiece = createPiece(piece, colour);
-	takenPiece.setAttribute('data-move', totalMoves);
+	takenPiece.setAttribute('data-move', window.totalMoves);
 	$.id(colour + '-pieces').appendChild(takenPiece);
 	logPoints();
 }
