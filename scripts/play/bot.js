@@ -13,7 +13,7 @@ function botMove() {
 	stockfishes[id].postMessage('setoption name Skill Level value 20');
 	stockfishes[id].postMessage('ucinewgame');
 	stockfishes[id].postMessage('isready');
-	stockfishes[id].postMessage('position fen' + global.moveList.slice(-1)[0]);
+	stockfishes[id].postMessage('position fen ' + global.moveList.slice(-1)[0]);
 	stockfishes[id].postMessage('go');
 	hasClicked(startCell);
 	hasClicked(endCell);
