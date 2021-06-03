@@ -57,8 +57,8 @@ function sendChatMessage() {
 async function init() {
     if (!gameOptions.multiplayer) return;
     const data = await getGameData();
-    window.playerCount = +data.players;
-    window.playerTurn = [, 'white', 'black'][playerCount];
+    window.playerCount = (+data.players || 0) + 1;
+    window.playerTurn = playerCount === 1 ? 'white' : 'black';
     if (playerCount > 2) {
         gameOptions.spectating = true;
         window.ingame = false;
