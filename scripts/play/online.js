@@ -50,7 +50,7 @@ async function sendDB() {
 
 function sendChatMessage() {
     let message = $('#chat-message').value;
-    if (!message) break;
+    if (!message) return;
     window.chat.push(+new Date() + SEP.INFO + window.session + SEP.INFO + window.username + SEP.INFO + message);
 }
 
