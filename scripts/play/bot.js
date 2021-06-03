@@ -25,4 +25,4 @@ setInterval(function () {
 	if (window.gameOptions && window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
 		botMove();
 	}
-}, 500);
+}, 100);
