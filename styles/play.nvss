@@ -36,6 +36,7 @@ h1 {
 
 dd, dt @ ..$(BR) {
     display: inline;
+	margin: 0 1em;
 }
 
 dt {
@@ -131,7 +132,7 @@ $( @each | a,b,c,d,e,f,g,h | , | |
 
 	$( @each | king,queen,bishop,knight,rook,pawn | , | |
 		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
-	)
+	 )
 
 	.taken-pieces & {
 		margin: -8px;
@@ -143,9 +144,9 @@ $( @each | a,b,c,d,e,f,g,h | , | |
 	@ ..$(BR) {
 		transform: none;
 
-		.norotate .black,
-		.rotate .white {
-			transform: scale(1.6) rotate(180deg);
+		[noflip].norotate &.black,
+		[noflip].rotate &.white {
+			transform: rotate(180deg);
 			margin: 5px 5px 0 0;
 		}
 	}

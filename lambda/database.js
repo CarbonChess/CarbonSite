@@ -54,8 +54,8 @@ async function readData({ gameId }) {
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData({ gameId, fen, moves, ingame }) {
-	const data = { id: gameId, fen, moves, ingame };
+async function sendData({ gameId, fen, moves, ingame, players }) {
+	const data = { id: gameId, fen, moves, ingame, players };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);

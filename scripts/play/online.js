@@ -14,10 +14,11 @@ async function getGameData() {
 }
 
 async function readDB() {
-    const { fen = createFen(), moves, ingame } = await getGameData();
+    const { fen = createFen(), moves, ingame, players } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
+    window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
         window.ingame = false;
@@ -35,6 +36,7 @@ async function sendDB() {
         `gameId=${encodeURIComponent(window.gameId)}`,
         `fen=${encodeURIComponent(fen)}`,
         `moves=${global.logList.join(',')}`,
+        `players=${window.playerCount}`,
         `ingame=${+!window.sessionLost}`,
     ];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
@@ -44,11 +46,10 @@ async function sendDB() {
 async function init() {
     if (!gameOptions.multiplayer) return;
     const data = await getGameData();
-    // Assign colour to player: white if P1, black if P2
-    const gameExists = Object.keys(data).length > 0;
-    window.playerTurn = gameExists ? 'black' : 'white';
+    window.playerCount = +data.players;
+    window.playerTurn = [, 'white', 'black'][playerCount];
     if (window.playerTurn === 'black') flipBoard();
-    if (!gameExists) sendDB();
+    if ([1, 2].includes(playerCount)) sendDB();
 }
 
 document.addEventListener('DOMContentLoaded', init);

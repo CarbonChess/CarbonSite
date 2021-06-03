@@ -53,6 +53,7 @@ function run() {
 		window.ingame = false;
 		addGameData('Spectating', 'Yes');
 	}
+	if (!gameOptions.autoFlip) $('body').dataset.noflip = true;
 
 	Object.assign(window, { ...fenFuncs });
 	setupBoard();
