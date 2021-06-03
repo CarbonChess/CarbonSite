@@ -54,8 +54,8 @@ async function readData({ gameId }) {
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData({ gameId, fen, moves, ingame, players }) {
-	const data = { id: gameId, fen, moves, ingame, players };
+async function sendData({ gameId, fen, moves, ingame, players, chat }) {
+	const data = { id: gameId, fen, moves, ingame, players, chat };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
@@ -75,7 +75,7 @@ async function sendData({ gameId, fen, moves, ingame, players }) {
 	else {
 		type = 'update';
 		await client.query(
-			Q.Update(docs[0].ref, { data })
+			Q.Update(docs[0].ref, { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	return { type, success, data };
@@ -90,7 +90,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => await 1.00,
+		version: async () => await 1.01,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {

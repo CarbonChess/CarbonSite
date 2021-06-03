@@ -75,6 +75,11 @@ permalink: /play/
 			<strong>Moves</strong>
 			<div id="log" class="resettable"></div>
 		</aside>
+
+		<form action="javascript:void(0)">
+			<input type="text" id="chat-message">
+			<button onclick="window.chat.push($('#chat-message').value);">Send</button>
+		</form>
 	</div>
 
 	<footer>

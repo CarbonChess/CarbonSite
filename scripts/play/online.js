@@ -1,3 +1,4 @@
+'use strict';
 const apiUrl = '/.netlify/functions/database';
 const sec = 1000;
 const TIMEOUT_AGE = 3 * 60 * sec;
@@ -14,10 +15,11 @@ async function getGameData() {
 }
 
 async function readDB() {
-    const { fen = createFen(), moves, ingame, players } = await getGameData();
+    const { fen = createFen(), moves, ingame, players, chat } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
+    window.chat = chat;
     window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
@@ -31,15 +33,17 @@ async function sendDB() {
     console.debug(`Attempting to send data to game ID ${window.gameId}...`);
     const fen = createFen();
     idleTime = 0;
+    let isPlaying = !gameOptions.spectating;
     let queryParams = [
         'type=send',
-        `gameId=${encodeURIComponent(window.gameId)}`,
-        `fen=${encodeURIComponent(fen)}`,
-        `moves=${global.logList.join(',')}`,
+        isPlaying && `gameId=${encodeURIComponent(window.gameId)}`,
+        isPlaying && `fen=${encodeURIComponent(fen)}`,
+        isPlaying && `moves=${global.logList.join(',')}`,
         `players=${window.playerCount}`,
-        `ingame=${+!window.sessionLost}`,
+        `chat=${encodeURIComponent(window.chat.join('\u001E'))}`,
+        isPlaying && `ingame=${+!window.sessionLost}`,
     ];
-    await fetch(`${apiUrl}?${queryParams.join('&')}`);
+    await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
 }
 
@@ -48,8 +52,13 @@ async function init() {
     const data = await getGameData();
     window.playerCount = +data.players;
     window.playerTurn = [, 'white', 'black'][playerCount];
+    if (playerCount > 2) {
+        gameOptions.spectating = true;
+        window.ingame = false;
+        addGameData('Spectating', 'Yes');
+    }
     if (window.playerTurn === 'black') flipBoard();
-    if ([1, 2].includes(playerCount)) sendDB();
+    sendDB();
 }
 
 document.addEventListener('DOMContentLoaded', init);
