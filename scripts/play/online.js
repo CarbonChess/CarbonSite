@@ -20,7 +20,7 @@ async function readDB() {
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    $('#chat').innerHTML = chat.split(SEP.MSG).join('<br>').split(SEP.INFO).join('>').replace(/(<br>)\d+>\d+>/, '$1');
+    $('#chat').innerHTML += chat.split(SEP.MSG).join('<br>').split(SEP.INFO).join('>').replace(/(<br>)\d+>\d+>/g, '$1');
     window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
@@ -34,15 +34,14 @@ async function sendDB(soft) {
     console.debug(`Attempting to send data to game ID ${window.gameId}...`);
     const fen = createFen();
     idleTime = 0;
-    let isPlaying = !gameOptions.spectating || !soft;
     let queryParams = [
         'type=send',
-        isPlaying && `gameId=${encodeURIComponent(window.gameId)}`,
-        isPlaying && `fen=${encodeURIComponent(fen)}`,
-        isPlaying && `moves=${global.logList.join(',')}`,
+        !soft && `gameId=${encodeURIComponent(window.gameId)}`,
+        !soft && `fen=${encodeURIComponent(fen)}`,
+        !soft && `moves=${global.logList.join(',')}`,
         `players=${window.playerCount}`,
         `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
-        isPlaying && `ingame=${+!window.sessionLost}`,
+        `ingame=${+!window.sessionLost}`,
     ];
     window.chat = [];
     await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
@@ -53,7 +52,7 @@ function sendChatMessage() {
     let message = $('#chat-message').value;
     if (!message) return;
     $('#chat-message').value = '';
-    window.chat.push(+new Date() + SEP.INFO + window.session + SEP.INFO + window.username + SEP.INFO + message);
+    window.chat.push([+new Date(), window.session, window.username, message].join(SEP.INFO));
 }
 
 async function init() {
@@ -76,7 +75,7 @@ setInterval(function () {
     if (!window.autoPing || !window.ingame) return;
     if (idleTime > TIMEOUT_AGE) {
         window.sessionLost = true;
-        sendDB();
+        sendDB('soft');
         alert('Session timed out');
         location.pathname = '/';
         return;
