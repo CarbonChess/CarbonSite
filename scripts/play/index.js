@@ -40,7 +40,7 @@ function run() {
 	window.gameId = gameOptions.gamecode;
 	window.session = randomID(5);
 	window.username = gameOptions.username || 'Player' + random(0, 999);
-	window.chat = [[+new Date(), session, username, 'joined the game'].join(INFO.SEP)];
+	window.chat = [[+new Date(), session, username, 'joined the game'].join(SEP.INFo)];
 
 	const gameData = $('#game-data dl');
 	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;
