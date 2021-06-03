@@ -298,7 +298,7 @@ button.disabled {
 
 #sidebar {
 	max-height: var(--board-size);
-	overflow-y: scroll;
+	overflow-y: auto;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
