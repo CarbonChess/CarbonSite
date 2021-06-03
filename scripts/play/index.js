@@ -37,6 +37,7 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
+	window.username = 'Player' + random(0, 999);
 	window.chat = [];
 
 	const gameData = $('#game-data dl');

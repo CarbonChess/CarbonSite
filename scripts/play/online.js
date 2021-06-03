@@ -3,6 +3,7 @@ const apiUrl = '/.netlify/functions/database';
 const sec = 1000;
 const TIMEOUT_AGE = 3 * 60 * sec;
 const READ_INTERVAL = 4 * sec;
+const SEP = {MSG: '\u001e', USR: '\u001d'}
 
 let lastReceivedFen;
 let idleTime = 0;
@@ -40,11 +41,17 @@ async function sendDB() {
         isPlaying && `fen=${encodeURIComponent(fen)}`,
         isPlaying && `moves=${global.logList.join(',')}`,
         `players=${window.playerCount}`,
-        `chat=${encodeURIComponent(window.chat.join('\u001E'))}`,
+        `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
         isPlaying && `ingame=${+!window.sessionLost}`,
     ];
     await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
+}
+
+function sendChatMessage() {
+    let message = $('#chat-message').value;
+    if (!message) break;
+    window.chat.push(window.username + SEP.USR + message);
 }
 
 async function init() {
