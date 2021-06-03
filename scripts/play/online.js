@@ -14,20 +14,16 @@ async function getGameData() {
 }
 
 async function readDB() {
-    const { fen = createFen(), lastMove } = await getGameData();
+    const { fen = createFen(), moves, ingame } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    if (lastMove) {
-        if (lastMove === 'x') {
-            $('#winner').innerText = 'Timed out';
-            ingame = false;
-        }
-        else {
-            lastMove.split('-').forEach(cell => cell && $.id(cell)?.classList.add('last-move'));
-            $('#log').innerHTML += lastMove.split('-')[1];
-        }
+    if (!+ingame) {
+        $('#winner').innerText = 'Timed out';
+        window.ingame = false;
     }
+    if (moves) global.logList = moves.split(',');
+    updateMoves();
 }
 
 async function sendDB() {
@@ -38,7 +34,8 @@ async function sendDB() {
         'type=send',
         `gameId=${encodeURIComponent(window.gameId)}`,
         `fen=${encodeURIComponent(fen)}`,
-        `lastMove=${window.sessionLost ? x : window.lastMove.start + '-' + window.lastMove.end}`,
+        `moves=${global.logList.join(',')}`,
+        `ingame=${+!window.sessionLost}`,
     ];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);

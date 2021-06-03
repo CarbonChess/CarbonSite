@@ -23,7 +23,6 @@ function run() {
 	window.ingame = true;
 	window.sessionLost = false;
 	window.totalMoves = 0;
-	window.lastMove = { start: '', end: '' };
 	window.selectedCell = null;
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
@@ -44,16 +43,15 @@ function run() {
 	gameData.innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	if (gameOptions.bot) addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
-	if (gameOptions.multiplayer) addGameData('Multiplayer', 'Yes');
 	if (window.gameId) addGameData('Game ID', window.gameId);
 	if (gameOptions.static) {
 		readDB();
 		window.autoPing = false;
-		gameData.innerHTML += addGameData('Replay', 'Yes');
+		addGameData('Replay', 'Yes');
 	}
 	if (gameOptions.spectating) {
 		window.ingame = false;
-		gameData.innerHTML += addGameData('Spectating', 'Yes');
+		addGameData('Spectating', 'Yes');
 	}
 
 	Object.assign(window, { ...fenFuncs });
@@ -67,3 +65,10 @@ function reset() {
 	run();
 	if (gameOptions.multiplayer) sendDB(window.gameId, defaultFen);
 }
+
+/* Console IDs
+ * S = selected
+ * T = type
+ * M = move
+ * I = invalid
+*/

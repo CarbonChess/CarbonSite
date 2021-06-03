@@ -3,13 +3,13 @@
 function newBoard(size, initial) {
 	$('table').innerHTML = '';
 	let emptyCells = [];
-	for (i = 1; i <= size; i++) {
+	for (let i = 1; i <= size; i++) {
 
 		const tr = document.createElement('tr');
 		tr.id = 'r' + i;
 		$('table').appendChild(tr);
 
-		for (j = 1; j <= size; j++) {
+		for (let j = 1; j <= size; j++) {
 
 			const cellName = indexToLetter(j) + (9 - i);
 			const td = document.createElement('td');

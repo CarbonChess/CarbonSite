@@ -5,6 +5,7 @@ function hasClicked(cell) {
 		|| gameOptions.multiplayer && global.currentTurn !== window.playerTurn[0]
 	) return;
 
+	cell = cell.toUpperCase();
 	const $cell = $.id('piece' + cell);
 	const cellClasses = $cell ? Array.from($cell.classList) : [];
 
@@ -75,7 +76,7 @@ function hasClicked(cell) {
 		// log the move
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
-		log({ startCell, endCell, startClasses, endClasses, count: totalMoves, taken, promoted: canPromote, /*castled,*/ check: isCheck(global.currentTurn) });
+		log({ startCell, endCell, startClasses, endClasses, taken, promoted: canPromote });
 
 		// hide promotion box
 		window.promotionPiece = 'queen';
@@ -88,7 +89,7 @@ function hasClicked(cell) {
 		// check game ending status
 		const endingStatus = gameEndingStatus(global.currentTurn);
 		if (endingStatus) {
-			let winText = global.currentTurn !== 'w' ? 'White' : 'Black' + ' Wins';
+			let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
 			let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
 			$('#winner').innerText = statusMsg;
 			ingame = false;
@@ -131,7 +132,6 @@ function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
 }
-
 
 function undoLastMove() {
 	if (window.totalMoves === 0 || global.moveList.length === 0) return;

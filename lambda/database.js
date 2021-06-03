@@ -54,8 +54,8 @@ async function readData({ gameId }) {
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData({ gameId, fen, lastMove }) {
-	const data = { id: gameId, fen, lastMove };
+async function sendData({ gameId, fen, moves, ingame }) {
+	const data = { id: gameId, fen, moves, ingame };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
@@ -90,9 +90,9 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => await 0.15,
+		version: async () => await 1.00,
 	};
-	funcs.help = async () => ({ commands: Object.keys(funcs), version: funcs.version() });
+	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

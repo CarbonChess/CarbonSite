@@ -1,24 +1,25 @@
-function log({ startCell, endCell, startClasses, endClasses, count, taken, promoted, castled, check }) {
-
-	window.lastMove = { start: startCell, end: endCell };
-	const [colour, piece] = startClasses;
-
+function log({ startCell, endCell, startClasses, endClasses, taken, promoted }) {
+	const colour = startClasses[0];
 	if (taken) points[colour[0]] += getPointsEquivalent(endClasses[1]);
 	if (promoted) points[colour[0]] += getPointsEquivalent(getPieceClasses(endCell)[1]);
 	logPoints();
+	updateMoves();
+}
 
-	let code = ' ';
-	if (count % 2 === 1 && hasRules) code += '<br class="desktoponly">' + ((count + 1) / 2) + '. ';
-	if (castled) code += endCell.charCodeAt(0) < 'D'.charCodeAt(0) ? '0-0-0' : '0-0';
-	else {
-		code += getPieceID(piece);
-		if (taken && piece === 'pawn') code += startCell[0].toLowerCase();
-		if (taken || enpassantTaken) code += 'x';
-		code += endCell.toLowerCase();
-		if (promoted) code += '=' + getPieceID(window.promotionPiece);
+function updateMoves() {
+	let moveHtml = '';
+	for (let [n, move] of Object.entries(global.logList)) {
+		moveHtml += ' <span class="move">';
+		let isWhite = n % 2 === 0;
+		if (isWhite) moveHtml += `<br class="desktoponly">` + (n / 2 + 1) + '. ';
+		let pieceCode = 9812 + ['K', 'Q', 'R', 'B', 'N'].indexOf(move[0]);
+		if (pieceCode === 9811) pieceCode = 9817;
+		else move = move.slice(1);
+		if (!isWhite) pieceCode += 6;
+		moveHtml += `&#${pieceCode};` + move;
+		moveHtml += '</span>';
 	}
-	if (check) code += '+';
-	$('#log').innerHTML += `<span class="move">` + code + '</span>';
+	$('#log').innerHTML = moveHtml;
 }
 
 function logPoints() {
@@ -33,10 +34,3 @@ function logTakenPiece(colour, piece) {
 	$.id(colour + '-pieces').appendChild(takenPiece);
 	logPoints();
 }
-
-/* Console IDs
- * S = selected
- * T = type
- * M = move
- * I = invalid
-*/
