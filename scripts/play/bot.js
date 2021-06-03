@@ -8,8 +8,8 @@ function botMove() {
 		console.log("received: " + message);
 		let [, start, end] = message.match(/bestmove (..)(..) /) || [];
 		if (start && end) {
-			hasClicked(start);
-			hasClicked(end);
+			hasClicked(start.toUpperCase());
+			hasClicked(end.toUpperCase());
 		}
 	}
 	//options
