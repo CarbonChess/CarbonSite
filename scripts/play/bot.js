@@ -14,13 +14,15 @@ function botMove() {
 	}
 	//options
 	stockfishes[id].postMessage('setoption name Contempt 20');
-	stockfishes[id].postMessage('setoption name Minimum Thinking Time 1000');
-
+	stockfishes[id].postMessage('setoption name Minimum Thinking Time 500');
 	stockfishes[id].postMessage('ucinewgame');
 	stockfishes[id].postMessage('isready');
 	stockfishes[id].postMessage('position fen ' + global.moveList.slice(-1)[0]);
 	stockfishes[id].postMessage('go');
-	//hasClicked(startCell);
-	//hasClicked(endCell);
 }
 
+setInterval(function () {
+	if (window.gameOptions && window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
+		botMove();
+	}
+}, 500);
