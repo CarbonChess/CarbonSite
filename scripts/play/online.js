@@ -3,7 +3,7 @@ const apiUrl = '/.netlify/functions/database';
 const sec = 1000;
 const TIMEOUT_AGE = 3 * 60 * sec;
 const READ_INTERVAL = 4 * sec;
-const SEP = {MSG: '\u001e', USR: '\u001d'}
+const SEP = { MSG: '\u001e', INFO: '\u001d' }; // sync with database.js
 
 let lastReceivedFen;
 let idleTime = 0;
@@ -51,7 +51,7 @@ async function sendDB() {
 function sendChatMessage() {
     let message = $('#chat-message').value;
     if (!message) break;
-    window.chat.push(window.username + SEP.USR + message);
+    window.chat.push(+new Date() + SEP.INFO + window.session + SEP.INFO + window.username + SEP.INFO + message);
 }
 
 async function init() {

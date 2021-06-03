@@ -7,6 +7,7 @@ const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
 const MAX_AGE = 3 * 86.4e6; // 3 days
+const SEP = { MSG: '\u001e', INFO: '\u001d' }; // sync with online.js
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
@@ -74,6 +75,9 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	// Otherwise update existing doc
 	else {
 		type = 'update';
+		// Merge chat messages
+		docs[0].data.chat = [...new Set(...docs[0].data.chat, chat).sort((a, b) => +a.split(SEP.INFO)[0] > +b.split(SEP.INFO)[0] ? 1 : -1)];
+		// Update doc
 		await client.query(
 			Q.Update(docs[0].ref, { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);
