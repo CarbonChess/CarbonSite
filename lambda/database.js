@@ -76,11 +76,12 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	else {
 		type = 'update';
 		// Merge chat messages
-		docs[0].data.chat = (() => {
+		{
 			const uniqueMsgs = [...new Set([...docs[0].data.chat, chat])];
-			const sorter = (a, b) => +a.split(SEP.INFO)[0] > +b.split(SEP.INFO)[0] ? 1 : -1;
-			return uniqueMsgs.sort(sorter);
-		})();
+			const getDate = str => +str.split(SEP.INFO)[0];
+			const sorter = (a, b) => getDate(a) > getDate(b) ? +1 : -1;
+			docs[0].data.chat = uniqueMsgs.sort(sorter);
+		}
 		// Update doc
 		await client.query(
 			Q.Update(docs[0].ref, { ...docs[0].data, data })

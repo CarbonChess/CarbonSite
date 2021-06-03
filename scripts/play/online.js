@@ -20,7 +20,7 @@ async function readDB() {
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    window.chat = chat;
+    $('#chat').innerHTML = chat.replace(new RegExp(SEP.MSG, 'g'), '<br>').replace(new RegExp(SEP.INFO, 'g'), '>');
     window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
