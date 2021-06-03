@@ -11,6 +11,7 @@ function run() {
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
+		username: params.get('username'),
 		rules: !booleanParam('free'),
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
@@ -37,8 +38,8 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.sesssion = randomID();
-	window.username = 'Player' + random(0, 999);
+	window.session = randomID(5);
+	window.username = gameOptions.username || 'Player' + random(0, 999);
 	window.chat = [];
 
 	const gameData = $('#game-data dl');
