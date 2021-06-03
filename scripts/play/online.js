@@ -30,11 +30,11 @@ async function readDB() {
     updateMoves();
 }
 
-async function sendDB() {
+async function sendDB(soft) {
     console.debug(`Attempting to send data to game ID ${window.gameId}...`);
     const fen = createFen();
     idleTime = 0;
-    let isPlaying = !gameOptions.spectating;
+    let isPlaying = !gameOptions.spectating || !soft;
     let queryParams = [
         'type=send',
         isPlaying && `gameId=${encodeURIComponent(window.gameId)}`,
@@ -44,6 +44,7 @@ async function sendDB() {
         `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
         isPlaying && `ingame=${+!window.sessionLost}`,
     ];
+    window.chat = [];
     await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
 }
@@ -51,6 +52,7 @@ async function sendDB() {
 function sendChatMessage() {
     let message = $('#chat-message').value;
     if (!message) return;
+    $('#chat-message').value = '';
     window.chat.push(+new Date() + SEP.INFO + window.session + SEP.INFO + window.username + SEP.INFO + message);
 }
 
@@ -65,7 +67,7 @@ async function init() {
         addGameData('Spectating', 'Yes');
     }
     if (window.playerTurn === 'black') flipBoard();
-    sendDB();
+    sendDB('soft');
 }
 
 document.addEventListener('DOMContentLoaded', init);

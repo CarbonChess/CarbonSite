@@ -75,13 +75,6 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	// Otherwise update existing doc
 	else {
 		type = 'update';
-		// Merge chat messages
-		{
-			const uniqueMsgs = [...new Set([...docs[0].data.chat, chat])];
-			const getDate = str => +str.split(SEP.INFO)[0];
-			const sorter = (a, b) => getDate(a) > getDate(b) ? +1 : -1;
-			docs[0].data.chat = uniqueMsgs.sort(sorter);
-		}
 		// Update doc
 		await client.query(
 			Q.Update(docs[0].ref, { ...docs[0].data, data })
