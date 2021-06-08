@@ -25,7 +25,7 @@ async function readDB() {
         let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
         let allMessages = $('#chat').innerHTML;
         allMessages += displayedMessages.join('<br>');
-        allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] < +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+        allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
         $('#chat').innerHTML = allMessages;
     }
     window.playerCount = +players;
@@ -43,7 +43,7 @@ async function sendDB(soft) {
     idleTime = 0;
     let queryParams = [
         'type=send',
-        !soft && `gameId=${encodeURIComponent(window.gameId)}`,
+        `gameId=${encodeURIComponent(window.gameId)}`,
         !soft && `fen=${encodeURIComponent(fen)}`,
         !soft && `moves=${global.logList.join(',')}`,
         `players=${window.playerCount}`,
