@@ -1,8 +1,7 @@
 'use strict';
 const apiUrl = '/.netlify/functions/database';
-const sec = 1000;
-const TIMEOUT_AGE = 3 * 60 * sec;
-const READ_INTERVAL = 4 * sec;
+const TIMEOUT_AGE = 3 * 60 * 1000;
+const READ_INTERVAL = 1 * 1000;
 const SEP = { MSG: '\u001e', INFO: '\u001d' };
 
 let lastReceivedFen;
@@ -20,7 +19,15 @@ async function readDB() {
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    $('#chat').innerHTML += chat.split(SEP.MSG).join('<br>').split(SEP.INFO).join('>').replace(/(<br>)\d+>\d+>/g, '$1');
+    if (chat) {
+        let messages = chat.split(SEP.MSG);
+        let messageParts = messages.map(msg => msg.split(SEP.INFO));
+        let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
+        let allMessages = $('#chat').innerHTML;
+        allMessages += displayedMessages.join('<br>');
+        allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] < +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+        $('#chat').innerHTML = allMessages;
+    }
     window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
@@ -53,6 +60,7 @@ function sendChatMessage() {
     if (!message) return;
     $('#chat-message').value = '';
     window.chat.push([+new Date(), window.session, window.username, message].join(SEP.INFO));
+    sendDB('soft');
 }
 
 async function init() {
