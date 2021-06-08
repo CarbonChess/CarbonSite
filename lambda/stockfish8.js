@@ -24,7 +24,7 @@ exports.handler = async function (event, context, callback) {
     const { fen } = event.queryStringParameters;
     let output = botMove(fen);
     return {
-        statusCode: output ? 200 : 400,
+        statusCode: output ? 200 : 500,
         body: JSON.stringify(output),
     };
 };
