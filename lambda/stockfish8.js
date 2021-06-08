@@ -25,6 +25,6 @@ exports.handler = async function (event, context, callback) {
     let output = botMove(fen);
     return {
         statusCode: output ? 200 : 500,
-        body: JSON.stringify(output),
+        body: JSON.stringify(output || {}),
     };
 };
