@@ -21,7 +21,8 @@ function botMove(fen) {
 }
 
 exports.handler = async function (event, context, callback) {
-    const { fen } = event.queryStringParameters;
+    const params = event.queryStringParameters;
+    const fen = decodeURIComponent(params.fen);
     let output = botMove(fen);
     return {
         statusCode: output ? 200 : 500,
