@@ -20,18 +20,11 @@ function botMove(fen) {
     stockfishes[id].postMessage('go');
 }
 
-setInterval(function () {
-    if (window.gameOptions && window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
-        botMove();
-    }
-}, 100);
-
-
 exports.handler = async function (event, context, callback) {
     const { fen } = event.queryStringParameters;
-    let { start, end } = botMove(fen);
+    let output = botMove(fen);
     return {
-        statusCode: 200,
-        body: JSON.stringify({ start, end })
+        statusCode: output ? 200 : 400,
+        body: JSON.stringify(output),
     };
 };
