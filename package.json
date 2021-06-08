@@ -14,7 +14,8 @@
 	"dependencies": {
 		"faunadb": "^4.3.0",
 		"fenfurnace": ">=0.2.0",
-		"novasheets": "^1.0.0-rc5"
+		"novasheets": "^1.0.0-rc5",
+		"stockfish": "^11.0.0"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^0.12.1",
