@@ -2,22 +2,21 @@ const stockfish = require('stockfish');
 
 function botMove(fen) {
 
-    let id = 0;
-    let stockfishes = [];
-    stockfishes[id] = stockfish();
+    let engine = stockfish();
 
-    stockfishes[id].onmessage = (message) => {
+    engine.onmessage = (message) => {
         console.log("received: " + message);
         let [, start, end] = message.match(/bestmove (..)(..) /) || [];
         return { start, end };
     }
+    console.log('configure stockfish');
     //options
-    stockfishes[id].postMessage('setoption name Contempt 20');
-    stockfishes[id].postMessage('setoption name Minimum Thinking Time 500');
-    stockfishes[id].postMessage('ucinewgame');
-    stockfishes[id].postMessage('isready');
-    stockfishes[id].postMessage('position fen ' + fen);
-    stockfishes[id].postMessage('go');
+    engine.postMessage('setoption name Contempt 20');
+    engine.postMessage('setoption name Minimum Thinking Time 500');
+    engine.postMessage('ucinewgame');
+    engine.postMessage('isready');
+    engine.postMessage('position fen ' + fen);
+    engine.postMessage('go');
 }
 
 exports.handler = async function (event, context, callback) {
