@@ -7,10 +7,9 @@ let lastReceivedFen;
 let idleTime = 0;
 
 async function getGameData() {
-    const resp = await fetch(`${apiUrl}?type=read&gameId=${window.gameId}`);
-    const json = await resp.json();
+    const resp = await fetch(`${apiUrl}?type=read&gameId=${window.gameId}`).then(data => data.json());
     console.debug(`Retrieved data for game ID ${window.gameId}.`);
-    return json.output.data;
+    return resp.output.data;
 }
 
 async function readDB() {

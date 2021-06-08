@@ -1,6 +1,3 @@
-/*
-	Database typing: {'id': string, 'fen': string, 'lastMove': string}
-*/
 const faunadb = require('faunadb');
 const { FAUNA_CLIENT_KEY } = process.env;
 const Q = faunadb.query;
@@ -25,12 +22,20 @@ async function getDocs() {
 
 async function getGameData(gameId) {
 	console.debug('Retrieving game data of ID', gameId);
-	let docs = await getDocs();
-	return docs.filter(doc => doc.data.id === gameId);
+	let docs = await client.query(
+		Q.Map(
+			Q.Paginate(Q.Match(Q.Index('GameIDs'), gameId.toString())),
+			Q.Lambda(x => Q.Get(x))
+		)
+	);
+	console.log('Documents:', docs.data);
+	return docs.data;
 }
 
 async function deleteDoc(doc) {
-	await client.query(Q.Delete(doc.ref)).then(resolve).catch(rejection);
+	await client.query(
+		Q.Delete(doc.ref)
+	).then(resolve).catch(rejection);
 }
 
 async function pruneDocs() {
@@ -90,7 +95,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => await 1.00,
+		version: async () => await 1.01,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
