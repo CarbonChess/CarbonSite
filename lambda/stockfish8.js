@@ -1,9 +1,10 @@
+const stockfish = require('stockfish');
 
 function botMove(fen) {
 
     let id = 0;
     let stockfishes = [];
-    stockfishes[id] = STOCKFISH();
+    stockfishes[id] = stockfish();
 
     stockfishes[id].onmessage = (message) => {
         console.log("received: " + message);
