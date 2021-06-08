@@ -4,11 +4,6 @@ function botMove(fen) {
 
     let engine = stockfish();
 
-    engine.onmessage = (message) => {
-        console.log("received: " + message);
-        let [, start, end] = message.match(/bestmove (..)(..) /) || [];
-        return { start, end };
-    }
     console.log('configure stockfish');
     //options
     engine.postMessage('setoption name Contempt 20');
@@ -17,6 +12,12 @@ function botMove(fen) {
     engine.postMessage('isready');
     engine.postMessage('position fen ' + fen);
     engine.postMessage('go');
+
+    engine.onmessage = (message) => {
+        console.log("received: " + message);
+        let [, start, end] = message.match(/bestmove (..)(..) /) || [];
+        return { start, end };
+    }
 }
 
 exports.handler = async function (event, context, callback) {
