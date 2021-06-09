@@ -226,12 +226,12 @@ select {
 
 	@ $(BR).. {
 		display: grid;
-		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
-		grid-template-columns: 1fr var(--board-size) 2fr;
+		grid-template-areas: ". white ." "icons table rsidebar" ". black ." ". promotion .";
+		grid-template-columns: 150px var(--board-size) 200px;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
-			grid-template-areas: ". black ." "icons table sidebar" ". white .";
+			grid-template-areas: ". black ." "icons table rsidebar" ". white .";
 		}
 	}
 }
@@ -242,7 +242,6 @@ select {
 	font-size: 1.5em;
 }
 
-#icon-options,
 #foot {
 	margin: 0.5em auto;
 	text-align: center;
@@ -296,13 +295,25 @@ button.disabled {
 #taken-black-pieces {grid-area: black;}
 #taken-white-pieces {grid-area: white;}
 
-#sidebar {
+#left-sidebar,
+#right-sidebar {
 	max-height: var(--board-size);
 	overflow-y: auto;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
-	grid-area: sidebar;
+}
+
+#left-sidebar {
+	grid-area: lsidebar;
+
+	#chat {
+		width: 100%;
+	}
+}
+
+#right-sidebar {
+	grid-area: rsidebar;
 
 	strong {
 		margin-bottom: 0.5em;

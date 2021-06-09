@@ -35,21 +35,6 @@ permalink: /play/
 	<div id="game-content">
 		<table></table>
 
-		<div id="icon-options">
-			<button id="flip-board" onclick="flipBoard(true)" title="Flip board">
-				<img src="/images/icons/flip.png" alt="Flip">
-			</button>
-			<button id="undo" onclick="undoLastMove()" title="Undo last move">
-				<img src="/images/icons/undo.png" alt="Undo">
-			</button>
-			<button id="reset" onclick="reset()" title="Reset board">
-				Reset
-			</button>
-			<button onclick="shareGame()" title="Copy to clipboard">
-				Share
-			</button>
-		</div>
-
 		<div id="taken-black-pieces" class="taken-pieces">
 			<span id="black-pieces" class="resettable"></span>
 			<span id="black-points" class="resettable"></span>
@@ -67,7 +52,7 @@ permalink: /play/
 			<img src="/images/transparent.gif" alt="Queen" data-piece onclick="setPromotion(this)" class="white queen">
 		</div>
 
-		<aside id="sidebar">
+		<aside id="right-sidebar">
     		<div id="game-data">
     			<strong>Session</strong>
 				<dl></dl>
@@ -75,13 +60,33 @@ permalink: /play/
 			<strong>Moves</strong>
 			<div id="log" class="resettable"></div>
 		</aside>
-	</div>
 
-	<form action="javascript:sendChatMessage()">
-		<input type="text" id="chat-message">
-		<button type="submit">Send</button>
-	</form>
-	<div id="chat"></div>
+		<aside id="left-sidebar">
+
+			<div id="icon-options">
+				<button id="flip-board" onclick="flipBoard(true)" title="Flip board">
+					<img src="/images/icons/flip.png" alt="Flip">
+				</button>
+				<button id="undo" onclick="undoLastMove()" title="Undo last move">
+					<img src="/images/icons/undo.png" alt="Undo">
+				</button>
+				<button id="reset" onclick="reset()" title="Reset board">
+					Reset
+				</button>
+				<button onclick="shareGame()" title="Copy to clipboard">
+					Share
+				</button>
+			</div>
+
+			<form action="javascript:sendChatMessage()">
+				<input type="text" id="chat-message">
+				<button type="submit">Send</button>
+			</form>
+
+			<div id="chat"></div>
+
+		</aside>
+	</div>
 
 	<footer>
 		<div>Copyright &copy; 2021 CarbonChess</div>
