@@ -23,10 +23,7 @@ async function readDB() {
         let messages = chat.split(SEP.MSG);
         let messageParts = messages.map(msg => msg.split(SEP.INFO));
         let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
-        let allMessages = $('#chat').innerHTML;
-        allMessages += displayedMessages.join('<br>');
-        allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
-        $('#chat').innerHTML = allMessages;
+        $('#chat').innerHTML += displayedMessages.join('<br>');
     }
     window.playerCount = +players;
     if (!+ingame) {
@@ -61,6 +58,12 @@ function sendChatMessage() {
     $('#chat-message').value = '';
     window.chat.push([+new Date(), window.session, window.username, message].join(SEP.INFO));
     sendDB('soft');
+    updateChat()
+}
+
+function updateChat() {
+    allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+    $('#chat').innerHTML = allMessages;
 }
 
 async function init() {
