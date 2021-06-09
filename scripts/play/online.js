@@ -45,8 +45,8 @@ async function sendDB() {
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
 }
 
-function readChat() {
-    const { chat } = await getGameData('chat');
+async function readChat() {
+    const { chat } = await getGameData({ chat: true });
     let messages = chat.split(SEP.MSG);
     let messageParts = messages.map(msg => msg.split(SEP.INFO));
     let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
@@ -54,7 +54,7 @@ function readChat() {
     updateChat();
 }
 
-function sendChatMessage() {
+async function sendChatMessage() {
     readChat();
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     let message = $('#chat-message').value;

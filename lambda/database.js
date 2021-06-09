@@ -3,7 +3,7 @@ const { FAUNA_CLIENT_KEY } = process.env;
 const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
-const MAX_AGE = 3 * 86.4e6; // 3 days
+const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
