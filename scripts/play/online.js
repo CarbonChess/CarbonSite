@@ -64,7 +64,6 @@ async function sendChatMessage(force) {
     if (!message && !force) return;
 
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
-    await readChat();
     if (message) {
         let messageParts = [+new Date(), window.username, message];
         $('#chat').innerHTML += formatChatMessage(messageParts);
@@ -76,6 +75,7 @@ async function sendChatMessage(force) {
         `gameId=c:${encodeURIComponent(window.gameId)}`,
         `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
     ];
+    await readChat();
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
 // Sort function // .split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
