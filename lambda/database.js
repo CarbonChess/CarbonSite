@@ -73,7 +73,7 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	if (docs.length === 0) {
 		type = 'create';
 		await client.query(
-			Q.Create(Q.Collection(COLLECTION), { ...docs[0].data, data })
+			Q.Create(Q.Collection(COLLECTION), { data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	// Otherwise update existing doc
@@ -81,7 +81,7 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 		type = 'update';
 		// Update doc
 		await client.query(
-			Q.Update(docs[0].ref, { data })
+			Q.Update(docs[0].ref, { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	return { type, success, data };
