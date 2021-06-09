@@ -51,7 +51,6 @@ async function readChat() {
     let messageParts = messages.map(msg => msg.split(SEP.INFO));
     let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
     $('#chat').innerHTML += displayedMessages.join('<br>');
-    updateChat();
 }
 
 async function sendChatMessage() {
@@ -68,12 +67,8 @@ async function sendChatMessage() {
     ];
     window.chat = [];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
-    updateChat();
 }
-
-function updateChat() {
-    $('#chat').innerHTML = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
-}
+// $('#chat').innerHTML = $('#chat').innerHTML.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
 
 async function init() {
     if (!gameOptions.multiplayer) return;
