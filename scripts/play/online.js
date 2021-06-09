@@ -59,9 +59,10 @@ async function readChat() {
 }
 
 async function sendChatMessage() {
-    console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     let message = $('#chat-message').value;
     if (!message) return;
+
+    console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     await readChat();
     $('#chat-message').value = '';
     let messageParts = [+new Date(), window.username, message];
@@ -93,7 +94,7 @@ async function init() {
         addGameData('Spectating', 'Yes');
     }
     if (window.playerTurn === 'black') flipBoard();
-    $('#chat').innerHTML = formatChatMessage(window.chat[0]);
+    $('#chat').innerHTML = window.chat.map(formatChatMessage);
     sendDB({ soft: true });
     sendChatMessage();
 }
