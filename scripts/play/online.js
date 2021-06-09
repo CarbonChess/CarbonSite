@@ -55,16 +55,16 @@ async function readChat() {
     let messages = chat.split(SEP.MSG);
     let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
     window.chat = messages;
-    $('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('<br>');
+    $('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
 }
 
 async function sendChatMessage() {
-    readChat();
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     let message = $('#chat-message').value;
     if (!message) return;
+    readChat();
     $('#chat-message').value = '';
-    let messageParts = [+new Date(), window.session, window.username, message];
+    let messageParts = [+new Date(), window.username, message];
     $('#chat').innerHTML += formatChatMessage(messageParts);
     window.chat.push(messageParts.join(SEP.INFO));
     let queryParams = [
@@ -74,10 +74,10 @@ async function sendChatMessage() {
     ];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-//Sort function//split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+//Sort function//split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
-function formatChatMessage([ts, session, user, msg]) {
-    return `<span data-ts="${ts}">${user}&gt; ${msg}</span>`;
+function formatChatMessage([ts, user, msg]) {
+    return `<div data-ts="${ts}">${user}&gt; ${msg}</div>`;
 }
 
 // Game functions //

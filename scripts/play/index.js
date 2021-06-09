@@ -38,9 +38,8 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.session = (+randomID(4)).toString(36).padStart(3, '0');
 	window.username = gameOptions.username || 'Player' + random(0, 999);
-	window.chat = [[+new Date(), session, username, 'joined the game'].join(SEP.INFO)];
+	window.chat = [[+new Date(), username, 'joined the game'].join(SEP.INFO)];
 
 	const gameData = $('#game-data dl');
 	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;
