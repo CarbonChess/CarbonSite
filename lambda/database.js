@@ -79,7 +79,6 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	// Otherwise update existing doc
 	else {
 		type = 'update';
-		// Update doc
 		await client.query(
 			Q.Update(docs[0].ref, { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);

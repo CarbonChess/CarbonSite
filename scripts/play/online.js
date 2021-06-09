@@ -74,7 +74,7 @@ async function sendChatMessage() {
     ];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-//Sort function//split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
+// Sort function // .split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
 function formatChatMessage([ts, user, msg]) {
     return `<div data-ts="${ts}">${user}&gt; ${msg}</div>`;
@@ -93,6 +93,7 @@ async function init() {
         addGameData('Spectating', 'Yes');
     }
     if (window.playerTurn === 'black') flipBoard();
+    $('#chat').innerHTML = formatChatMessage(window.chat[0]);
     sendDB({ soft: true });
     sendChatMessage();
 }

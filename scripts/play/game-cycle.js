@@ -96,7 +96,7 @@ function hasClicked(cell) {
 		}
 
 		// send to server
-		if (window.autoPing) sendDB(window.gameId, createFen());
+		if (window.autoPing) sendDB();
 
 	}
 
@@ -146,7 +146,7 @@ function undoLastMove() {
 	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
-	if (window.autoPing) sendDB(window.gameId, createFen());
+	if (window.autoPing) sendDB();
 	if (gameOptions.bot && global.currentTurn === gameOptions.botColour[0]) undoLastMove();
 }
 
