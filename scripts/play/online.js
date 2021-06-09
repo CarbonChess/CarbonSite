@@ -40,8 +40,7 @@ async function sendDB() {
         `players=${window.playerCount}`,
         `ingame=${+!window.sessionLost}`,
     ];
-    window.chat = [];
-    await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
+    await fetch(`${apiUrl}?${queryParams.join('&')}`);
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
 }
 
@@ -66,7 +65,8 @@ async function sendChatMessage() {
         `gameId=c:${encodeURIComponent(window.gameId)}`,
         `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
     ];
-    await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
+    window.chat = [];
+    await fetch(`${apiUrl}?${queryParams.join('&')}`);
     updateChat();
 }
 
