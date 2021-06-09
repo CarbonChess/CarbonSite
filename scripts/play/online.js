@@ -58,16 +58,18 @@ async function readChat() {
     $('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
 }
 
-async function sendChatMessage() {
+async function sendChatMessage(force) {
     let message = $('#chat-message').value;
-    if (!message) return;
+    if (!message && !force) return;
 
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     await readChat();
     $('#chat-message').value = '';
-    let messageParts = [+new Date(), window.username, message];
-    $('#chat').innerHTML += formatChatMessage(messageParts);
-    window.chat.push(messageParts.join(SEP.INFO));
+    if (message) {
+        let messageParts = [+new Date(), window.username, message];
+        $('#chat').innerHTML += formatChatMessage(messageParts);
+        window.chat.push(messageParts.join(SEP.INFO));
+    }
     let queryParams = [
         'type=send',
         `gameId=c:${encodeURIComponent(window.gameId)}`,
@@ -96,7 +98,7 @@ async function init() {
     if (window.playerTurn === 'black') flipBoard();
     $('#chat').innerHTML = window.chat.map(formatChatMessage);
     sendDB({ soft: true });
-    sendChatMessage();
+    sendChatMessage({ force: true });
 }
 
 document.addEventListener('DOMContentLoaded', init);
