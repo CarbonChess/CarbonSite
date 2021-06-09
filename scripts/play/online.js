@@ -60,11 +60,11 @@ async function readChat() {
 
 async function sendChatMessage(force) {
     let message = $('#chat-message').value;
+    $('#chat-message').value = '';
     if (!message && !force) return;
 
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     await readChat();
-    $('#chat-message').value = '';
     if (message) {
         let messageParts = [+new Date(), window.username, message];
         $('#chat').innerHTML += formatChatMessage(messageParts);
@@ -80,7 +80,7 @@ async function sendChatMessage(force) {
 // Sort function // .split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
 function formatChatMessage([ts, user, msg]) {
-    return `<div data-ts="${ts}">${user}&gt; ${msg}</div>`;
+    return `<div data-ts="${ts}">${user}&gt; ${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
 }
 
 // Game functions //
