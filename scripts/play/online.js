@@ -1,30 +1,24 @@
 'use strict';
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
-const READ_INTERVAL = 1 * 1000;
+const READ_INTERVAL = 2 * 1000;
 const SEP = { MSG: '\u001e', INFO: '\u001d' };
 
 let lastReceivedFen;
 let idleTime = 0;
 
-async function getGameData() {
-    const resp = await fetch(`${apiUrl}?type=read&gameId=${window.gameId}`);
+async function getGameData(chat) {
+    const resp = await fetch(`${apiUrl}?type=read&gameId=${chat ? 'c:' : ''}${window.gameId}`);
     const json = await resp.json();
     console.debug(`Retrieved data for game ID ${window.gameId}.`);
     return json.output.data;
 }
 
 async function readDB() {
-    const { fen = createFen(), moves, ingame, players, chat } = await getGameData();
+    const { fen = createFen(), moves, ingame, players } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    if (chat) {
-        let messages = chat.split(SEP.MSG);
-        let messageParts = messages.map(msg => msg.split(SEP.INFO));
-        let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
-        $('#chat').innerHTML += displayedMessages.join('<br>');
-    }
     window.playerCount = +players;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
@@ -34,17 +28,16 @@ async function readDB() {
     updateMoves();
 }
 
-async function sendDB(soft) {
+async function sendDB() {
     console.debug(`Attempting to send data to game ID ${window.gameId}...`);
     const fen = createFen();
     idleTime = 0;
     let queryParams = [
         'type=send',
         `gameId=${encodeURIComponent(window.gameId)}`,
-        !soft && `fen=${encodeURIComponent(fen)}`,
-        !soft && `moves=${global.logList.join(',')}`,
+        `fen=${encodeURIComponent(fen)}`,
+        `moves=${global.logList.join(',')}`,
         `players=${window.playerCount}`,
-        `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
         `ingame=${+!window.sessionLost}`,
     ];
     window.chat = [];
@@ -52,13 +45,29 @@ async function sendDB(soft) {
     console.debug(`Sent FEN data for game ID ${window.gameId}: ${fen}.`);
 }
 
+function readChat() {
+    const { chat } = await getGameData('chat');
+    let messages = chat.split(SEP.MSG);
+    let messageParts = messages.map(msg => msg.split(SEP.INFO));
+    let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
+    $('#chat').innerHTML += displayedMessages.join('<br>');
+    updateChat();
+}
+
 function sendChatMessage() {
+    readChat();
+    console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     let message = $('#chat-message').value;
     if (!message) return;
     $('#chat-message').value = '';
     window.chat.push([+new Date(), window.session, window.username, message].join(SEP.INFO));
-    sendDB('soft');
-    updateChat()
+    let queryParams = [
+        'type=send',
+        `gameId=c:${encodeURIComponent(window.gameId)}`,
+        `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
+    ];
+    await fetch(`${apiUrl}?${queryParams.filter(p => !!p).join('&')}`);
+    updateChat();
 }
 
 function updateChat() {
