@@ -46,6 +46,7 @@ async function sendDB() {
 
 async function readChat() {
     const { chat } = await getGameData({ chat: true });
+    if (!chat) return;
     let messages = chat.split(SEP.MSG);
     let messageParts = messages.map(msg => msg.split(SEP.INFO));
     let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
@@ -71,8 +72,7 @@ async function sendChatMessage() {
 }
 
 function updateChat() {
-    allMessages = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
-    $('#chat').innerHTML = allMessages;
+    $('#chat').innerHTML = allMessages.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
 }
 
 async function init() {
