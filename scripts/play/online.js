@@ -17,11 +17,11 @@ async function getGameData(chat) {
 // Database //
 
 async function readDB() {
-    const { fen = createFen(), moves, ingame, players } = await getGameData();
+    const { fen = createFen(), moves, ingame = 1, players } = await getGameData();
     if (fen === lastReceivedFen) return;
     lastReceivedFen = fen;
     createBoardFromFen(fen);
-    window.playerCount = +players;
+    window.playerCount = +players || 0;
     if (!+ingame) {
         $('#winner').innerText = 'Timed out';
         window.ingame = false;
@@ -55,7 +55,7 @@ async function readChat() {
     let messages = chat.split(SEP.MSG);
     let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
     window.chat = messages;
-    $('#chat').innerHTML = messagesRaw.map(displayChatMessage).join('<br>');
+    $('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('<br>');
 }
 
 async function sendChatMessage() {
@@ -65,7 +65,7 @@ async function sendChatMessage() {
     if (!message) return;
     $('#chat-message').value = '';
     let messageParts = [+new Date(), window.session, window.username, message];
-    $('#chat').innerHTML += displayChatMessage(messageParts);
+    $('#chat').innerHTML += formatChatMessage(messageParts);
     window.chat.push(messageParts.join(SEP.INFO));
     let queryParams = [
         'type=send',
@@ -74,9 +74,9 @@ async function sendChatMessage() {
     ];
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-//split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+//Sort function//split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
 
-function displayChatMessage([ts, session, user, msg]) {
+function formatChatMessage([ts, session, user, msg]) {
     return `<span data-ts="${ts}">${user}&gt; ${msg}</span>`;
 }
 
