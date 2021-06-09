@@ -62,7 +62,7 @@ async function sendChatMessage() {
     console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
     let message = $('#chat-message').value;
     if (!message) return;
-    readChat();
+    await readChat();
     $('#chat-message').value = '';
     let messageParts = [+new Date(), window.username, message];
     $('#chat').innerHTML += formatChatMessage(messageParts);
