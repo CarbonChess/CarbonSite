@@ -70,6 +70,7 @@ async function sendChatMessage(force) {
         $('#chat').innerHTML += formatChatMessage(messageParts);
         window.chat.push(messageParts.join(SEP.INFO));
     }
+    if (!window.autoPing || !window.ingame) return;
     let queryParams = [
         'type=send',
         `gameId=c:${encodeURIComponent(window.gameId)}`,
