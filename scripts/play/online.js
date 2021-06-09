@@ -28,6 +28,7 @@ async function readDB() {
     }
     if (moves) global.logList = moves.split(',');
     updateMoves();
+    readChat();
 }
 
 async function sendDB(soft) {
@@ -52,9 +53,9 @@ async function readChat() {
     const { chat } = await getGameData({ chat: true });
     if (!chat) return;
     let messages = chat.split(SEP.MSG);
-    let messageParts = messages.map(msg => msg.split(SEP.INFO));
+    let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
     window.chat = messages;
-    $('#chat').innerHTML = messageParts.map(displayChatMessage).join('<br>');
+    $('#chat').innerHTML = messagesRaw.map(displayChatMessage).join('<br>');
 }
 
 async function sendChatMessage() {
@@ -64,7 +65,7 @@ async function sendChatMessage() {
     if (!message) return;
     $('#chat-message').value = '';
     let messageParts = [+new Date(), window.session, window.username, message];
-    $('#chat').innerHTML += messageParts;
+    $('#chat').innerHTML += displayChatMessage(messageParts);
     window.chat.push(messageParts.join(SEP.INFO));
     let queryParams = [
         'type=send',
