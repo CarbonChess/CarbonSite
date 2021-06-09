@@ -49,8 +49,7 @@ async function readChat() {
     if (!chat) return;
     let messages = chat.split(SEP.MSG);
     let messageParts = messages.map(msg => msg.split(SEP.INFO));
-    let displayedMessages = messageParts.map(([ts, session, user, msg]) => `<span data-ts='${ts}'>${user}&gt; ${msg}</span>`);
-    $('#chat').innerHTML += displayedMessages.join('<br>');
+    $('#chat').innerHTML += messageParts.map(displayChatMessage).join('<br>');
 }
 
 async function sendChatMessage() {
@@ -59,16 +58,21 @@ async function sendChatMessage() {
     let message = $('#chat-message').value;
     if (!message) return;
     $('#chat-message').value = '';
-    window.chat.push([+new Date(), window.session, window.username, message].join(SEP.INFO));
+    let messageParts = [+new Date(), window.session, window.username, message];
+    $('#chat').innerHTML += messageParts;
     let queryParams = [
         'type=send',
         `gameId=c:${encodeURIComponent(window.gameId)}`,
         `chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
     ];
-    window.chat = [];
+    $()
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-// $('#chat').innerHTML = $('#chat').innerHTML.split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+//split('<br>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('<br>');
+
+function displayChatMessage([ts, session, user, msg]) {
+    return `<span data-ts="${ts}">${user}&gt; ${msg}</span>`;
+}
 
 async function init() {
     if (!gameOptions.multiplayer) return;
@@ -81,7 +85,8 @@ async function init() {
         addGameData('Spectating', 'Yes');
     }
     if (window.playerTurn === 'black') flipBoard();
-    sendDB('soft');
+    sendDB();
+    sendChatMessage();
 }
 
 document.addEventListener('DOMContentLoaded', init);
