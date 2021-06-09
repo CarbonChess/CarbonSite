@@ -73,7 +73,7 @@ async function sendData({ gameId, fen, moves, ingame, players, chat }) {
 	if (docs.length === 0) {
 		type = 'create';
 		await client.query(
-			Q.Create(Q.Collection(COLLECTION), { data })
+			Q.Create(Q.Collection(COLLECTION), { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	// Otherwise update existing doc
