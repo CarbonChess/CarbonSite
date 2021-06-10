@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 function processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
@@ -19,7 +17,7 @@ function processData(allText) {
     console.log[lines];
 }
 
-function getPuzzles() {
-    let fileData = fs.readFileSync('/images/puzzles.csv', {encoding: 'utf8' });
+async function getPuzzles() {
+    let fileData = await fetch('/images/puzzles.csv').then(data => data.text());
     return processData(fileData);
 }
