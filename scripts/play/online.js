@@ -92,7 +92,7 @@ function formatChatMessage([ts, user, msg]) {
 // Game functions //
 
 async function init() {
-    if (!gameOptions.multiplayer) return;
+    if (!gameOptions?.multiplayer) return;
     const data = await getGameData();
     window.playerCount = (+data.players || 0) + 1;
     window.playerTurn = playerCount === 1 ? 'white' : 'black';
