@@ -18,6 +18,13 @@ function processData(allText) {
 }
 
 async function getPuzzles() {
+    const PUZZLENO = 10;
     let fileData = await fetch('/images/puzzles.csv').then(data => data.text());
-    return processData(fileData);
+    let puzzleList = processData(fileData);
+
+    let selection = [];
+    for (let i = 1; 1 <= PUZZLENO; i++) {
+        selection.push[puzzleList[Math.floor[Math.random() * puzzleList.length] + 1]];
+    }
+    return selection;
 }
