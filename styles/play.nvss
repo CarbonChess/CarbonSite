@@ -9,9 +9,13 @@
 :root {
 	--bg-colour: #191919;
 	--cell-size: 80px;
-	--board-size: calc(var(--cell-size) * 8 );
 	@ ..$(BR) {
 		--cell-size: 50px;
+	}
+	--board-size: calc(var(--cell-size) * 8 );
+	--left-sidebar-size: 220px;
+	body.is-singleplayer {
+		--left-sidebar-size: 100px;
 	}
 }
 
@@ -227,7 +231,7 @@ select {
 	@ $(BR).. {
 		display: grid;
 		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
-		grid-template-columns: 220px var(--board-size) 200px;
+		grid-template-columns: var(--left-sidebar-size) var(--board-size) 200px;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
@@ -245,22 +249,6 @@ select {
 #foot {
 	margin: 0.5em auto;
 	text-align: center;
-}
-
-#icon-options {
-	button {
-		width: 50px;
-		height: 50px;
-		padding: 2px 4px;
-	}
-
-	@ $(BR).. {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		grid-area: icons;
-	}
 }
 
 button.enabled,
@@ -306,9 +294,34 @@ button.disabled {
 	grid-area: lsidebar;
 	padding-right: 6px;
 
-	#send-chat textarea,
-	#chat {
+	#icon-options {
+		button {
+			width: 50px;
+			height: 50px;
+			padding: 2px 4px;
+		}
+
+		@ $(BR).. {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			grid-area: icons;
+			flex-wrap: wrap;
+			gap: 4px;
+
+			body.is-singleplayer & {
+				flex-direction: column;
+			}
+		}
+	}
+
+	& #send-chat,
+	& #chat {
 		width: 100%;
+
+		body.is-singleplayer & {
+			display: none;
+		}
 	}
 
 	#send-chat {
