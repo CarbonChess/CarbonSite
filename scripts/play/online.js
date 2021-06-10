@@ -2,7 +2,7 @@
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 2 * 1000;
-const SEP = { MSG: '\u001e', INFO: '\u001d' };
+const SEP = { MSG: '\x1e', INFO: '\x1f' };
 
 let lastReceivedFen;
 let idleTime = 0;
