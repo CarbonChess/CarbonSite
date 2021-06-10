@@ -81,6 +81,7 @@ permalink: /play/
 			<form action="javascript:sendChatMessage()" id="send-chat">
 				<label for="chat-message">Chat</label>
 				<textarea id="chat-message"></textarea>
+				<script>$("#chat-message").addEventListener("keypress", e => { e.which === 13 && !event.shiftKey && (e.target.form.submit(), e.preventDefault()) });</script>
 				<button type="submit">Send</button>
 			</form>
 

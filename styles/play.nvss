@@ -13,7 +13,7 @@
 		--cell-size: 50px;
 	}
 	--board-size: calc(var(--cell-size) * 8 );
-	--left-sidebar-size: 220px;
+	--left-sidebar-size: 240px;
 	body.is-singleplayer {
 		--left-sidebar-size: 100px;
 	}
@@ -315,7 +315,7 @@ button.disabled {
 		}
 	}
 
-	:is(#send-chat, & #chat) {
+	:is(#send-chat, #chat) {
 		width: 100%;
 
 		body.is-singleplayer & {
@@ -328,16 +328,30 @@ button.disabled {
 		display: flex;
 		flex-direction: column;
 
+		textarea {
+			resize: none;
+		}
+
 		button {
 			margin: 4px 4px 4px auto;
 		}
 	}
 
-	.chat-message {
-		padding: 8px 0;
+	#chat {
+		max-height: 70%;
+		padding: 6px;
+		overflow-y: auto;
+		border: 2px solid black;
+		background: #fff;
+		color: black;
+		font-size: 110%;
 
-		&_user {
-			font-size: 80%;
+		.chat-message {
+			padding: 8px 0;
+
+			&_user {
+				font-size: 80%;
+			}
 		}
 	}
 }
