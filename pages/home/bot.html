@@ -16,22 +16,22 @@ layout: menu.njk
 
 	<h2>Bot intelligence</h2>
 	<div id="bot-intelligence" class="cards">
-		<a class="card small" data-level="1">
+		<a class="card small" data-level="0">
 			<img src="/images/icons/none.svg" height="100px" alt="None" class="card-image">
 			<span class="card-heading">None</span>
 			<span class="card-description">Bot plays random moves</span>
 		</a>
-		<a class="card small hide" data-level="2">
+		<a class="card small hide" data-level="1">
 			<img src="/images/icons/march.svg" height="100px" alt="March" class="card-image">
 			<span class="card-heading">March</span>
 			<span class="card-description">Bot moves pieces forward</span>
 		</a>
-		<a class="card small hide" data-level="3">
+		<a class="card small hide" data-level="2">
 			<img src="/images/icons/charge.svg" height="100px" alt="Charge" class="card-image">
 			<span class="card-heading">Charge</span>
 			<span class="card-description">Bot prioritises taking pieces</span>
 		</a>
-		<a class="card small hide" data-level="4">
+		<a class="card small hide" data-level="3">
 			<img src="/images/icons/attack.svg" height="100px" alt="Attack" class="card-image">
 			<span class="card-heading">Attack</span>
 			<span class="card-description">Bot takes pieces intelligently</span>
@@ -39,7 +39,7 @@ layout: menu.njk
 		<div style="width: 100%;">
 			<label>
 				<span style="display:none;">Bot intelligence</span>
-				<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="1" max="4" oninput="updateBotIntelligence();">
+				<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="1" min="0" max="3" oninput="updateBotIntelligence();">
 			</label>
 			<div id="bot-intelligence-dots">
 				<span id="dot-highlighted">•</span> • • •

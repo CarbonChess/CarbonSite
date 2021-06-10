@@ -81,7 +81,12 @@ async function sendChatMessage(force) {
 // Sort function // .split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
 function formatChatMessage([ts, user, msg]) {
-    return `<div data-ts="${ts}">${user}&gt; ${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
+    return `
+        <div data-ts="${ts}" class="chat-message">
+            <div class="chat-message_user">${user}</div>
+            <div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        </div>
+    `;
 }
 
 // Game functions //

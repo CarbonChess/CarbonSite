@@ -35,7 +35,7 @@ h1 {
 }
 
 dd, dt @ ..$(BR) {
-    display: inline;
+	display: inline;
 	margin: 0 1em;
 }
 
@@ -226,12 +226,12 @@ select {
 
 	@ $(BR).. {
 		display: grid;
-		grid-template-areas: ". white ." "icons table rsidebar" ". black ." ". promotion .";
-		grid-template-columns: 150px var(--board-size) 200px;
+		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
+		grid-template-columns: 220px var(--board-size) 200px;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
-			grid-template-areas: ". black ." "icons table rsidebar" ". white .";
+			grid-template-areas: ". black ." "lsidebar table rsidebar" ". white .";
 		}
 	}
 }
@@ -256,8 +256,9 @@ select {
 
 	@ $(BR).. {
 		display: flex;
-		flex-direction: column;
+		flex-wrap: wrap;
 		align-items: center;
+		justify-content: center;
 		grid-area: icons;
 	}
 }
@@ -299,20 +300,40 @@ button.disabled {
 #right-sidebar {
 	max-height: var(--board-size);
 	overflow-y: auto;
-	border: 2px solid #111;
-	background-color: #dcdcdc;
-	color: black;
 }
 
 #left-sidebar {
 	grid-area: lsidebar;
+	padding-right: 6px;
 
+	#send-chat textarea,
 	#chat {
 		width: 100%;
+	}
+
+	#send-chat {
+		margin-top: 2em;
+		display: flex;
+		flex-direction: column;
+
+		button {
+			margin: 4px 4px 4px auto;
+		}
+	}
+
+	.chat-message {
+		padding: 8px 0;
+
+		&_user {
+			font-size: 80%;
+		}
 	}
 }
 
 #right-sidebar {
+	border: 2px solid #111;
+	background-color: #dcdcdc;
+	color: black;
 	grid-area: rsidebar;
 
 	strong {
