@@ -315,8 +315,7 @@ button.disabled {
 		}
 	}
 
-	& #send-chat,
-	& #chat {
+	:is(#send-chat, & #chat) {
 		width: 100%;
 
 		body.is-singleplayer & {
