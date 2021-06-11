@@ -102,7 +102,7 @@ async function init() {
 		addGameData('Spectating', 'Yes');
 	}
 	if (window.playerTurn === 'black') flipBoard();
-	$('#chat').innerHTML = formatChatMessage(window.chat);
+	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	sendDB({ soft: true });
 	sendChatMessage({ force: true });
 }

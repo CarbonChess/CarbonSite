@@ -13,15 +13,15 @@ layout: menu.njk
 	</label>
 	<label>
 		<strong>Game Code</strong><br>
-		<input required type="text" pattern="^\d{5}$" autocomplete="off" name="gamecode" title="Enter a 5-digit game code">
+		<input required type="text" name="gamecode" autocomplete="off" pattern="^\d{5}$" title="Enter a 5-digit game code">
 	</label>
 	<label>
 		<strong>Username</strong><br>
-		<input type="text" name="username">
+		<input type="text" name="username" autocomplete="off">
 	</label>
 	<label class="toggle">
 		<strong>Spectating?</strong>
-		<input type="checkbox" autocomplete="off" name="spectating">
+		<input type="checkbox" name="spectating" autocomplete="off">
 		<span class="slider"></span>
 	</label>
 
