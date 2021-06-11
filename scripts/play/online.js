@@ -54,7 +54,8 @@ async function readChat() {
 	if (!chat) return;
 	let messages = chat.split(SEP.MSG);
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
-	window.chat = [...new Set([...messages, window.chat])].sort();
+	const sorter = (a, b) => a.split(SEP.INFO)[0] - b.split(SEP.INFO)[0];
+	window.chat = [...new Set([...messages, ...window.chat])].sort(sorter);
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
 	if (!window.hasSentJoinMsg) {
 		window.hasSentJoinMsg = true;
@@ -81,7 +82,6 @@ async function sendChatMessage(force) {
 	console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
 	fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-// Sort function // .sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
 function formatChatMessage([ts, user, msg]) {
 	return `
