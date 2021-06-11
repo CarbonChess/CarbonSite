@@ -39,7 +39,7 @@ function run() {
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
 	window.username = gameOptions.username || 'Player' + window.playerCount;
-	window.chat = [];
+	window.chat = [[+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO)];
 
 	const gameData = $('#game-data dl');
 	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;

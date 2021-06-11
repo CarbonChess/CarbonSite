@@ -54,7 +54,7 @@ async function readChat() {
 	if (!chat) return;
 	let messages = chat.split(SEP.MSG);
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
-	window.chat = messages;
+	window.chat = [...new Set([...messages, window.chat])].sort();
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
 	if (!window.hasSentJoinMsg) {
 		window.hasSentJoinMsg = true;
