@@ -1,6 +1,6 @@
 @option MAX_MATH_RECURSION 20
 
-@var BR = 800px
+@var BR = 1050px
 @var light-color = #dcdcdc
 @var dark-color = #afafaf
 
