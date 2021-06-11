@@ -50,12 +50,17 @@ async function sendDB(soft) {
 // Chat //
 
 async function readChat() {
-	const { chat } = await getGameData({ chat: true });
+	const { chat } = await getGameData('chat:true');
 	if (!chat) return;
 	let messages = chat.split(SEP.MSG);
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
 	window.chat = messages;
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
+	if (!window.hasSentJoinMsg) {
+		window.hasSentJoinMsg = true;
+		window.push([+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO));
+		sendChatMessage('force:true');
+	}
 }
 
 async function sendChatMessage(force) {
@@ -63,6 +68,7 @@ async function sendChatMessage(force) {
 	$('#chat-message').value = '';
 	if (!message && !force) return;
 
+	await readChat();
 	if (message) {
 		let messageParts = [+new Date(), window.username, message];
 		$('#chat').innerHTML += formatChatMessage(messageParts);
@@ -75,8 +81,7 @@ async function sendChatMessage(force) {
 		`chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
 	];
 	console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
-	await readChat();
-	await fetch(`${apiUrl}?${queryParams.join('&')}`);
+	fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
 // Sort function // .sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
@@ -103,8 +108,8 @@ async function init() {
 	}
 	if (window.playerTurn === 'black') flipBoard();
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
-	sendDB({ soft: true });
-	sendChatMessage({ force: true });
+	sendDB('soft:true');
+	sendChatMessage('force:true');
 }
 
 document.addEventListener('DOMContentLoaded', init);
