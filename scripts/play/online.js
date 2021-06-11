@@ -8,6 +8,7 @@ let lastReceivedFen;
 let idleTime = 0;
 
 async function getGameData(chat) {
+	if (!window.gameId) throw Error('No game ID has been specified');
 	const resp = await fetch(`${apiUrl}?type=read&gameId=${chat ? 'c:' : ''}${window.gameId}`);
 	const json = await resp.json();
 	console.debug(`Retrieved data for game ID ${window.gameId}.`);
@@ -17,6 +18,7 @@ async function getGameData(chat) {
 // Database //
 
 async function readDB() {
+	if (!gameOptions?.multiplayer) return;
 	readChat();
 	const { fen = createFen(), moves, ingame = 1, players } = await getGameData();
 	if (fen === lastReceivedFen) return;
@@ -50,6 +52,7 @@ async function sendDB(soft) {
 // Chat //
 
 async function readChat() {
+	if (!gameOptions?.multiplayer) return;
 	const { chat } = await getGameData('chat:true');
 	if (!chat) return;
 	let messages = chat.split(SEP.MSG);
