@@ -1,6 +1,6 @@
 @option MAX_MATH_RECURSION 20
 
-@var BR = 1050px
+@var BR = 1100px
 @var light-color = #dcdcdc
 @var dark-color = #afafaf
 
@@ -16,17 +16,6 @@
 	--left-sidebar-size: 240px;
 	body.is-singleplayer {
 		--left-sidebar-size: 100px;
-	}
-}
-
-body {
-	max-width: 900px;
-
-	@ $(BR).. {
-		margin: 0 auto;
-		padding: 50px 0 0;
-		display: flex;
-		flex-direction: column;
 	}
 }
 
@@ -229,6 +218,7 @@ select {
 	margin-bottom: 1em;
 
 	@ $(BR).. {
+		margin: auto;
 		display: grid;
 		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
 		grid-template-columns: var(--left-sidebar-size) var(--board-size) 200px;
