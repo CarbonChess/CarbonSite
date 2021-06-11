@@ -51,16 +51,7 @@ async function sendDB(soft) {
 
 async function readChat() {
 	const { chat } = await getGameData('chat:true');
-	if (!chat) {
-		if (!window.chat) {
-			// Send joined message
-			let messageParts = [+new Date(), '[System]', `${username} joined the game`];
-			$('#chat').innerHTML += formatChatMessage(messageParts);
-			window.chat = [messageParts.join(SEP.INFO)];
-			sendChatMessage('force:true');
-		}
-		return;
-	}
+	if (!chat) return;
 	let messages = chat.split(SEP.MSG);
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
 	window.chat = messages;
