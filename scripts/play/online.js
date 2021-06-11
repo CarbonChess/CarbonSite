@@ -78,7 +78,7 @@ async function sendChatMessage(force) {
     await readChat();
     await fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
-// Sort function // .split('</div>').sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
+// Sort function // .sort((a, b) => +a.match(/ts=.(\d+)./g)[1] - +b.match(/ts=.(\d+)./g)[1]).join('</div>');
 
 function formatChatMessage([ts, user, msg]) {
     return `

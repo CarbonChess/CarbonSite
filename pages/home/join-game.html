@@ -1,0 +1,37 @@
+---
+permalink: /menu/online/join/
+layout: menu.njk
+---
+
+<form action="/play" method="GET">
+
+	<h2>Join Game</h2>
+
+	<label>
+		<span style="display:none;">Multiplayer enabled</span>
+		<input readonly type="checkbox" checked name="multiplayer" class="hide">
+	</label>
+	<label>
+		<strong>Game Code</strong><br>
+		<input required type="text" pattern="^\d{5}$" autocomplete="off" name="gamecode" title="Enter a 5-digit game code">
+	</label>
+	<label>
+		<strong>Username</strong><br>
+		<input type="text" name="username">
+	</label>
+	<label class="toggle">
+		<strong>Spectating?</strong>
+		<input type="checkbox" autocomplete="off" name="spectating">
+		<span class="slider"></span>
+	</label>
+
+	<div style="display: flex;">
+		<a href="/menu/online/" id="back" class="card wide" title="Back">
+			Back
+		</a>
+		<button type="submit" id="play" class="card wide">
+			Play
+		</button>
+	</div>
+
+</form>

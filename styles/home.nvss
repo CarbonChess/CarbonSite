@@ -299,18 +299,20 @@ input[type="text"] {
 
 /* Toggles */
 
-.toggle {
+label {
 	margin-top: 2em;
 	display: block;
 
-	strong {
-		width: 100px;
-		margin-left: -50px;
-		display: inline-block;
-	}
+	&.toggle {
+		strong {
+			width: 100px;
+			margin-left: -50px;
+			display: inline-block;
+		}
 
-	&.disabled strong {
-		color: gray;
+		&.disabled strong {
+			color: gray;
+		}
 	}
 }
 
