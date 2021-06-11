@@ -17,6 +17,7 @@ async function getGameData(chat) {
 // Database //
 
 async function readDB() {
+	readChat();
 	const { fen = createFen(), moves, ingame = 1, players } = await getGameData();
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
@@ -28,7 +29,6 @@ async function readDB() {
 	}
 	if (moves) global.logList = moves.split(',');
 	updateMoves();
-	readChat();
 }
 
 async function sendDB(soft) {

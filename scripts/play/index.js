@@ -38,7 +38,7 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.username = gameOptions.username || 'Player' + window.playerCount;
+	window.username = gameOptions.username || 'User' + random(10, 99);
 	window.chat = [[+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO)];
 
 	const gameData = $('#game-data dl');
