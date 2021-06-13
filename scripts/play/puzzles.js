@@ -23,7 +23,7 @@ async function getPuzzles() {
     let puzzleList = processData(fileData);
 
     let selection = [];
-    for (let i = 1; 1 <= PUZZLENO; i++) {
+    for (let i = 1; i <= PUZZLENO; i++) {
         selection.push[puzzleList[Math.floor[Math.random() * puzzleList.length] + 1]];
     }
     return selection;
