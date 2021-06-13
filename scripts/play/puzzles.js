@@ -1,3 +1,5 @@
+let savedPuzzles;
+let movestoMake;
 function processData(allText) {
     let allTextLines = allText.split(/\r\n|\n/);
     let headers = allTextLines[0].split(',');
@@ -26,5 +28,11 @@ async function getPuzzles() {
     for (let i = 1; i <= PUZZLENO; i++) {
         selection.push(puzzleList[Math.floor(Math.random() * puzzleList.length) + 1]);
     }
-    return selection;
+    selection = selection.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
+    savedPuzzles = selection;
+}
+
+function setBoard(itemNo){
+    createBoardFromFen(savedPuzzles[itemNo].fen);
+    movestoMake = savedPuzzles[itemNo].moves.split[' '];
 }
