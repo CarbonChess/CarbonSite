@@ -87,13 +87,7 @@ function hasClicked(cell) {
 		if (window.hasRules && window.autoFlip) alignBoard();
 
 		// check game ending status
-		const endingStatus = gameEndingStatus(global.currentTurn);
-		if (endingStatus) {
-			let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
-			let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
-			$('#winner').innerText = statusMsg;
-			ingame = false;
-		}
+		checkGameEnding();
 
 		// send to server
 		if (window.autoPing) sendDB();
@@ -131,6 +125,15 @@ function hasClicked(cell) {
 function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+}
+
+function checkGameEnding() {
+	const endingStatus = gameEndingStatus(global.currentTurn);
+	if (!endingStatus) return;
+	let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
+	let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
+	$('#winner').innerText = statusMsg;
+	window.ingame = false;
 }
 
 function undoLastMove() {

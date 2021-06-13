@@ -1,7 +1,7 @@
 'use strict';
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
-const READ_INTERVAL = 2 * 1000;
+const READ_INTERVAL = 3 * 1000;
 const SEP = { MSG: '\x1e', INFO: '\x1f' };
 
 let lastReceivedFen;
@@ -60,9 +60,7 @@ async function readChat() {
 	const sorter = (a, b) => a.split(SEP.INFO)[0] - b.split(SEP.INFO)[0];
 	window.chat = [...new Set([...messages, ...window.chat])].sort(sorter);
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
-	if (!window.hasSentJoinMsg) {
-		window.hasSentJoinMsg = true;
-	}
+	$('#chat').lastElementChild.scrollIntoView();
 }
 
 async function sendChatMessage(force) {
@@ -88,11 +86,11 @@ async function sendChatMessage(force) {
 
 function formatChatMessage([ts, user, msg]) {
 	return `
-        <div data-ts="${ts}" class="chat-message">
-            <div class="chat-message_user">${user}</div>
-            <div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-        </div>
-    `;
+		<div data-ts="${ts}" class="chat-message">
+			<div class="chat-message_user">${user}</div>
+			<div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+		</div>
+	`;
 }
 
 // Game functions //

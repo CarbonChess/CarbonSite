@@ -80,7 +80,7 @@ permalink: /play/
 
 			<form action="javascript:sendChatMessage()" id="send-chat" title="Disclaimer: All messages sent are publicly accessible.">
 				<label for="chat-message">Chat</label>
-				<textarea id="chat-message"></textarea>
+				<textarea id="chat-message" maxlength="140"></textarea>
 				<script>$("#chat-message").addEventListener("keypress", e => { e.which === 13 && !event.shiftKey && (e.target.form.submit(), e.preventDefault()) });</script>
 				<button type="submit">Send</button>
 			</form>
