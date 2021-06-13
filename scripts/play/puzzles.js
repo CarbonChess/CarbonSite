@@ -33,6 +33,6 @@ async function getPuzzles() {
 }
 
 function setBoard(itemNo){
-    createBoardFromFen(savedPuzzles[itemNo].fen);
-    movestoMake = savedPuzzles[itemNo].moves.split[' '];
+    createBoardFromFen(savedPuzzles[itemNo].FEN);
+    movestoMake = savedPuzzles[itemNo].Moves.split[' '];
 }
