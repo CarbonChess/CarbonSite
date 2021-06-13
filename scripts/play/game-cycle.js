@@ -25,16 +25,14 @@ function hasClicked(cell) {
 
 		const startCell = selectedCell;
 		const endCell = cell;
-		const $startCell = $.id(selectedCell);
-		const $endCell = $.id(endCell);
-		const $startPiece = $.id('piece' + selectedCell);
+		const $startPiece = $.id('piece' + startCell);
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
 		const [colour, piece] = startClasses;
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
-		$startCell.classList.remove('selected');
+		$.id(startCell).classList.remove('selected');
 		window.selectedCell = null;
 
 		if (!startClasses) return; // exit if the cell does not has metadata
@@ -60,8 +58,8 @@ function hasClicked(cell) {
 			movePiece(startCell, endCell);
 		}
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
-		$startCell.classList.add('last-move');
-		$endCell.classList.add('last-move');
+		$.id(startCell).classList.add('last-move');
+		$.id(endCell).classList.add('last-move');
 
 		// check if in check
 		checkHighlight();
