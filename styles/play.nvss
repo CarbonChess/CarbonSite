@@ -220,6 +220,7 @@ select {
 	@ $(BR).. {
 		margin: auto;
 		display: grid;
+		place-content: center;
 		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
 		grid-template-columns: var(--left-sidebar-size) var(--board-size) 200px;
 		grid-template-rows: 48px auto 48px;
