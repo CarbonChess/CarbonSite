@@ -20,10 +20,12 @@ async function getGameData(chat) {
 async function readDB() {
 	if (!gameOptions?.multiplayer) return;
 	readChat();
-	const { fen = createFen(), moves, ingame = 1, players } = await getGameData();
+	const { fen = createFen(), moves, lastMove, ingame = 1, players } = await getGameData();
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
 	createBoardFromFen(fen);
+	$$('td').forEach(elem => elem.classList.remove('last-move'));
+	lastMove?.split(',').forEach(cell => $.id(cell)?.classList.add('last-move'));
 	window.playerCount = +players || 0;
 	if (!+ingame) {
 		$('#winner').innerText = 'Timed out';
@@ -42,6 +44,7 @@ async function sendDB(soft) {
 		`gameId=${encodeURIComponent(window.gameId)}`,
 		!soft && `fen=${encodeURIComponent(fen)}`,
 		!soft && `moves=${global.logList.join(',')}`,
+		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
 		`players=${window.playerCount}`,
 		`ingame=${+!window.sessionLost}`,
 	];

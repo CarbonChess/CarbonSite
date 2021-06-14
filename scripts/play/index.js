@@ -24,6 +24,7 @@ function run() {
 	window.ingame = true;
 	window.sessionLost = false;
 	window.totalMoves = 0;
+	window.lastMove = { start: '', end: '' };
 	window.selectedCell = null;
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';

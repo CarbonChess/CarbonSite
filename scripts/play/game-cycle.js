@@ -60,6 +60,7 @@ function hasClicked(cell) {
 		$$('td').forEach(elem => elem.classList.remove('last-move'));
 		$.id(startCell).classList.add('last-move');
 		$.id(endCell).classList.add('last-move');
+		window.lastMove = { start: startCell, end: endCell };
 
 		// check if in check
 		checkHighlight();

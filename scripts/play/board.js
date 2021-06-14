@@ -107,7 +107,6 @@ function createBoardFromFen(fenString) {
 	// Update highlighting
 	checkHighlight();
 	checkGameEnding();
-	$.id(global.logList.slice(-1)[0].substr(-2,2).toUpperCase()).classList.add('last-move');
 
 }
 
