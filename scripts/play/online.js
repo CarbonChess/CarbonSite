@@ -9,10 +9,9 @@ let idleTime = 0;
 
 async function getGameData(chat) {
 	if (!window.gameId) throw Error('No game ID has been specified');
-	const resp = await fetch(`${apiUrl}?type=read&gameId=${chat ? 'c:' : ''}${window.gameId}`);
-	const json = await resp.json();
+	const resp = await fetch(`${apiUrl}?type=read&gameId=${chat ? 'c:' : ''}${window.gameId}`).then(data => data.json());
 	console.debug(`Retrieved data for game ID ${window.gameId}.`);
-	return json.output.data;
+	return resp.output.data;
 }
 
 // Database //
