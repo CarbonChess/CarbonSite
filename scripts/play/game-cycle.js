@@ -122,7 +122,7 @@ function checkHighlight() {
 
 	let { start, end } = window.lastMove;
 	$$('td').forEach(elem => elem.classList.remove('last-move'));
-	[start, end].forEach(cell => $.id(cell).classList.add('last-move'));
+	[start, end].forEach(cell => $.id(cell)?.classList.add('last-move'));
 }
 
 function checkGameEnding() {
