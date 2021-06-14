@@ -57,12 +57,7 @@ function hasClicked(cell) {
 		else {
 			movePiece(startCell, endCell);
 		}
-		$$('td').forEach(elem => elem.classList.remove('last-move'));
-		$.id(startCell).classList.add('last-move');
-		$.id(endCell).classList.add('last-move');
 		window.lastMove = { start: startCell, end: endCell };
-
-		// check if in check
 		checkHighlight();
 
 		// display taken piece on side
@@ -124,6 +119,10 @@ function hasClicked(cell) {
 function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+
+	let { start, end } = window.lastMove;
+	$$('td').forEach(elem => elem.classList.remove('last-move'));
+	[start, end].forEach(cell => $.id(cell).classList.add('last-move'));
 }
 
 function checkGameEnding() {

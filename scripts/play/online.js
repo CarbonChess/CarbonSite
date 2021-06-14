@@ -23,15 +23,20 @@ async function readDB() {
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
 	createBoardFromFen(fen);
-	$$('td').forEach(elem => elem.classList.remove('last-move'));
-	lastMove?.split(',').forEach(cell => $.id(cell)?.classList.add('last-move'));
-	window.playerCount = +players || 0;
+	if (lastMove) {
+		let [start, end] = lastMove.split(',');
+		window.lastMove = { start, end };
+		checkHighlight();
+	}
+	if (moves) {
+		global.logList = moves.split(',');
+		updateMoves();
+	}
 	if (!+ingame) {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
 	}
-	if (moves) global.logList = moves.split(',');
-	updateMoves();
+	window.playerCount = +players || 0;
 }
 
 async function sendDB(soft) {
