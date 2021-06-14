@@ -59,8 +59,8 @@ async function readData({ gameId }) {
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData({ gameId, fen, moves, lastMove, ingame, players, chat }) {
-	const data = { id: gameId, fen, moves, lastMove, ingame, players, chat };
+async function sendData({ gameId, fen, moves, lastMove, points, ingame, players, chat }) {
+	const data = { id: gameId, fen, moves, lastMove, points, ingame, players, chat };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
@@ -95,7 +95,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => 1.03,
+		version: async () => 1.04,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
