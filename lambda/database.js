@@ -3,7 +3,7 @@ const { FAUNA_CLIENT_KEY } = process.env;
 const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
-const MAX_AGE = 3 * 86.4e6; // 3 days
+const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
 const resolve = ret => console.log('Success:', ret);
 const rejection = err => console.error('Error:', err.message);
@@ -59,8 +59,8 @@ async function readData({ gameId }) {
 	return { success, data: success ? docs[0].data : {} };
 }
 
-async function sendData({ gameId, fen, moves, ingame }) {
-	const data = { id: gameId, fen, moves, ingame };
+async function sendData({ gameId, fen, moves, lastMove, points, ingame, players, chat }) {
+	const data = { id: gameId, fen, moves, lastMove, points, ingame, players, chat };
 	console.debug('Sending game data', fen, 'to ID', gameId);
 	let success, type;
 	let docs = await getGameData(gameId);
@@ -80,7 +80,7 @@ async function sendData({ gameId, fen, moves, ingame }) {
 	else {
 		type = 'update';
 		await client.query(
-			Q.Update(docs[0].ref, { data })
+			Q.Update(docs[0].ref, { ...docs[0].data, data })
 		).then(() => success = true).catch(() => success = false);
 	}
 	return { type, success, data };
@@ -95,7 +95,7 @@ exports.handler = async function (event, context, callback) {
 		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => await 1.01,
+		version: async () => 1.04,
 	};
 	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {

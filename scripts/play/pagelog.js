@@ -12,11 +12,11 @@ function updateMoves() {
 		moveHtml += ' <span class="move">';
 		let isWhite = n % 2 === 0;
 		if (isWhite) moveHtml += `<br class="desktoponly">` + (n / 2 + 1) + '. ';
-		let pieceCode = 9812 + ['K', 'Q', 'R', 'B', 'N'].indexOf(move[0]);
+		let pieceCode = move.length === 2 ? 9811 : 9812 + ['K', 'Q', 'R', 'B', 'N'].indexOf(move[0]);
 		if (pieceCode === 9811) pieceCode = 9817;
 		else move = move.slice(1);
 		if (!isWhite) pieceCode += 6;
-		moveHtml += `&#${pieceCode};` + move;
+		moveHtml += `&#${pieceCode};` + move.toLowerCase();
 		moveHtml += '</span>';
 	}
 	$('#log').innerHTML = moveHtml;

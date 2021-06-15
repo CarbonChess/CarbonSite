@@ -3,26 +3,15 @@ permalink: /menu/online/
 layout: menu.njk
 ---
 
-<script>
-	let toggled = false;
-	function toggle() {
-		toggled = !toggled;
-		['#online-menu', '#join-game'].forEach(id => $(id).classList.toggle('hide'));
-	}
-	document.addEventListener('DOMContentLoaded', function () {
-		$('#new-game').href = $('#new-game').href.replace('{gameId}', randomID());
-	});
-</script>
-
 <section id="online-menu">
 	<h2>Online</h2>
 	<div class="cards">
-		<a href="/play?multiplayer=on&gamecode={gameId}" id="new-game" class="card big">
+		<a href="/menu/online/new/" id="new-game" class="card big">
 			<img src="/images/icons/offline.svg" height="100px" alt="New Game" class="card-image">
 			<span class="card-heading">New Game</span>
 			<span class="card-description">Create a new game for an opponent to join</span>
 		</a>
-		<a href="javascript:toggle();" class="card big">
+		<a href="/menu/online/join/" class="card big">
 			<img src="/images/icons/online.svg" height="100px" alt="Join Game" class="card-image">
 			<span class="card-heading">Join Game</span>
 			<span class="card-description">Join an existing chess game</span>
@@ -32,32 +21,3 @@ layout: menu.njk
 		Back
 	</a>
 </section>
-
-<form action="/play" method="GET" id="join-game" class="hide">
-
-	<label>
-		<span style="display:none;">Multiplayer enabled</span>
-		<input readonly type="checkbox" checked name="multiplayer" class="hide">
-	</label>
-
-	<h2>Join Game</h2>
-	<label>
-		<strong>Game Code</strong><br>
-		<input required type="text" pattern="^\d{5}$" autocomplete="off" name="gamecode" title="Enter a 5-digit game code">
-	</label>
-	<label class="toggle">
-		<strong>Spectating?</strong>
-		<input type="checkbox" autocomplete="off" name="spectating">
-		<span class="slider"></span>
-	</label>
-
-	<div style="display: flex;">
-		<a href="javascript:toggle();" id="back" class="card wide" title="Back">
-			Back
-		</a>
-		<button type="submit" id="play" class="card wide">
-			Play
-		</button>
-	</div>
-
-</form>

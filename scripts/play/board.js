@@ -1,6 +1,6 @@
 // Board functions //
 
-function newBoard(size, initial) {
+function newBoard(size) {
 	$('table').innerHTML = '';
 	let emptyCells = [];
 	for (let i = 1; i <= size; i++) {
@@ -103,6 +103,10 @@ function createBoardFromFen(fenString) {
 		const c = takenPieces.b[i];
 		logTakenPiece('black', pieces[c]);
 	}
+
+	// Update highlighting
+	checkHighlight();
+	checkGameEnding();
 
 }
 

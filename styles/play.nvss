@@ -1,6 +1,6 @@
 @option MAX_MATH_RECURSION 20
 
-@var BR = 800px
+@var BR = 1100px
 @var light-color = #dcdcdc
 @var dark-color = #afafaf
 
@@ -9,20 +9,13 @@
 :root {
 	--bg-colour: #191919;
 	--cell-size: 80px;
-	--board-size: calc(var(--cell-size) * 8 );
 	@ ..$(BR) {
 		--cell-size: 50px;
 	}
-}
-
-body {
-	max-width: 900px;
-
-	@ $(BR).. {
-		margin: 0 auto;
-		padding: 50px 0 0;
-		display: flex;
-		flex-direction: column;
+	--board-size: calc(var(--cell-size) * 8 );
+	--left-sidebar-size: 240px;
+	body.is-singleplayer {
+		--left-sidebar-size: 100px;
 	}
 }
 
@@ -35,7 +28,8 @@ h1 {
 }
 
 dd, dt @ ..$(BR) {
-    display: inline;
+	display: inline;
+	margin: 0 1em;
 }
 
 dt {
@@ -131,7 +125,7 @@ $( @each | a,b,c,d,e,f,g,h | , | |
 
 	$( @each | king,queen,bishop,knight,rook,pawn | , | |
 		&.$v {background-position-x: calc(($i-1)*var(--piece-sep));}
-	)
+	 )
 
 	.taken-pieces & {
 		margin: -8px;
@@ -143,9 +137,9 @@ $( @each | a,b,c,d,e,f,g,h | , | |
 	@ ..$(BR) {
 		transform: none;
 
-		.norotate .black,
-		.rotate .white {
-			transform: scale(1.6) rotate(180deg);
+		[noflip].norotate &.black,
+		[noflip].rotate &.white {
+			transform: rotate(180deg);
 			margin: 5px 5px 0 0;
 		}
 	}
@@ -224,13 +218,15 @@ select {
 	margin-bottom: 1em;
 
 	@ $(BR).. {
+		margin: auto;
 		display: grid;
-		grid-template-areas: ". white ." "icons table sidebar" ". black ." ". promotion .";
-		grid-template-columns: 1fr var(--board-size) 2fr;
+		place-content: center;
+		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
+		grid-template-columns: var(--left-sidebar-size) var(--board-size) 200px;
 		grid-template-rows: 48px auto 48px;
 
 		.rotate & {
-			grid-template-areas: ". black ." "icons table sidebar" ". white .";
+			grid-template-areas: ". black ." "lsidebar table rsidebar" ". white .";
 		}
 	}
 }
@@ -241,25 +237,9 @@ select {
 	font-size: 1.5em;
 }
 
-#icon-options,
 #foot {
 	margin: 0.5em auto;
 	text-align: center;
-}
-
-#icon-options {
-	button {
-		width: 50px;
-		height: 50px;
-		padding: 2px 4px;
-	}
-
-	@ $(BR).. {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		grid-area: icons;
-	}
 }
 
 button.enabled,
@@ -295,13 +275,107 @@ button.disabled {
 #taken-black-pieces {grid-area: black;}
 #taken-white-pieces {grid-area: white;}
 
-#sidebar {
+.is-multiplayer :is(#undo, #reset) {
+	display: none;
+}
+
+#left-sidebar,
+#right-sidebar {
 	max-height: var(--board-size);
-	overflow-y: scroll;
+	overflow-y: auto;
+}
+
+#left-sidebar {
+	grid-area: lsidebar;
+	padding-right: 6px;
+	overflow-y: hidden;
+
+	#icon-options {
+		button {
+			width: 50px;
+			height: 50px;
+			padding: 2px 4px;
+		}
+
+		@ $(BR).. {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			grid-area: icons;
+			flex-wrap: wrap;
+			gap: 4px;
+
+			body.is-singleplayer & {
+				flex-direction: column;
+			}
+		}
+	}
+
+	:is(#send-chat, #chat) {
+		width: 100%;
+
+		body.is-singleplayer & {
+			display: none;
+		}
+	}
+
+	#send-chat {
+		margin-top: 2em;
+		display: flex;
+		flex-direction: column;
+
+		#chat-message {
+			border-radius: 6px;
+			resize: none;
+		}
+
+		button {
+			margin: 4px 4px 4px auto;
+		}
+	}
+
+	#chat {
+		max-height: 70%;
+		padding: 6px;
+		overflow-y: auto;
+		border: 2px solid #111;
+		background: #2228;
+		color: #eee;
+		font-family: monospace;
+		font-size: 120%;
+
+		.chat-message {
+			padding: 8px 4px;
+
+			&_user {
+				font-size: 80%;
+				color: #ccc;
+			}
+
+			&-self {
+				text-align: right;
+			}
+
+			&-same {
+				margin-top: -3/4em;
+
+				.chat-message_user {
+					display: none;
+				}
+			}
+
+			&-system {
+				text-align: center;
+			}
+		}
+	}
+}
+
+#right-sidebar {
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
-	grid-area: sidebar;
+	grid-area: rsidebar;
 
 	strong {
 		margin-bottom: 0.5em;
@@ -317,7 +391,8 @@ button.disabled {
 	}
 
 	#log {
-		text-align: center;
+    	padding: 1em;
+		text-align: left;
 
 		.move {
 			padding: 1px 2px;
