@@ -99,7 +99,7 @@ function hasClicked(cell) {
 		//check if correct puzzle move
 		if (window.gameOptions.puzzles) {
 
-			if (startCell === movesToMake[0].slice(0, 2) && endCell === movesToMake[0].slice(2, 4)) {
+			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase() ) {
 				movesToMake.shift();
 				if (movesToMake.length > 0) {
 					$.id('winner').innerHTML = 'correct now find the next one'
