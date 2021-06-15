@@ -39,7 +39,7 @@ function puzzleMove() {
 }
 function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
-    movestoMake = savedPuzzles[itemNo].Moves.split[' '];
+    movestoMake = savedPuzzles[itemNo].Moves.split(' ');
     alignBoard();
     setTimeout(puzzleMove, 1000);
 }
