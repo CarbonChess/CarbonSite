@@ -32,7 +32,14 @@ async function getPuzzles() {
     savedPuzzles = selection;
 }
 
+function puzzleMove(){
+    let move = movestoMake.shift(0);
+    hasClicked(move.substr(0,2));
+    hasClicked(move.substr(2,2));
+}
 function setBoard(itemNo){
     createBoardFromFen(savedPuzzles[itemNo].FEN);
     movestoMake = savedPuzzles[itemNo].Moves.split[' '];
+    alignBoard();
+    setTimeout(puzzleMove, 1000);
 }

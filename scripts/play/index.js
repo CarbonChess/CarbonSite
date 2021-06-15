@@ -16,6 +16,7 @@ function run() {
 		gamecode: params.get('gamecode'),
 		static: booleanParam('static'),
 		spectating: booleanParam('spectating'),
+		puzzles: booleanParam('puzzles'),
 	}
 	window.firstLoad = false;
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
