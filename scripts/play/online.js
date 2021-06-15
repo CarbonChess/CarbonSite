@@ -3,8 +3,9 @@ const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
 
-let lastReceivedFen;
 let idleTime = 0;
+let lastReceivedFen;
+let lastMessageUser;
 
 async function getGameData(chat) {
 	if (!window.gameId) throw Error('No game ID has been specified');
@@ -71,6 +72,7 @@ async function readChat() {
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
 	const sorter = (a, b) => a.split(SEP.INFO)[0] - b.split(SEP.INFO)[0];
 	window.chat = [...new Set([...messages, ...window.chat])].sort(sorter);
+	lastMessageUser = null;
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
 	$('#chat').lastElementChild.scrollIntoView();
 }
@@ -96,7 +98,6 @@ async function sendChatMessage(force) {
 	fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
 
-let lastMessageUser;
 function formatChatMessage([ts, user, msg]) {
 	let messageClass = user === window.username ? 'chat-message-self' : user === '[System]' ? 'chat-message-system' : '';
 	const content = `
