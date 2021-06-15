@@ -1,5 +1,5 @@
 let savedPuzzles;
-let movestoMake;
+let movesToMake;
 function processData(allText) {
     let allTextLines = allText.split(/\r\n|\n/);
     let headers = allTextLines[0].split(',');
@@ -39,7 +39,7 @@ function puzzleMove() {
 }
 function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
-    movestoMake = savedPuzzles[itemNo].Moves.split(' ');
+    movesToMake = savedPuzzles[itemNo].Moves.split(' ');
     alignBoard();
     setTimeout(puzzleMove, 1000);
 }
