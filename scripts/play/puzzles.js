@@ -33,10 +33,10 @@ async function getPuzzles() {
 }
 
 function puzzleMove() {
-    let move = movesToMake.shift(0);
-    hasClicked(move.slice(0, 2));
-    hasClicked(move.slice(2, 4));
+    hasClicked(movesToMake[0].slice(0, 2));
+    hasClicked(movesToMake[0].slice(2, 4));
 }
+
 function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
     movesToMake = savedPuzzles[itemNo].Moves.split(' ');
