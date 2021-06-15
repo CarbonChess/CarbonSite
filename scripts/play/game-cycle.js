@@ -104,10 +104,12 @@ function hasClicked(cell) {
 				if (movesToMake.length > 0) {
 					$.id('winner').innerHTML = 'correct now find the next one'
 					setTimeout(puzzleMove, 500);
-				} else {
+				} 
+				else {
 					$.id('winner').innerHTML = 'Congrats you are a puzzles god';
 				}
-			} else {
+			} 
+			else {
 				undoLastMove();
 				$.id('winner').innerHTML = 'try again fool';
 			}
