@@ -1,0 +1,25 @@
+---
+permalink: /menu/puzzles/
+layout: menu.njk
+---
+
+<form action="/play" method="GET">
+
+	<h2>Puzzles</h2>
+	<div>
+		<label class="hide">
+			<strong>Puzzles</strong>
+			<input type="checkbox" checked name="puzzles">
+		</label>
+	</div>
+
+	<div id="nav-buttons">
+		<a href="/" id="back" class="card wide" title="Return to menu">
+			Back
+		</a>
+		<button type="submit" id="play" class="card wide">
+			Play
+		</button>
+	</div>
+
+</form>
