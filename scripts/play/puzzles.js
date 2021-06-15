@@ -1,5 +1,6 @@
 let savedPuzzles;
 let movesToMake;
+let puzzleColour;
 function processData(allText) {
     let allTextLines = allText.split(/\r\n|\n/);
     let headers = allTextLines[0].split(',');
@@ -41,5 +42,6 @@ function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
     movesToMake = savedPuzzles[itemNo].Moves.split(' ');
     alignBoard();
+    puzzleColour = global.currentTurn === 'w' ? 'b' : 'w'; 
     setTimeout(puzzleMove, 1000);
 }

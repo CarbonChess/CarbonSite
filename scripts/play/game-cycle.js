@@ -97,7 +97,7 @@ function hasClicked(cell) {
 
 
 		//check if correct puzzle move
-		if (window.gameOptions.puzzles) {
+		if (window.gameOptions.puzzles && puzzleColour === window.currentTurn) {
 
 			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase() ) {
 				movesToMake.shift();
