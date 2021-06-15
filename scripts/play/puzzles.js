@@ -43,6 +43,6 @@ function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
     movesToMake = savedPuzzles[itemNo].Moves.split(' ');
     alignBoard();
-    puzzleColour = global.currentTurn === 'w' ? 'b' : 'w'; 
+    puzzleColour = global.currentTurn; 
     setTimeout(puzzleMove, 1000);
 }
