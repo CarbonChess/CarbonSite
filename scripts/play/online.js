@@ -2,7 +2,6 @@
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
-const SEP = { MSG: '\x1e', INFO: '\x1f' };
 
 let lastReceivedFen;
 let idleTime = 0;
@@ -100,14 +99,14 @@ async function sendChatMessage(force) {
 let lastMessageUser;
 function formatChatMessage([ts, user, msg]) {
 	let messageClass = { [window.username]: 'chat-message-self', [lastMessageUser]: 'chat-message-same', '[System]': 'chat-message-system' }[user] || '';
-	const msg = `
+	const content = `
 		<div data-ts="${ts}" class="chat-message ${messageClass}">
 			<div class="chat-message_user">${user}</div>
 			<div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
 		</div>
 	`;
 	lastMessageUser = user;
-	return msg;
+	return content;
 }
 
 // Game functions //
