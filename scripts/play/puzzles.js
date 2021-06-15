@@ -33,7 +33,7 @@ async function getPuzzles() {
 }
 
 function puzzleMove() {
-    let move = movestoMake.shift(0);
+    let move = movesToMake.shift(0);
     hasClicked(move.slice(0, 2));
     hasClicked(move.slice(2, 4));
 }
