@@ -86,7 +86,7 @@ async function sendChatMessage(force) {
 		$('#chat').innerHTML += formatChatMessage(messageParts);
 		window.chat.push(messageParts.join(SEP.INFO));
 	}
-	if (!window.autoPing || !window.ingame) return;
+	if (!window.autoPing) return;
 	let queryParams = [
 		'type=send',
 		`gameId=c:${encodeURIComponent(window.gameId)}`,
@@ -98,9 +98,9 @@ async function sendChatMessage(force) {
 
 let lastMessageUser;
 function formatChatMessage([ts, user, msg]) {
-	let messageClass = { [window.username]: 'chat-message-self', [lastMessageUser]: 'chat-message-same', '[System]': 'chat-message-system' }[user] || '';
+	let messageClass = user === window.username ? 'chat-message-self' : user === '[System]' ? 'chat-message-system' : '';
 	const content = `
-		<div data-ts="${ts}" class="chat-message ${messageClass}">
+		<div data-ts="${ts}" class="chat-message ${messageClass} ${user === lastMessageUser ? 'chat-message-same' : ''}">
 			<div class="chat-message_user">${user}</div>
 			<div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
 		</div>

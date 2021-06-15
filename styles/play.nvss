@@ -288,6 +288,7 @@ button.disabled {
 #left-sidebar {
 	grid-area: lsidebar;
 	padding-right: 6px;
+	overflow-y: hidden;
 
 	#icon-options {
 		button {
@@ -347,7 +348,8 @@ button.disabled {
 			padding: 8px 4px;
 
 			&_user {
-				font-size: 90%;
+				font-size: 80%;
+				color: #ccc;
 			}
 
 			&-self {
@@ -389,7 +391,8 @@ button.disabled {
 	}
 
 	#log {
-		text-align: center;
+    	padding: 1em;
+		text-align: left;
 
 		.move {
 			padding: 1px 2px;
