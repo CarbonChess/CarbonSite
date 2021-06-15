@@ -3,22 +3,6 @@ const { FAUNA_CLIENT_KEY } = process.env;
 const Q = faunadb.query;
 const client = new faunadb.Client({ secret: FAUNA_CLIENT_KEY });
 const COLLECTION = 'Games';
-const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
-
-const resolve = ret => console.log('Success:', ret);
-const rejection = err => console.error('Error:', err.message);
-
-async function getDocs() {
-	console.debug('Retrieving documents');
-	const docs = await client.query(
-		Q.Map(
-			Q.Paginate(Q.Documents(Q.Collection(COLLECTION))),
-			Q.Lambda(x => Q.Get(x))
-		)
-	);
-	console.log('Documents:', docs.data);
-	return docs.data;
-}
 
 async function getGameData(gameId) {
 	console.debug('Retrieving game data of ID', gameId);
@@ -30,26 +14,6 @@ async function getGameData(gameId) {
 	);
 	console.log('Documents:', docs.data);
 	return docs.data;
-}
-
-async function deleteDoc(doc) {
-	await client.query(
-		Q.Delete(doc.ref)
-	).then(resolve).catch(rejection);
-}
-
-async function pruneDocs() {
-	const docs = await getDocs();
-	let deletedDocs = [];
-	for (const doc of docs) {
-		const invalidID = !/^\d{5}$/.test(doc.data.id);
-		const oldSession = +new Date() - doc.ts / 1e3 > MAX_AGE;
-		if (invalidID || oldSession) {
-			deleteDoc(doc);
-			deletedDocs.push(doc.data);
-		}
-	}
-	return { success: docs.length > 1, data: { deleted: deletedDocs } };
 }
 
 async function readData({ gameId }) {
@@ -66,7 +30,7 @@ async function sendData({ gameId, fen, moves, lastMove, points, ingame, players,
 	let docs = await getGameData(gameId);
 	// Remove duplicates if applicable
 	if (docs.length > 1) {
-		docs.slice(1).forEach(deleteDoc);
+		docs.slice(1).forEach(client.query(Q.Delete(doc.ref)));
 		docs = [docs[0]];
 	}
 	// Make new document if no game is in session
@@ -91,13 +55,10 @@ exports.handler = async function (event, context, callback) {
 	const input = event.queryStringParameters;
 	const { type } = input;
 	const funcs = {
-		list: async () => await getDocs(),
-		prune: async () => await pruneDocs(),
 		read: async () => await readData(input),
 		send: async () => await sendData(input),
-		version: async () => 1.04,
+		help: async () => ['read', 'send'],
 	};
-	funcs.help = async () => ({ commands: Object.keys(funcs), version: await funcs.version() });
 	if (!funcs[type]) {
 		return { statusCode: 405, body: JSON.stringify(`Error: Invalid function '${type}'.`) };
 	}

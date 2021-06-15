@@ -78,9 +78,9 @@ permalink: /play/
 				</button>
 			</div>
 
-			<form action="javascript:sendChatMessage()" id="send-chat" title="Disclaimer: All messages sent are publicly accessible.">
+			<form action="javascript:sendChatMessage()" id="send-chat">
 				<label for="chat-message">Chat</label>
-				<textarea id="chat-message" maxlength="140"></textarea>
+				<textarea id="chat-message" maxlength="140" title="Note that chat messages are not encrypted"></textarea>
 				<script>$("#chat-message").addEventListener("keypress", e => { e.which === 13 && !event.shiftKey && (e.target.form.submit(), e.preventDefault()) });</script>
 				<button type="submit">Send</button>
 			</form>

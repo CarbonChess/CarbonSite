@@ -1,4 +1,3 @@
-'use strict';
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
@@ -9,8 +8,9 @@ let lastMessageUser;
 
 async function getGameData(chat) {
 	if (!window.gameId) throw Error('No game ID has been specified');
-	const resp = await fetch(`${apiUrl}?type=read&gameId=${chat ? 'c:' : ''}${window.gameId}`).then(data => data.json());
-	console.debug(`Retrieved data for game ID ${window.gameId}.`);
+	let gameId = (chat ? 'c:' : '') + window.gameId;
+	const resp = await fetch(`${apiUrl}?type=read&gameId=${gameId}`).then(data => data.json());
+	console.debug(`Retrieved data for game ID ${gameId}.`);
 	return resp.output.data;
 }
 
@@ -74,7 +74,7 @@ async function readChat() {
 	window.chat = [...new Set([...messages, ...window.chat])].sort(sorter);
 	lastMessageUser = null;
 	$('#chat').innerHTML = messagesRaw.map(formatChatMessage).join('');
-	$('#chat').lastElementChild.scrollIntoView();
+	if (document.body.clientWidth > 1100) $('#chat').lastElementChild.scrollIntoView();
 }
 
 async function sendChatMessage(force) {
@@ -94,8 +94,8 @@ async function sendChatMessage(force) {
 		`gameId=c:${encodeURIComponent(window.gameId)}`,
 		`chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
 	];
-	console.debug(`Attempting to send chat message data to game ID ${window.gameId}...`);
 	fetch(`${apiUrl}?${queryParams.join('&')}`);
+	console.debug(`Sent chat message to game ID ${window.gameId}.`);
 }
 
 function formatChatMessage([ts, user, msg]) {
