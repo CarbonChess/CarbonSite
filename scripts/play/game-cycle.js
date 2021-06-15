@@ -95,6 +95,24 @@ function hasClicked(cell) {
 			ingame = false;
 		}
 
+
+		//check if correct puzzle move
+		if (window.gameOptions.puzzles) {
+
+			if (startCell === movesToMake[0].slice(0, 2) && endCell === movesToMake[0].slice(2, 4)) {
+				movesToMake.shift();
+				if (movesToMake.length > 0) {
+					$.id('winner').innerHTML = 'correct now find the next one'
+					setTimeout(puzzleMove, 500);
+				} else {
+					$.id('winner').innerHTML = 'Congrats you are a puzzles god';
+				}
+			} else {
+				undoLastMove();
+				$.id('winner').innerHTML = 'try again fool';
+			}
+
+		}
 		// send to server
 		if (window.autoPing) sendDB(window.gameId, createFen());
 

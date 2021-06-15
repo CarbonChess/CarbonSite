@@ -56,9 +56,16 @@ function run() {
 	}
 
 	Object.assign(window, { ...fenFuncs });
+
 	setupBoard();
-	newBoard(8, true);
-	alignBoard();
+	if (window.gameOptions.puzzles) {
+		await getPuzzles();
+		setBoard(0);
+	}
+	else {
+		newBoard(8, true);
+		alignBoard();
+	}
 
 }
 
