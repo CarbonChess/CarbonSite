@@ -34,7 +34,7 @@ async function readDB() {
 	}
 	if (points) {
 		let [w, b] = points.split(',');
-		window.points = { w, b };
+		window.points = { w: +w, b: +b };
 		logPoints();
 	}
 	if (!+ingame) {
@@ -97,13 +97,17 @@ async function sendChatMessage(force) {
 	fetch(`${apiUrl}?${queryParams.join('&')}`);
 }
 
+let lastMessageUser;
 function formatChatMessage([ts, user, msg]) {
-	return `
-		<div data-ts="${ts}" class="chat-message">
+	let messageClass = { [window.username]: 'chat-message-self', [lastMessageUser]: 'chat-message-same', '[System]': 'chat-message-system' }[user] || '';
+	const msg = `
+		<div data-ts="${ts}" class="chat-message ${messageClass}">
 			<div class="chat-message_user">${user}</div>
 			<div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
 		</div>
 	`;
+	lastMessageUser = user;
+	return msg;
 }
 
 // Game functions //
