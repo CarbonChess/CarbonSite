@@ -59,8 +59,7 @@ function run() {
 
 	setupBoard();
 	if (window.gameOptions.puzzles) {
-		await getPuzzles();
-		setBoard(0);
+		getPuzzles().then(() => setBoard(0));
 	}
 	else {
 		newBoard(8, true);
