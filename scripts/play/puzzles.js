@@ -25,7 +25,7 @@ function processData(allText) {
 async function getPuzzles(difficulty) {
     //TODO implement `difficulty`
     const PUZZLENO = 10;
-    let fileData = await fetch('/images/puzzles.csv').then(data => data.text());
+    let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
     let puzzleList = processData(fileData);
 
     let selection = [];
