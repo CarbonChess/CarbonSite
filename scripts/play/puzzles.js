@@ -51,7 +51,7 @@ function setBoard(itemNo) {
 function nextPuzzle() {
     if (puzzlePosition === 9) {
         puzzlePosition = 0;
-        await getPuzzles().then(setBoard(puzzlePosition));
+        getPuzzles().then(setBoard(puzzlePosition));
     } else {
         puzzlePosition++;
         setBoard(puzzlePosition);
