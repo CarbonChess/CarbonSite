@@ -44,6 +44,17 @@ function setBoard(itemNo) {
     createBoardFromFen(savedPuzzles[itemNo].FEN);
     movesToMake = savedPuzzles[itemNo].Moves.split(' ');
     alignBoard();
-    puzzleColour = global.currentTurn; 
+    puzzleColour = global.currentTurn;
     setTimeout(puzzleMove, 1000);
+}
+
+function nextPuzzle() {
+    if (puzzlePosition === 9) {
+        puzzlePosition = 0;
+        await getPuzzles().then(setBoard(puzzlePosition));
+    } else {
+        puzzlePosition++;
+        setBoard(puzzlePosition);
+    }
+    $.id('next-puzzle').classList.add('hide');
 }

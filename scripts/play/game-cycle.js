@@ -95,6 +95,7 @@ function hasClicked(cell) {
 				} 
 				else {
 					$.id('winner').innerHTML = 'Congrats you are a puzzles god';
+					$.id('next-puzzle').classList.remove('hide');
 				}
 			} 
 			else {
