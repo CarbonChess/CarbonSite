@@ -58,4 +58,5 @@ function nextPuzzle() {
         setBoard(puzzlePosition);
     }
     $.id('next-puzzle').classList.add('hide');
+    $.id('winner').innerHTML = '';
 }
