@@ -2,6 +2,7 @@ const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
 
+let cipher;
 let idleTime = 0;
 let lastReceivedFen;
 let lastMessageUser;
@@ -68,7 +69,7 @@ async function readChat() {
 	if (!gameOptions?.multiplayer) return;
 	const { chat } = await getGameData('chat:true');
 	if (!chat) return;
-	let messages = chat.split(SEP.MSG);
+	let messages = cipher.decode(chat).split(SEP.MSG);
 	let messagesRaw = messages.map(msg => msg.split(SEP.INFO));
 	const sorter = (a, b) => a.split(SEP.INFO)[0] - b.split(SEP.INFO)[0];
 	window.chat = [...new Set([...messages, ...window.chat])].sort(sorter);
@@ -92,16 +93,16 @@ async function sendChatMessage(force) {
 	let queryParams = [
 		'type=send',
 		`gameId=c:${encodeURIComponent(window.gameId)}`,
-		`chat=${encodeURIComponent(window.chat.join(SEP.MSG))}`,
+		`chat=${encodeURIComponent(cipher.encode(window.chat.join(SEP.MSG)))}`,
 	];
 	fetch(`${apiUrl}?${queryParams.join('&')}`);
 	console.debug(`Sent chat message to game ID ${window.gameId}.`);
 }
 
 function formatChatMessage([ts, user, msg]) {
-	let messageClass = user === window.username ? 'chat-message-self' : user === '[System]' ? 'chat-message-system' : '';
+	let messageType = user === window.username ? 'chat-message-self' : user === '[System]' ? 'chat-message-system' : '';
 	const content = `
-		<div data-ts="${ts}" class="chat-message ${messageClass} ${user === lastMessageUser ? 'chat-message-same' : ''}">
+		<div data-ts="${ts}" class="chat-message ${messageType} ${user === lastMessageUser ? 'chat-message-same' : ''}">
 			<div class="chat-message_user">${user}</div>
 			<div class="chat-message_text">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
 		</div>
@@ -114,6 +115,7 @@ function formatChatMessage([ts, user, msg]) {
 
 async function init() {
 	if (!gameOptions?.multiplayer) return;
+	cipher = new Cipher(window.gameId);
 	const data = await getGameData();
 	window.playerCount = (+data.players || 0) + 1;
 	window.playerTurn = playerCount === 1 ? 'white' : 'black';

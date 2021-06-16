@@ -42,11 +42,9 @@ function run() {
 	window.username = gameOptions.username || 'User' + random(10, 99);
 	window.chat = [[+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO)];
 
-	const gameData = $('#game-data dl');
-	const addGameData = (title, content) => gameData.innerHTML += `<dt>${title}</dt><dd>${content}</dd>`;
-	gameData.innerHTML = '';
+	$('#game-data_content').innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
-	$('body').classList.add(gameOptions.multiplayer ? 'is-multiplayer' : 'is-singleplayer');
+	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : 'singleplayer';
 	if (gameOptions.bot) {
 		addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
 	}
@@ -62,7 +60,9 @@ function run() {
 		window.ingame = false;
 		addGameData('Spectating', 'Yes');
 	}
-	if (!gameOptions.autoFlip) $('body').dataset.noflip = true;
+	if (!gameOptions.autoFlip) {
+		$('body').dataset.noflip = true;
+	}
 
 	Object.assign(window, { ...fenFuncs });
 	setupBoard();

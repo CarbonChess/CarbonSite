@@ -55,7 +55,7 @@ permalink: /play/
 		<aside id="right-sidebar">
 			<div id="game-data">
 				<strong>Session</strong>
-				<dl></dl>
+				<dl id="game-data_content"></dl>
 			</div>
 			<strong>Moves</strong>
 			<div id="log" class="resettable"></div>
@@ -80,7 +80,7 @@ permalink: /play/
 
 			<form action="javascript:sendChatMessage()" id="send-chat">
 				<label for="chat-message">Chat</label>
-				<textarea id="chat-message" maxlength="140" title="Note that chat messages are not encrypted"></textarea>
+				<textarea id="chat-message" maxlength="140"></textarea>
 				<script>$("#chat-message").addEventListener("keypress", e => { e.which === 13 && !event.shiftKey && (e.target.form.submit(), e.preventDefault()) });</script>
 				<button type="submit">Send</button>
 			</form>

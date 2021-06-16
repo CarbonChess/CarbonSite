@@ -14,7 +14,7 @@
 	}
 	--board-size: calc(var(--cell-size) * 8 );
 	--left-sidebar-size: 240px;
-	body.is-singleplayer {
+	[mode="singleplayer"] {
 		--left-sidebar-size: 100px;
 	}
 }
@@ -275,7 +275,7 @@ button.disabled {
 #taken-black-pieces {grid-area: black;}
 #taken-white-pieces {grid-area: white;}
 
-.is-multiplayer :is(#undo, #reset) {
+body[mode="multiplayer"] :is(#undo, #reset) {
 	display: none;
 }
 
@@ -305,7 +305,7 @@ button.disabled {
 			flex-wrap: wrap;
 			gap: 4px;
 
-			body.is-singleplayer & {
+			body[mode="singleplayer"] & {
 				flex-direction: column;
 			}
 		}
@@ -314,7 +314,7 @@ button.disabled {
 	:is(#send-chat, #chat) {
 		width: 100%;
 
-		body.is-singleplayer & {
+		body[mode="singleplayer"] & {
 			display: none;
 		}
 	}
