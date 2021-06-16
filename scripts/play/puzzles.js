@@ -2,6 +2,7 @@ let savedPuzzles;
 let movesToMake;
 let puzzleColour;
 let puzzlePosition = 0;
+
 function processData(allText) {
     let allTextLines = allText.split(/\r\n|\n/);
     let headers = allTextLines[0].split(',');
@@ -11,17 +12,18 @@ function processData(allText) {
         let data = allTextLines[i].split(',');
         if (data.length == headers.length) {
 
-            let tarr = [];
+            let textArray = [];
             for (let j = 0; j < headers.length; j++) {
-                tarr.push(headers[j] + ":" + data[j]);
+                textArray.push(headers[j] + ":" + data[j]);
             }
-            lines.push(tarr);
+            lines.push(textArray);
         }
     }
     return lines;
 }
 
-async function getPuzzles() {
+async function getPuzzles(difficulty) {
+    //TODO implement `difficulty`
     const PUZZLENO = 10;
     let fileData = await fetch('/images/puzzles.csv').then(data => data.text());
     let puzzleList = processData(fileData);

@@ -3,9 +3,9 @@ function updateSelection(elem) {
 	elem.classList.add('selected');
 }
 
-function updateBotIntelligence() {
-	const level = $('#bot-intelligence-level').value;
+function updateSlider(id) {
+	const level = $(`#${id}-level`).value;
 	$$(`[data-level]`).forEach(elem => elem.classList.add('hide'));
 	$(`[data-level="${level}"]`).classList.remove('hide');
-	$('#bot-intelligence-dots').innerHTML = ' • '.repeat(level - 1) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(4 - level);
+	$(`#${id}-dots`).innerHTML = ' • '.repeat(level - 1) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(4 - level);
 }

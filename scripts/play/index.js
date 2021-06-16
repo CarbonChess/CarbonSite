@@ -18,6 +18,7 @@ function run() {
 		static: booleanParam('static'),
 		spectating: booleanParam('spectating'),
 		puzzles: booleanParam('puzzles'),
+		difficulty: +params.get('difficulty'),
 	}
 	window.firstLoad = false;
 	history.pushState({}, 'Play', location.href.replace(location.search, ''));
@@ -68,8 +69,8 @@ function run() {
 	Object.assign(window, { ...fenFuncs });
 
 	setupBoard();
-	if (window.gameOptions.puzzles) {
-		getPuzzles().then(() => setBoard(0));
+	if (gameOptions.puzzles) {
+		getPuzzles(gameOptions.difficulty).then(() => setBoard(0));
 	}
 	else {
 		newBoard(8, true);
