@@ -1,6 +1,7 @@
 let savedPuzzles;
 let movesToMake;
 let puzzleColour;
+let puzzlePosition = 0;
 function processData(allText) {
     let allTextLines = allText.split(/\r\n|\n/);
     let headers = allTextLines[0].split(',');
