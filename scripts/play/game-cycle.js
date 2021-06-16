@@ -25,16 +25,14 @@ function hasClicked(cell) {
 
 		const startCell = selectedCell;
 		const endCell = cell;
-		const $startCell = $.id(selectedCell);
-		const $endCell = $.id(endCell);
-		const $startPiece = $.id('piece' + selectedCell);
+		const $startPiece = $.id('piece' + startCell);
 		const $endPiece = $.id('piece' + endCell);
 		const startClasses = getClasses($startPiece);
 		const endClasses = getClasses($endPiece);
 		const [colour, piece] = startClasses;
 
 		$$('td').forEach(elem => elem.classList.remove('valid'));
-		$startCell.classList.remove('selected');
+		$.id(startCell).classList.remove('selected');
 		window.selectedCell = null;
 
 		if (!startClasses) return; // exit if the cell does not has metadata
@@ -59,11 +57,7 @@ function hasClicked(cell) {
 		else {
 			movePiece(startCell, endCell);
 		}
-		$$('td').forEach(elem => elem.classList.remove('last-move'));
-		$startCell.classList.add('last-move');
-		$endCell.classList.add('last-move');
-
-		// check if in check
+		window.lastMove = { start: startCell, end: endCell };
 		checkHighlight();
 
 		// display taken piece on side
@@ -87,13 +81,7 @@ function hasClicked(cell) {
 		if (window.hasRules && window.autoFlip) alignBoard();
 
 		// check game ending status
-		const endingStatus = gameEndingStatus(global.currentTurn);
-		if (endingStatus) {
-			let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
-			let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
-			$('#winner').innerText = statusMsg;
-			ingame = false;
-		}
+		checkGameEnding();
 
 
 		//check if correct puzzle move
@@ -116,7 +104,7 @@ function hasClicked(cell) {
 
 		}
 		// send to server
-		if (window.autoPing) sendDB(window.gameId, createFen());
+		if (window.autoPing) sendDB();
 
 	}
 
@@ -151,6 +139,19 @@ function hasClicked(cell) {
 function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
+
+	let { start, end } = window.lastMove;
+	$$('td').forEach(elem => elem.classList.remove('last-move'));
+	[start, end].forEach(cell => $.id(cell)?.classList.add('last-move'));
+}
+
+function checkGameEnding() {
+	const endingStatus = gameEndingStatus(global.currentTurn);
+	if (!endingStatus) return;
+	let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
+	let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
+	$('#winner').innerText = statusMsg;
+	window.ingame = false;
 }
 
 function undoLastMove() {
@@ -166,7 +167,7 @@ function undoLastMove() {
 	});
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
-	if (window.autoPing) sendDB(window.gameId, createFen());
+	if (window.autoPing) sendDB();
 	if (gameOptions.bot && global.currentTurn === gameOptions.botColour[0]) undoLastMove();
 }
 
