@@ -61,5 +61,5 @@ function nextPuzzle() {
 		setBoard(puzzlePosition);
 	}
 	$.id('next-puzzle').classList.add('hide');
-	$.id('winner').innerHTML = '';
+	$.id('winner').innerHTML = 'Find the best move';
 }
