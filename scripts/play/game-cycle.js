@@ -83,27 +83,25 @@ function hasClicked(cell) {
 		// check game ending status
 		checkGameEnding();
 
-
 		//check if correct puzzle move
 		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn) {
-
 			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase() ) {
 				movesToMake.shift();
 				if (movesToMake.length > 0) {
-					$.id('winner').innerHTML = 'correct now find the next one'
+					$.id('winner').innerHTML = 'Correct, now find the next one'
 					setTimeout(puzzleMove, 500);
-				} 
+				}
 				else {
-					$.id('winner').innerHTML = 'Congrats you are a puzzles god';
+					$.id('winner').innerHTML = 'Congrats, you are a puzzle god';
 					$.id('next-puzzle').classList.remove('hide');
 				}
-			} 
+			}
 			else {
 				undoLastMove();
-				$.id('winner').innerHTML = 'try again fool';
+				$.id('winner').innerHTML = 'Wrong, try again';
 			}
-
 		}
+
 		// send to server
 		if (window.autoPing) sendDB();
 

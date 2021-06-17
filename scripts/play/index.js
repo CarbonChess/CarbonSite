@@ -46,7 +46,7 @@ function run() {
 
 	$('#game-data_content').innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
-	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : 'singleplayer';
+	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles? 'singleplayer' : 'puzzles';
 	if (gameOptions.bot) {
 		addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
 	}
@@ -61,6 +61,11 @@ function run() {
 	if (gameOptions.spectating) {
 		window.ingame = false;
 		addGameData('Spectating', 'Yes');
+	}
+	if (gameOptions.puzzles) {
+		addGameData('Puzzle', 'Yes');
+		addGameData('Difficulty', gameOptions.difficulty);
+		$('#winner').innerText = 'Find the best move';
 	}
 	if (!gameOptions.autoFlip) {
 		$('body').dataset.noflip = true;
