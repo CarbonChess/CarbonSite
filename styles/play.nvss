@@ -14,7 +14,7 @@
 	}
 	--board-size: calc(var(--cell-size) * 8 );
 	--left-sidebar-size: 240px;
-	[mode="singleplayer"] {
+	[data-mode="singleplayer"] {
 		--left-sidebar-size: 100px;
 	}
 }
@@ -275,20 +275,18 @@ button.disabled {
 #taken-black-pieces {grid-area: black;}
 #taken-white-pieces {grid-area: white;}
 
-body[mode="multiplayer"] :is(#undo, #reset) {
+[data-mode="multiplayer"] :is(#undo, #reset) {
 	display: none;
 }
 
 #left-sidebar,
 #right-sidebar {
 	max-height: var(--board-size);
-	overflow-y: auto;
 }
 
 #left-sidebar {
 	grid-area: lsidebar;
 	padding-right: 6px;
-	overflow-y: hidden;
 
 	#icon-options {
 		button {
@@ -305,16 +303,16 @@ body[mode="multiplayer"] :is(#undo, #reset) {
 			flex-wrap: wrap;
 			gap: 4px;
 
-			body[mode="singleplayer"] & {
+			body[data-mode="singleplayer"] & {
 				flex-direction: column;
 			}
 		}
 	}
 
-	:is(#send-chat, #chat) {
+	#send-chat, #chat {
 		width: 100%;
 
-		body[mode="singleplayer"] & {
+		body[data-mode="singleplayer"] :is(&) {
 			display: none;
 		}
 	}
@@ -372,10 +370,13 @@ body[mode="multiplayer"] :is(#undo, #reset) {
 }
 
 #right-sidebar {
+	display: flex;
+	flex-direction: column;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
 	grid-area: rsidebar;
+	overflow-y: auto;
 
 	strong {
 		margin-bottom: 0.5em;

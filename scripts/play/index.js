@@ -19,7 +19,6 @@ function run() {
 		spectating: booleanParam('spectating'),
 	}
 	window.firstLoad = false;
-	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
 	window.sessionLost = false;
@@ -39,8 +38,8 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.username = gameOptions.username || 'User' + random(10, 99);
-	window.chat = [[+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO)];
+	window.username = gameOptions.username || '[Anon]';
+	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
@@ -64,7 +63,7 @@ function run() {
 		$('body').dataset.noflip = true;
 	}
 
-	Object.assign(window, { ...fenFuncs });
+	Object.assign(window, fenFuncs);
 	setupBoard();
 	newBoard(8, true);
 	alignBoard();
