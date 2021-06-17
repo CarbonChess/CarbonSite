@@ -41,7 +41,7 @@ async function readDB() {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
 	}
-	window.playerCount = +players || 0;
+	window.playerCount = ~~players;
 }
 
 async function sendDB(soft) {
@@ -122,11 +122,10 @@ async function init() {
 		window.playerTurn = { [data.white]: 'white', [data.black]: 'black' }[window.username];
 	}
 	else {
-		window.playerCount = (+data.players || 0) + 1;
+		window.playerCount = ~~data.players + 1;
 		window.playerTurn = [, 'white', 'black'][playerCount] || '';
 		if (playerCount > 2 && !gameOptions.spectating) {
 			gameOptions.spectating = true;
-			window.ingame = false;
 			addGameData('Spectating', 'Yes');
 		}
 	}
@@ -137,6 +136,7 @@ async function init() {
 	}
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
+	$('#winner').innerText = '';
 	sendDB('soft:true');
 	sendChatMessage('force:true');
 }

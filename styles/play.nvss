@@ -341,6 +341,7 @@ button.disabled {
 		color: #eee;
 		font-family: monospace;
 		font-size: 120%;
+		word-break: break-word;
 
 		.chat-message {
 			padding: 8px 4px;

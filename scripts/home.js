@@ -7,5 +7,5 @@ function updateBotIntelligence() {
 	const level = $('#bot-intelligence-level').value;
 	$$(`[data-level]`).forEach(elem => elem.classList.add('hide'));
 	$(`[data-level="${level}"]`).classList.remove('hide');
-	$('#bot-intelligence-dots').innerHTML = ' • '.repeat(level - 1) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(4 - level);
+	$('#bot-intelligence-dots').innerHTML = ' • '.repeat(level) + ` <span id="dot-highlighted">•</span> ` + ' • '.repeat(3 - level);
 }

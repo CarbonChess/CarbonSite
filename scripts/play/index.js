@@ -11,7 +11,7 @@ function run() {
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
-		username: params.get('username'),
+		username: params.get('username').trim(),
 		rules: !booleanParam('free'),
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
@@ -44,11 +44,12 @@ function run() {
 	$('#game-data_content').innerHTML = '';
 	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : 'singleplayer';
+	if (gameOptions.multiplayer) {
+		addGameData('Game ID', window.gameId);
+		$('#winner').innerText = 'Loading...';
+	}
 	if (gameOptions.bot) {
 		addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
-	}
-	if (window.gameId) {
-		addGameData('Game ID', window.gameId);
 	}
 	if (gameOptions.static) {
 		readDB();
@@ -56,7 +57,6 @@ function run() {
 		addGameData('Replay', 'Yes');
 	}
 	if (gameOptions.spectating) {
-		window.ingame = false;
 		addGameData('Spectating', 'Yes');
 	}
 	if (!gameOptions.autoFlip) {
