@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 
 module.exports = function (cfg) {
     const passThruPaths = [
-        'images/', 'scripts/', 'styles/',
+        'images/', 'data/', 'scripts/', 'styles/',
         '_redirects', 'favicon.ico',
     ];
 
