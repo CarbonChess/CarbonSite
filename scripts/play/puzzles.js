@@ -57,6 +57,7 @@ function nextPuzzle() {
 		getPuzzles().then(setBoard(puzzlePosition));
 	} else {
 		puzzlePosition++;
+		setupBoard();
 		setBoard(puzzlePosition);
 	}
 	$.id('next-puzzle').classList.add('hide');
