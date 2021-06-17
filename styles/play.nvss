@@ -372,6 +372,8 @@ body[data-mode="multiplayer"] :is(#undo, #reset) {
 }
 
 #right-sidebar {
+	display: flex;
+	flex-direction: column;
 	border: 2px solid #111;
 	background-color: #dcdcdc;
 	color: black;
@@ -401,6 +403,10 @@ body[data-mode="multiplayer"] :is(#undo, #reset) {
 		@ $(BR).. {
 			overflow: auto;
 		}
+	}
+
+	#next-puzzle {
+		margin: auto auto 2em;
 	}
 }
 
