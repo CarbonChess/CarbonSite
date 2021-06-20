@@ -8,10 +8,7 @@
 
 :root {
 	--bg-colour: #191919;
-	--cell-size: 80px;
-	@ ..$(BR) {
-		--cell-size: 50px;
-	}
+	$( @breakpoint | $(BR) | --cell-size: 50px; | --cell-size: 80px; )
 	--board-size: calc(var(--cell-size) * 8 );
 	--left-sidebar-size: 240px;
 	[data-mode="singleplayer"] {
@@ -48,12 +45,7 @@ table {
 	border-collapse: collapse;
 	user-select: none;
 	color: #000;
-	@ ..$(BR) {
-		margin: auto;
-	}
-	@ $(BR).. {
-		grid-area: table;
-	}
+	$( @breakpoint | $(BR) || margin: auto; | grid-area: table; )
 }
 
 td {
@@ -216,10 +208,18 @@ select {
 
 #game-content {
 	margin-bottom: 1em;
+	display: grid;
+
+	@ ..$(BR) {
+		grid-template-areas: "white" "table" "black" "rsidebar" "lsidebar" "promotion";
+
+		.rotate & {
+			grid-template-areas: "black" "table" "white" "rsidebar" "lsidebar" "promotion";
+		}
+	}
 
 	@ $(BR).. {
 		margin: auto;
-		display: grid;
 		place-content: center;
 		grid-template-areas: ". white ." "lsidebar table rsidebar" ". black ." ". promotion .";
 		grid-template-columns: var(--left-sidebar-size) var(--board-size) 200px;
