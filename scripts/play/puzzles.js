@@ -64,3 +64,8 @@ function nextPuzzle() {
 	$.id('next-puzzle').classList.add('hide');
 	$.id('winner').innerHTML = 'Find the best move';
 }
+
+function showPuzzleHint() {
+	const bestMove = movesToMake[0];
+	alert(bestMove.slice(0, 2) + '-' + bestMove.slice(2, 4));
+}
