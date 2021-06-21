@@ -4,14 +4,13 @@ let puzzleColour;
 let puzzlePosition = 0;
 
 function processData(allText) {
-	let allTextLines = allText.split(/\r\n|\n/);
-	let headers = allTextLines[0].split(',');
+	const allTextLines = allText.split(/\r\n|\n/);
+	const headers = allTextLines[0].split(',');
 	let lines = [];
 
 	for (let i = 1; i < allTextLines.length; i++) {
-		let data = allTextLines[i].split(',');
-		if (data.length == headers.length) {
-
+		const data = allTextLines[i].split(',');
+		if (data.length === headers.length) {
 			let textArray = [];
 			for (let j = 0; j < headers.length; j++) {
 				textArray.push(headers[j] + ":" + data[j]);
@@ -27,12 +26,13 @@ async function getPuzzles(difficulty) {
 	const PUZZLENO = 10;
 	let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
 	let puzzleList = processData(fileData);
+	puzzleList = puzzleList.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
+	puzzleList = puzzleList.filter(obj => Math.abs(obj.ELO - gameOptions.difficulty) < 300); // filter to current difficulty
 
 	let selection = [];
 	for (let i = 1; i <= PUZZLENO; i++) {
 		selection.push(puzzleList[Math.floor(Math.random() * puzzleList.length) + 1]);
 	}
-	selection = selection.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
 	savedPuzzles = selection;
 }
 

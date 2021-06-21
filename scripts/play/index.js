@@ -76,7 +76,7 @@ function run() {
 	setupBoard();
 	if (gameOptions.puzzles) {
 		$.id('puzzles-hint').classList.remove('hide');
-		getPuzzles(gameOptions.difficulty).then(() => setBoard(0));
+		getPuzzles().then(() => setBoard(0));
 	}
 	else {
 		newBoard(8, true);
