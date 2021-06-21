@@ -66,6 +66,5 @@ function nextPuzzle() {
 }
 
 function showPuzzleHint() {
-	const bestMove = movesToMake[0];
-	alert(bestMove.slice(0, 2) + '-' + bestMove.slice(2, 4));
+	$.id(movesToMake[0].slice(0, 2).toUpperCase())?.classList.add('valid');
 }
