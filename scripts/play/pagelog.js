@@ -19,11 +19,12 @@ function updateMoves() {
 		moveHtml += `&#${pieceCode};` + move.toLowerCase();
 		moveHtml += '</span>';
 	}
-	$('#log').innerHTML = moveHtml;
+	$.id('log').innerHTML = moveHtml;
 }
 
 function logPoints() {
-	const pointsDiff = { w: points.b - points.w, b: points.w - points.b }
+	const { w, b } = window.points;
+	const pointsDiff = { w: b - w, b: w - b };
 	$.id('white-points').innerText = pointsDiff.w > 0 ? '+' + pointsDiff.w : '';
 	$.id('black-points').innerText = pointsDiff.b > 0 ? '+' + pointsDiff.b : '';
 }

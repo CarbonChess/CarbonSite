@@ -50,8 +50,8 @@ h2 {
 }
 
 input[type="text"] {
-	width: 8em;
-	height: 3em;
+	width: 7em;
+	height: 2em;
 	padding: 0.5em;
 }
 

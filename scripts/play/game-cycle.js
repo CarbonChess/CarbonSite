@@ -60,14 +60,8 @@ function hasClicked(cell) {
 		window.lastMove = { start: startCell, end: endCell };
 		checkHighlight();
 
-		// display taken piece on side
-		let taken = false;
-		if (endClasses.length && (moveOutput || !window.hasRules)) {
-			taken = true;
-			logTakenPiece(...getPieceClasses(enpassantCell || endCell));
-		}
-
 		// log the move
+		const taken = endClasses.length && (moveOutput || !window.hasRules);
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
 		log({ startCell, endCell, startClasses, endClasses, taken, promoted: canPromote });
