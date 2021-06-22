@@ -77,7 +77,7 @@ function hasClicked(cell) {
 		// check game ending status
 		checkGameEnding();
 
-		//check if correct puzzle move
+		// check if correct puzzle move has been made
 		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn && movesToMake) {
 			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase()) {
 				movesToMake.shift();

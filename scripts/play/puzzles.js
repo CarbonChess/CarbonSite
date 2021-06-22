@@ -22,7 +22,7 @@ function processData(allText) {
 }
 
 async function getPuzzles() {
-	const PUZZLENO = 10;
+	const puzzleCache = 10;
 	let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
 	let puzzleList = processData(fileData);
 	puzzleList = puzzleList.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
@@ -36,7 +36,7 @@ async function getPuzzles() {
 	puzzleList = sortedPuzzles;
 
 	let selection = [];
-	for (let i = 1; i <= PUZZLENO; i++) {
+	for (let i = 1; i <= puzzleCache; i++) {
 		selection.push(puzzleList[Math.floor(Math.random() * puzzleList.length) + 1]);
 	}
 	savedPuzzles = selection;
