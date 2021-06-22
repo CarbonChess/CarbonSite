@@ -60,9 +60,10 @@ function setBoard(itemNo) {
 }
 
 function nextPuzzle() {
+	window.ingame = true;
 	window.failedPuzzleAttempts = 0;
 	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
-	window.ingame = true;
+	$$('td').forEach(elem => elem.setAttribute('class', ''));
 	if (puzzlePosition === 9) {
 		puzzlePosition = 0;
 		getPuzzles().then(setBoard(puzzlePosition));
