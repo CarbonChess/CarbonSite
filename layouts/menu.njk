@@ -9,12 +9,16 @@
 	<link rel="stylesheet" href="/styles/home.css">
 	<script src="/scripts/helpers.js"></script>
 	<script src="/scripts/home.js"></script>
+	<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 
 <body>
-	<a href="/" title="Return to men">
-		<img src="/images/logo.svg" height="65px" id="logo" alt="CarbonChess">
-	</a>
+	<header>
+		<a href="/" title="Return to men">
+			<img src="/images/logo.svg" height="65px" id="logo" alt="CarbonChess">
+		</a>
+		<div data-netlify-identity-menu></div>
+	</header>
 
     <main id="main">
         {{ content | safe }}
