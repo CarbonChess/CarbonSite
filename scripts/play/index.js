@@ -11,7 +11,7 @@ function run() {
 		botColour: params.get('botColour'),
 		botIntelligence: +params.get('botIntelligence'),
 		multiplayer: booleanParam('multiplayer'),
-		username: params.get('username'),
+		username: params.get('username')?.trim(),
 		rules: !booleanParam('free'),
 		autoFlip: booleanParam('autoflip'),
 		gamecode: params.get('gamecode'),
@@ -21,7 +21,6 @@ function run() {
 		difficulty: +params.get('difficulty'),
 	}
 	window.firstLoad = false;
-	history.pushState({}, 'Play', location.href.replace(location.search, ''));
 
 	window.ingame = true;
 	window.sessionLost = false;
@@ -41,17 +40,18 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.username = gameOptions.username || 'User' + random(10, 99);
-	window.chat = [[+new Date(), '[System]', `${username} joined the game`].join(SEP.INFO)];
+	window.username = gameOptions.username || '[Anon]';
+	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
-	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles? 'singleplayer' : 'puzzles';
+	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
+	if (gameOptions.multiplayer) {
+		addGameData('Game ID', window.gameId);
+		$('#winner').innerText = 'Loading...';
+	}
 	if (gameOptions.bot) {
 		addGameData('Bot type', `Level ${gameOptions.botIntelligence}; ${gameOptions.botColour}`);
-	}
-	if (window.gameId) {
-		addGameData('Game ID', window.gameId);
 	}
 	if (gameOptions.static) {
 		readDB();
@@ -59,7 +59,6 @@ function run() {
 		addGameData('Replay', 'Yes');
 	}
 	if (gameOptions.spectating) {
-		window.ingame = false;
 		addGameData('Spectating', 'Yes');
 	}
 	if (gameOptions.puzzles) {
@@ -71,7 +70,7 @@ function run() {
 		$('body').dataset.noflip = true;
 	}
 
-	Object.assign(window, { ...fenFuncs });
+	Object.assign(window, fenFuncs);
 
 	setupBoard();
 	if (gameOptions.puzzles) {

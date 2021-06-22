@@ -9,9 +9,8 @@ let lastMessageUser;
 
 async function getGameData(chat) {
 	if (!window.gameId) throw Error('No game ID has been specified');
-	let gameId = (chat ? 'c:' : '') + window.gameId;
-	const resp = await fetch(`${apiUrl}?type=read&gameId=${gameId}`).then(data => data.json());
-	console.debug(`Retrieved data for game ID ${gameId}.`);
+	const resp = await fetch(`${apiUrl}?type=read&gameId=${(chat ? 'c:' : '') + window.gameId}`).then(data => data.json());
+	console.debug(`Retrieved data for game ID ${window.gameId}.`);
 	return resp.output.data;
 }
 
@@ -42,7 +41,7 @@ async function readDB() {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
 	}
-	window.playerCount = +players || 0;
+	window.playerCount = ~~players;
 }
 
 async function sendDB(soft) {
@@ -56,6 +55,7 @@ async function sendDB(soft) {
 		!soft && `moves=${global.logList.join(',')}`,
 		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
 		!soft && `points=${window.points.w},${window.points.b}`,
+		window.playerTurn && `${window.playerTurn}=${window.username}`,
 		`players=${window.playerCount}`,
 		`ingame=${+!window.sessionLost}`,
 	];
@@ -117,15 +117,26 @@ async function init() {
 	if (!gameOptions?.multiplayer) return;
 	cipher = new Cipher(window.gameId);
 	const data = await getGameData();
-	window.playerCount = (+data.players || 0) + 1;
-	window.playerTurn = playerCount === 1 ? 'white' : 'black';
-	if (playerCount > 2) {
-		gameOptions.spectating = true;
-		window.ingame = false;
-		addGameData('Spectating', 'Yes');
+	if ([data.white, data.black].includes(window.username)) {
+		window.playerCount = +data.players;
+		window.playerTurn = { [data.white]: 'white', [data.black]: 'black' }[window.username];
+	}
+	else {
+		window.playerCount = ~~data.players + 1;
+		window.playerTurn = [, 'white', 'black'][playerCount] || '';
+		if (playerCount > 2 && !gameOptions.spectating) {
+			gameOptions.spectating = true;
+			addGameData('Spectating', 'Yes');
+		}
 	}
 	if (window.playerTurn === 'black') flipBoard();
+	if (window.username === '[Anon]') {
+		let newName = window.playerCount < 3 ? 'Player' + window.playerCount : 'Spectator' + (window.playerCount - 2);
+		window.username = newName;
+	}
+	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
+	$('#winner').innerText = '';
 	sendDB('soft:true');
 	sendChatMessage('force:true');
 }

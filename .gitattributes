@@ -2,7 +2,7 @@
 * text=auto
 
 # Assets
-*.svg -text
+*.svg binary
 
 # Linguist
 *.nvss linguist-language=Less
