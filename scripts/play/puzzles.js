@@ -37,7 +37,7 @@ async function getPuzzles() {
 
 	let selection = [];
 	for (let i = 1; i <= puzzleCache; i++) {
-		selection.push(puzzleList[Math.floor(Math.random() * puzzleList.length) + 1]);
+		selection.push(puzzleList[random(0, puzzleList.length - 1)]);
 	}
 	savedPuzzles = selection;
 }
