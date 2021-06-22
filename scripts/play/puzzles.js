@@ -59,6 +59,7 @@ function setBoard(itemNo) {
 
 function nextPuzzle() {
 	window.failedPuzzleAttempts = 0;
+	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 	window.ingame = true;
 	if (puzzlePosition === 9) {
 		puzzlePosition = 0;
