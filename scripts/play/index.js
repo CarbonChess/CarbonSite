@@ -65,7 +65,8 @@ function run() {
 	if (gameOptions.puzzles) {
 		addGameData('Puzzle', 'Yes');
 		addGameData('Difficulty', gameOptions.difficulty);
-		$('#winner').innerText = 'Find the best move';
+		$.id('winner').innerText = 'Find the best move';
+		$.id('puzzle-attempts').classList.remove('hide');
 	}
 	if (!gameOptions.autoFlip) {
 		$('body').dataset.noflip = true;
