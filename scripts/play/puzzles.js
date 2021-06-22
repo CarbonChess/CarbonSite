@@ -43,8 +43,10 @@ async function getPuzzles() {
 }
 
 function puzzleMove() {
-	hasClicked(movesToMake[0].slice(0, 2));
-	hasClicked(movesToMake[0].slice(2, 4));
+	const [, start, end, promotion] = movesToMake[0].toUpperCase().match(/^(..)(..)(.?)/);
+	if (promotion) global.promotionPiece = promotion;
+	hasClicked(start);
+	hasClicked(end);
 	movesToMake.shift();
 }
 

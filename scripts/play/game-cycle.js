@@ -39,8 +39,8 @@ function hasClicked(cell) {
 
 		// promotion
 		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-		if (canPromote) {
-			global.promotionPiece = getPieceID(window.promotionPiece).toLowerCase();
+		if (canPromote && !global.promotionPiece) {
+			global.promotionPiece = getPieceID(window.promotionPiece) || 'q';
 		}
 
 		// move the piece
