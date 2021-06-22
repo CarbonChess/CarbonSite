@@ -116,7 +116,7 @@ function hasClicked(cell) {
 		}
 
 		selectPiece(cell);
-		console.log('\n' + (totalMoves + 1));
+		console.log('\n' + (window.totalMoves + 1));
 		console.log('T', ...cellClasses);
 
 		$$('#promotion img').forEach(elem => {
@@ -135,7 +135,7 @@ function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
 
-	let { start, end } = window.lastMove;
+	const { start, end } = window.lastMove;
 	$$('td').forEach(elem => elem.classList.remove('last-move'));
 	[start, end].forEach(cell => $.id(cell)?.classList.add('last-move'));
 }
@@ -157,9 +157,7 @@ function undoLastMove() {
 	logPoints();
 	checkHighlight();
 	if (window.autoFlip) alignBoard();
-	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
-		if (elem.parentNode) elem.parentNode.innerHTML = '';
-	});
+	$$(`[data-move="${totalMoves}"]`).forEach(elem => elem.parentNode.innerHTML = '');
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
 	if (window.autoPing) sendDB();
@@ -169,9 +167,6 @@ function undoLastMove() {
 function threefoldRepetition() {
 	const lastFen = movesList[movesList.length - 1].replace(/ . .$/, '');
 	let repetitions = 0;
-	for (let i in movesList) {
-		if (movesList[i].replace(/ . .$/, '') === lastFen)
-			repetitions++;
-	}
+	movesList.forEach(move => (move.replace(/ . .$/, '') === lastFen) && repetitions++);
 	return repetitions >= 3;
 }
