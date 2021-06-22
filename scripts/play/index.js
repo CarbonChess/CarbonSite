@@ -18,6 +18,7 @@ function run() {
 		static: booleanParam('static'),
 		spectating: booleanParam('spectating'),
 		puzzles: booleanParam('puzzles'),
+		startingPuzzle: params.get('puzzlename'),
 		difficulty: +params.get('difficulty'),
 	}
 	window.firstLoad = false;
@@ -63,9 +64,11 @@ function run() {
 		addGameData('Spectating', 'Yes');
 	}
 	if (gameOptions.puzzles) {
-		addGameData('Puzzle', 'Yes');
+		addGameData('Puzzles Mode', 'Yes');
 		addGameData('Difficulty', gameOptions.difficulty);
+		if (gameOptions.startingPuzzle) addGameData('Current Puzzle', '', 'current-puzzle-name');
 		$.id('winner').innerText = 'Find the best move';
+		$.id('puzzles-hint').classList.remove('hide');
 		$.id('puzzle-attempts').classList.remove('hide');
 	}
 	if (!gameOptions.autoFlip) {
@@ -76,8 +79,7 @@ function run() {
 
 	setupBoard();
 	if (gameOptions.puzzles) {
-		$.id('puzzles-hint').classList.remove('hide');
-		getPuzzles().then(() => setBoard(0));
+		getPuzzles(gameOptions.startingPuzzle).then(() => setBoard(0));
 	}
 	else {
 		newBoard(8, true);

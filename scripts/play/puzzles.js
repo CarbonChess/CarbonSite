@@ -21,8 +21,10 @@ function processData(allText) {
 	return lines;
 }
 
-async function getPuzzles() {
+async function getPuzzles(start) {
 	const puzzleCache = 10;
+
+	// fetch puzzle data
 	let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
 	let puzzleList = processData(fileData);
 	puzzleList = puzzleList.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
@@ -35,11 +37,18 @@ async function getPuzzles() {
 	}
 	puzzleList = sortedPuzzles;
 
+	// cache list of puzzles
 	let selection = [];
 	for (let i = 1; i <= puzzleCache; i++) {
 		selection.push(puzzleList[random(0, puzzleList.length - 1)]);
 	}
 	savedPuzzles = selection;
+
+	// set first puzzle if explicitly specified
+	if (start) {
+		const customPuzzle = puzzleList.find(obj => obj.ID === start);
+		if (customPuzzle) savedPuzzles.unshift(customPuzzle);
+	}
 }
 
 function puzzleMove() {
@@ -50,9 +59,10 @@ function puzzleMove() {
 	movesToMake.shift();
 }
 
-function setBoard(itemNo) {
-	createBoardFromFen(savedPuzzles[itemNo].FEN);
-	movesToMake = savedPuzzles[itemNo].Moves.split(' ');
+function setBoard(item) {
+	$.id('current-puzzle-name').innerText = savedPuzzles[item].ID;
+	createBoardFromFen(savedPuzzles[item].FEN);
+	movesToMake = savedPuzzles[item].Moves.split(' ');
 	alignBoard();
 	flipBoard();
 	puzzleColour = global.currentTurn;
