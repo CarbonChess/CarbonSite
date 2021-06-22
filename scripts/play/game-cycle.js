@@ -82,11 +82,11 @@ function hasClicked(cell) {
 			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase()) {
 				movesToMake.shift();
 				if (movesToMake.length > 0) {
-					$.id('winner').innerHTML = 'Correct, now find the next one'
+					$.id('winner').innerHTML = 'Correct, now find the next move'
 					setTimeout(puzzleMove, 500);
 				}
 				else {
-					$.id('winner').innerHTML = 'Congrats, you are a puzzle god';
+					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
 				}
 			}
