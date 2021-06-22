@@ -39,7 +39,7 @@ layout: menu.njk
 		<div style="width: 100%;">
 			<label>
 				<span style="display:none;">Bot intelligence</span>
-				<input type="range" autocomplete="off" name="botIntelligence" id="bot-intelligence-level" value="0" min="0" max="3" oninput="updateBotIntelligence();">
+				<input type="range" autocomplete="off" name="botIntelligence" value="1" min="0" max="3" id="bot-intelligence-level" oninput="updateSlider('bot-intelligence');">
 			</label>
 			<div id="bot-intelligence-dots">
 				<span id="dot-highlighted">•</span> • • •

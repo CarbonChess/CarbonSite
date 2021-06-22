@@ -39,8 +39,8 @@ function hasClicked(cell) {
 
 		// promotion
 		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-		if (canPromote) {
-			global.promotionPiece = getPieceID(window.promotionPiece).toLowerCase();
+		if (canPromote && !global.promotionPiece) {
+			global.promotionPiece = getPieceID(window.promotionPiece) || 'q';
 		}
 
 		// move the piece
@@ -77,6 +77,27 @@ function hasClicked(cell) {
 		// check game ending status
 		checkGameEnding();
 
+		// check if correct puzzle move has been made
+		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn && movesToMake) {
+			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase()) {
+				movesToMake.shift();
+				if (movesToMake.length > 0) {
+					$.id('winner').innerHTML = 'Correct, now find the next move'
+					setTimeout(puzzleMove, 500);
+				}
+				else {
+					$.id('winner').innerHTML = 'Well done';
+					$.id('next-puzzle').classList.remove('hide');
+				}
+			}
+			else {
+				undoLastMove();
+				$.id('winner').innerHTML = 'Wrong, try again';
+				window.failedPuzzleAttempts++;
+			}
+			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
+		}
+
 		// send to server
 		if (window.autoPing) sendDB();
 
@@ -95,7 +116,7 @@ function hasClicked(cell) {
 		}
 
 		selectPiece(cell);
-		console.log('\n' + (totalMoves + 1));
+		console.log('\n' + (window.totalMoves + 1));
 		console.log('T', ...cellClasses);
 
 		$$('#promotion img').forEach(elem => {
@@ -114,7 +135,7 @@ function checkHighlight() {
 	if (isCheck('w')) $('.white.king').parentElement.classList.add('check');
 	if (isCheck('b')) $('.black.king').parentElement.classList.add('check');
 
-	let { start, end } = window.lastMove;
+	const { start, end } = window.lastMove;
 	$$('td').forEach(elem => elem.classList.remove('last-move'));
 	[start, end].forEach(cell => $.id(cell)?.classList.add('last-move'));
 }
@@ -136,9 +157,7 @@ function undoLastMove() {
 	logPoints();
 	checkHighlight();
 	if (window.autoFlip) alignBoard();
-	$$(`[data-move="${totalMoves}"]`).forEach(elem => {
-		if (elem.parentNode) elem.parentNode.innerHTML = '';
-	});
+	$$(`[data-move="${totalMoves}"]`).forEach(elem => elem.parentNode.innerHTML = '');
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
 	if (window.autoPing) sendDB();
@@ -148,9 +167,6 @@ function undoLastMove() {
 function threefoldRepetition() {
 	const lastFen = movesList[movesList.length - 1].replace(/ . .$/, '');
 	let repetitions = 0;
-	for (let i in movesList) {
-		if (movesList[i].replace(/ . .$/, '') === lastFen)
-			repetitions++;
-	}
+	movesList.forEach(move => (move.replace(/ . .$/, '') === lastFen) && repetitions++);
 	return repetitions >= 3;
 }

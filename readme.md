@@ -18,3 +18,5 @@ Try a game at https://carbonchess.com.
   - Play with a friend (or yourself) on the same device.
 - **Online**
   - Play online with someone anywhere in the world.
+- **Puzzles**
+  - Test your move-making skills on a variety of carefully-constructed puzzles.

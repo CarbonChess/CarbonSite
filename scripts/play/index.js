@@ -17,6 +17,9 @@ function run() {
 		gamecode: params.get('gamecode'),
 		static: booleanParam('static'),
 		spectating: booleanParam('spectating'),
+		puzzles: booleanParam('puzzles'),
+		startingPuzzle: params.get('puzzlename'),
+		difficulty: +params.get('difficulty'),
 	}
 	window.firstLoad = false;
 
@@ -34,6 +37,7 @@ function run() {
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
+	window.failedPuzzleAttempts = 0;
 	window.autoFlip = gameOptions.autoFlip;
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
@@ -42,8 +46,8 @@ function run() {
 	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
-	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
-	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : 'singleplayer';
+	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles ? 'singleplayer' : 'puzzles';
+	addGameData('Opponent', (gameOptions.bot || gameOptions.puzzles) ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	if (gameOptions.multiplayer) {
 		addGameData('Game ID', window.gameId);
 		$('#winner').innerText = 'Loading...';
@@ -59,14 +63,28 @@ function run() {
 	if (gameOptions.spectating) {
 		addGameData('Spectating', 'Yes');
 	}
+	if (gameOptions.puzzles) {
+		addGameData('Puzzles Mode', 'Yes');
+		addGameData('Difficulty', gameOptions.difficulty);
+		if (gameOptions.startingPuzzle) addGameData('Current Puzzle', '', 'current-puzzle-name');
+		$.id('winner').innerText = 'Find the best move';
+		$.id('puzzles-hint').classList.remove('hide');
+		$.id('puzzle-attempts').classList.remove('hide');
+	}
 	if (!gameOptions.autoFlip) {
 		$('body').dataset.noflip = true;
 	}
 
 	Object.assign(window, fenFuncs);
+
 	setupBoard();
-	newBoard(8, true);
-	alignBoard();
+	if (gameOptions.puzzles) {
+		getPuzzles(gameOptions.startingPuzzle).then(() => setBoard(0));
+	}
+	else {
+		newBoard(8, true);
+		alignBoard();
+	}
 
 }
 

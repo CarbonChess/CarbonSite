@@ -19,6 +19,7 @@ permalink: /play/
 	<script src="/scripts/play/online.js"></script>
 	<script src="/scripts/play/pagelog.js"></script>
 	<script src="/scripts/play/pieces.js"></script>
+	<script src="/scripts/play/puzzles.js"></script>
 	<script src="/scripts/ext/fenfurnace/main.js"></script>
 </head>
 
@@ -54,11 +55,18 @@ permalink: /play/
 
 		<aside id="right-sidebar">
 			<div id="game-data">
-				<strong>Session</strong>
+				<h3>Session</h3>
 				<dl id="game-data_content"></dl>
 			</div>
-			<strong>Moves</strong>
+			<h3>Moves</h3>
 			<div id="log" class="resettable"></div>
+			<div id="puzzle-attempts" class="hide">
+				<strong>Attempts:</strong>
+				<span id="puzzle-attempts-value">0</span>
+			</div>
+			<button id="next-puzzle" class="hide" onclick="nextPuzzle()" title="Next puzzle">
+				Next Puzzle &rarr;
+			</button>
 		</aside>
 
 		<aside id="left-sidebar">
@@ -75,6 +83,9 @@ permalink: /play/
 				</button>
 				<button onclick="shareGame()" title="Copy to clipboard">
 					Share
+				</button>
+				<button id="puzzles-hint" class="hide" onclick="showPuzzleHint()" title="Get a hint">
+					Hint
 				</button>
 			</div>
 
