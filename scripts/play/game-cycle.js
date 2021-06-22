@@ -93,7 +93,9 @@ function hasClicked(cell) {
 			else {
 				undoLastMove();
 				$.id('winner').innerHTML = 'Wrong, try again';
+				window.failedPuzzleAttempts++;
 			}
+			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 		}
 
 		// send to server

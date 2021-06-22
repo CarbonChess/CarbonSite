@@ -377,7 +377,7 @@ button.disabled {
 	grid-area: rsidebar;
 	overflow-y: auto;
 
-	strong {
+	h3 {
 		margin-bottom: 0.5em;
 		display: block;
 		text-align: center;
@@ -401,6 +401,10 @@ button.disabled {
 		@ $(BR).. {
 			overflow: auto;
 		}
+	}
+
+	#puzzle-attempts {
+		padding: 0.5em;
 	}
 
 	#next-puzzle {

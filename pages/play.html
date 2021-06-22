@@ -55,11 +55,15 @@ permalink: /play/
 
 		<aside id="right-sidebar">
 			<div id="game-data">
-				<strong>Session</strong>
+				<h3>Session</h3>
 				<dl id="game-data_content"></dl>
 			</div>
-			<strong>Moves</strong>
+			<h3>Moves</h3>
 			<div id="log" class="resettable"></div>
+			<div id="puzzle-attempts" class="hide">
+				<strong>Attempts:</strong>
+				<span id="puzzle-attempts-value"></span>
+			</div>
 			<button id="next-puzzle" class="hide" onclick="nextPuzzle()" title="Next puzzle">
 				Next Puzzle &rarr;
 			</button>

@@ -58,6 +58,7 @@ function setBoard(itemNo) {
 }
 
 function nextPuzzle() {
+	window.failedPuzzleAttempts = 0;
 	window.ingame = true;
 	if (puzzlePosition === 9) {
 		puzzlePosition = 0;

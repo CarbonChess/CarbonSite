@@ -36,6 +36,7 @@ function run() {
 	window.lastEnpassantCell = enpassantCell;
 	window.fmrMoves = 0;
 	window.failedMoveCount = 0;
+	window.failedPuzzleAttempts = 0;
 	window.autoFlip = gameOptions.autoFlip;
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
@@ -44,8 +45,8 @@ function run() {
 	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
-	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles? 'singleplayer' : 'puzzles';
-	addGameData('Opponent', gameOptions.bot ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
+	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles ? 'singleplayer' : 'puzzles';
+	addGameData('Opponent', (gameOptions.bot || gameOptions.puzzles) ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	if (gameOptions.multiplayer) {
 		addGameData('Game ID', window.gameId);
 		$('#winner').innerText = 'Loading...';
