@@ -21,13 +21,19 @@ function processData(allText) {
 	return lines;
 }
 
-async function getPuzzles(difficulty) {
-	//TODO implement `difficulty`
+async function getPuzzles() {
 	const PUZZLENO = 10;
 	let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
 	let puzzleList = processData(fileData);
 	puzzleList = puzzleList.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
-	puzzleList = puzzleList.filter(obj => Math.abs(obj.ELO - gameOptions.difficulty) < 300); // filter to current difficulty
+
+	// attempt to filter to current difficulty
+	let sortedPuzzles = puzzleList;
+	for (let i = 200; i < 800; i += 200) {
+		sortedPuzzles = puzzleList.filter(obj => Math.abs(obj.ELO - gameOptions.difficulty) < i);
+		if (sortedPuzzles.length >= 10) break;
+	}
+	puzzleList = sortedPuzzles;
 
 	let selection = [];
 	for (let i = 1; i <= PUZZLENO; i++) {
