@@ -5,6 +5,29 @@ layout: menu.njk
 
 <h2>Select opponent</h2>
 
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+	const open = () => netlifyIdentity.open();
+	const save = async () => {
+		const user_metadata = {
+			data: {
+				elo: random(0, 3000),
+			}
+		}
+		const user = await netlifyIdentity.gotrue.currentUser().update(user_metadata);
+		alert('Updated with ' + JSON.stringify(user_metadata));
+		alert(user);
+	}
+
+	netlifyIdentity.on('login', user => {
+		alert(JSON.stringify(user.user_metadata));
+	});
+	document.querySelector("#open").addEventListener("click", open)
+	document.querySelector("#save").addEventListener("click", save)
+</script>
+<div id="open">Open</div>
+<div id="save">Save</div>
+
 <div class="cards">
 
 	<a href="/menu/bot/" class="card big">
