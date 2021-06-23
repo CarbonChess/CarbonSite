@@ -61,6 +61,12 @@ input[type="text"] {
 	display: flex;
 	flex-wrap: wrap;
 	place-content: center;
+
+	&.showcase {
+		display: grid;
+		grid-template-areas: "online offline computer" "online puzzle puzzle";
+		gap: 1em;
+	}
 }
 
 .card {
@@ -102,10 +108,24 @@ input[type="text"] {
 	}
 
 	&.big {
-		margin: 1em;
 		height: 250px;
 		width: 250px;
-		border-radius: 1em;
+		border-radius: 0;
+
+		&.showcase-wide {
+			display: flex;
+			width: 100%;
+			grid-area: auto / span 2;
+			gap: 1em;
+			text-align: left;
+			font-size: 130%;
+		}
+
+		&.showcase-tall {
+			height: 100%;
+			grid-area: span 2 / auto;
+			font-size: 130%;
+		}
 
 		@ $(BR).. {
 			height: 325px;
@@ -212,16 +232,6 @@ input[type="text"] {
 
 	.card.wide & {
 		font-size: 1.15em;
-	}
-
-	.card.big &::before {
-		content: ' ';
-		height: 1px;
-		width: 55px;
-		background: #c8c8c8;
-		display: block;
-		margin-left: 74px;
-		margin-bottom: 1em;
 	}
 
 	.card:hover &::before {
