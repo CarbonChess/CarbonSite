@@ -1,5 +1,13 @@
 const DEFAULT_ELO = 1000;
 
+function initialiseUserData() {
+	const user = netlifyIdentity.gotrue.currentUser();
+	if (!user) return;
+	const { elo, full_name } = user.user_metadata;
+	window.userELO = elo || DEFAULT_ELO;
+	window.accountName = full_name;
+}
+
 async function saveUserData() {
 	const user_metadata = {
 		data: {
@@ -9,14 +17,5 @@ async function saveUserData() {
 	const user = await netlifyIdentity.gotrue.currentUser().update(user_metadata);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-	const user = netlifyIdentity.gotrue.currentUser();
-	if (!user) return;
-	const { elo, full_name } = user.user_metadata;
-	window.userELO = elo || DEFAULT_ELO;
-	window.accountName = full_name;
-})
-
-netlifyIdentity.on('login', user => {
-	window.userELO = user.user_metadata.elo;
-});
+document.addEventListener('DOMContentLoaded', initialiseUserData);
+netlifyIdentity.on('login', initialiseUserData);
