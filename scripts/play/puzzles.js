@@ -87,5 +87,7 @@ function nextPuzzle() {
 }
 
 function showPuzzleHint() {
+	window.userElo -= 2;
+	saveUserData();
 	$.id(movesToMake[0].slice(0, 2).toUpperCase())?.classList.add('valid');
 }

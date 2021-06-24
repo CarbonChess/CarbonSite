@@ -88,12 +88,16 @@ function hasClicked(cell) {
 				else {
 					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
+					window.userElo += 3;
+					saveUserData();
 				}
 			}
 			else {
 				undoLastMove();
 				$.id('winner').innerHTML = 'Wrong, try again';
 				window.failedPuzzleAttempts++;
+				window.userElo -= 1;
+				saveUserData();
 			}
 			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 		}
