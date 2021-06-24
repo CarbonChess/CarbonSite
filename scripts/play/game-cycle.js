@@ -147,10 +147,13 @@ function checkHighlight() {
 function checkGameEnding() {
 	const endingStatus = gameEndingStatus(global.currentTurn);
 	if (!endingStatus) return;
-	let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
+	const winner = global.currentTurn !== 'w' ? 'White' : 'Black';
+	let winText = winner + ' Wins';
 	let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
 	$('#winner').innerText = statusMsg;
 	window.ingame = false;
+	window.userElo += winner === window.playerTurn ? 100 : -100;
+	saveUserData();
 }
 
 function undoLastMove() {

@@ -55,7 +55,7 @@ async function sendDB(soft) {
 		!soft && `moves=${global.logList.join(',')}`,
 		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
 		!soft && `points=${window.points.w},${window.points.b}`,
-		window.playerTurn && `${window.playerTurn}=${window.username}`,
+		window.playerTurn && `${window.playerTurn}=${window.username}[]${window.userElo}`,
 		`players=${window.playerCount}`,
 		`ingame=${+!window.sessionLost}`,
 	];
@@ -119,7 +119,10 @@ async function init() {
 	const data = await getGameData();
 	if ([data.white, data.black].includes(window.username)) {
 		window.playerCount = +data.players;
-		window.playerTurn = { [data.white]: 'white', [data.black]: 'black' }[window.username];
+		const whiteName = data.white.split('[]')[0];
+		const blackName = data.black.split('[]')[0];
+		window.playerTurn = { [whiteName]: 'white', [blackName]: 'black' }[window.username];
+		window.opponentElo = +data[invertColour(window.playerTurn)].split('[]')[1];
 	}
 	else {
 		window.playerCount = ~~data.players + 1;
