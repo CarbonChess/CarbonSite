@@ -10,7 +10,11 @@ async function saveUserData() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	window.userELO = netlifyIdentity.gotrue.currentUser()?.user_metadata.elo || DEFAULT_ELO;
+	const user = netlifyIdentity.gotrue.currentUser();
+	if (!user) return;
+	const { elo, full_name } = user.user_metadata;
+	window.userELO = elo || DEFAULT_ELO;
+	window.accountName = full_name;
 })
 
 netlifyIdentity.on('login', user => {
