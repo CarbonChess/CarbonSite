@@ -14,12 +14,7 @@
 </head>
 
 <body>
-	<header>
-		<a href="/" title="Return to men">
-			<img src="/images/logo.svg" height="65px" id="logo" alt="CarbonChess">
-		</a>
-		<div data-netlify-identity-menu></div>
-	</header>
+	{% include "header.njk" %}
 
     <main id="main">
         {{ content | safe }}

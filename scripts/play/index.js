@@ -93,9 +93,4 @@ function reset() {
 	if (gameOptions.multiplayer) sendDB(window.gameId, defaultFen);
 }
 
-/* Console IDs
- * S = selected
- * T = type
- * M = move
- * I = invalid
-*/
+document.addEventListener('DOMContentLoaded', run);

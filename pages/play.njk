@@ -13,28 +13,15 @@ permalink: /play/
 	<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	<script src="/scripts/helpers.js"></script>
 	<script src="/scripts/userdata.js"></script>
-	<script src="/scripts/play/index.js"></script>
-	<script src="/scripts/play/board.js"></script>
-	<script src="/scripts/play/bot.js"></script>
-	<script src="/scripts/play/fen.js"></script>
-	<script src="/scripts/play/game-cycle.js"></script>
-	<script src="/scripts/play/online.js"></script>
-	<script src="/scripts/play/pagelog.js"></script>
-	<script src="/scripts/play/pieces.js"></script>
-	<script src="/scripts/play/puzzles.js"></script>
+	{% for script in ['index', 'board', 'bot', 'fen', 'game-cycle', 'online', 'pagelog', 'pieces', 'puzzles'] -%}
+		<script src="/scripts/play/{{ script }}.js"></script>
+	{%- endfor %}
 	<script src="/scripts/ext/fenfurnace/main.js"></script>
 </head>
 
 <body class="norotate">
 
-	<header>
-		<h1>
-			<a href="/menu/" title="Return to menu">
-				<img src="/images/logo.svg" height="65px" id="logo" alt="CarbonChess">
-			</a>
-		</h1>
-		<div data-netlify-identity-menu></div>
-	</header>
+	{% include "header.njk" %}
 
 	<div id="winner" class="resettable"></div>
 
@@ -52,10 +39,9 @@ permalink: /play/
 		</div>
 
 		<div id="promotion" class="hide">
-			<img src="/images/transparent.gif" alt="Bishop" data-piece onclick="setPromotion(this)" class="white bishop">
-			<img src="/images/transparent.gif" alt="Rook" data-piece onclick="setPromotion(this)" class="white rook">
-			<img src="/images/transparent.gif" alt="Knight" data-piece onclick="setPromotion(this)" class="white knight">
-			<img src="/images/transparent.gif" alt="Queen" data-piece onclick="setPromotion(this)" class="white queen">
+			{% for piece in ['Bishop', 'Knight', 'Rook', 'Queen'] -%}
+				<img src="/images/transparent.gif" alt="{{ piece }}" data-piece class="white {{ piece | lower }}" onclick="setPromotion(this)">
+			{%- endfor %}
 		</div>
 
 		<aside id="right-sidebar">
@@ -109,8 +95,6 @@ permalink: /play/
 	<footer>
 		<div>Copyright &copy; 2021 CarbonChess</div>
 	</footer>
-
-	<script>run()</script>
 
 </body>
 
