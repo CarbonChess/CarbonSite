@@ -84,11 +84,12 @@ function hasClicked(cell) {
 				if (movesToMake.length > 0) {
 					$.id('winner').innerHTML = 'Correct, now find the next move'
 					setTimeout(puzzleMove, 500);
+					window.userElo += 1;
 				}
 				else {
 					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
-					window.userElo += 10;
+					window.userElo += 3;
 					saveUserData();
 				}
 			}
@@ -97,7 +98,6 @@ function hasClicked(cell) {
 				$.id('winner').innerHTML = 'Wrong, try again';
 				window.failedPuzzleAttempts++;
 				window.userElo -= 1;
-				saveUserData();
 			}
 			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 		}
@@ -148,11 +148,12 @@ function checkGameEnding() {
 	const endingStatus = gameEndingStatus(global.currentTurn);
 	if (!endingStatus) return;
 	const winner = global.currentTurn !== 'w' ? 'White' : 'Black';
-	let winText = winner + ' Wins';
-	let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
+	const winText = winner + ' Wins';
+	const statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
 	$('#winner').innerText = statusMsg;
 	window.ingame = false;
-	window.userElo += winner === window.playerTurn ? 100 : -100;
+	if (!gameOptions.puzzles) return;
+	window.userElo += winner.toLowerCase() === window.playerTurn ? +100 : -100;
 	saveUserData();
 }
 

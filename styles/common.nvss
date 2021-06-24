@@ -34,6 +34,7 @@ summary {
 	position: absolute;
 	top: 0;
 	right: 0;
+	margin: 1em;
 	padding: 1em;
 	width: 350px;
 	background: #0004;
