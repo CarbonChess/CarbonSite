@@ -66,7 +66,7 @@ function run() {
 	if (gameOptions.puzzles) {
 		addGameData('Puzzles Mode', 'Yes');
 		addGameData('Difficulty', gameOptions.difficulty);
-		addGameData('Current Puzzle', '', 'current-puzzle-name');
+		addGameData('Puzzle ID', '', 'current-puzzle-name');
 		$.id('winner').innerText = 'Find the best move';
 		['puzzles-hint', 'puzzle-attempts'].forEach(id => $.id(id).classList.remove('hide'));
 	}
@@ -91,10 +91,3 @@ function reset() {
 	run();
 	if (gameOptions.multiplayer) sendDB(window.gameId, defaultFen);
 }
-
-/* Console IDs
- * S = selected
- * T = type
- * M = move
- * I = invalid
-*/

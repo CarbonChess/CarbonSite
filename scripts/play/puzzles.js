@@ -1,7 +1,9 @@
+const puzzleCache = 10;
 let savedPuzzles;
 let movesToMake;
 let puzzleColour;
 let puzzlePosition = 0;
+let hasLoadedCustom = false;
 
 function processData(allText) {
 	const allTextLines = allText.split(/\r\n|\n/);
@@ -22,12 +24,19 @@ function processData(allText) {
 }
 
 async function getPuzzles(start) {
-	const puzzleCache = 10;
 
 	// fetch puzzle data
 	let fileData = await fetch('/data/puzzles.csv').then(data => data.text());
 	let puzzleList = processData(fileData);
 	puzzleList = puzzleList.map(array => Object.fromEntries(array.map(item => item.split(':')))); // convert to array of objects
+	let selection = [];
+
+	// set first puzzle if explicitly specified
+	if (start && !hasLoadedCustom) {
+		hasLoadedCustom = true;
+		const customPuzzle = puzzleList.find(obj => obj.ID === start);
+		if (customPuzzle) selection.push(customPuzzle);
+	}
 
 	// attempt to filter to current difficulty
 	let sortedPuzzles = puzzleList;
@@ -37,18 +46,11 @@ async function getPuzzles(start) {
 	}
 	puzzleList = sortedPuzzles;
 
-	// cache list of puzzles
-	let selection = [];
+	// cache selected list of puzzles
 	for (let i = 1; i <= puzzleCache; i++) {
 		selection.push(puzzleList[random(0, puzzleList.length - 1)]);
 	}
 	savedPuzzles = selection;
-
-	// set first puzzle if explicitly specified
-	if (start) {
-		const customPuzzle = puzzleList.find(obj => obj.ID === start);
-		if (customPuzzle) savedPuzzles.unshift(customPuzzle);
-	}
 }
 
 function puzzleMove() {
@@ -74,7 +76,7 @@ function nextPuzzle() {
 	window.failedPuzzleAttempts = 0;
 	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 	$$('td').forEach(elem => elem.setAttribute('class', ''));
-	if (puzzlePosition === 9) {
+	if (puzzlePosition === puzzleCache - 1) {
 		puzzlePosition = 0;
 		getPuzzles().then(setBoard(puzzlePosition));
 	} else {
