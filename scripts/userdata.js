@@ -6,6 +6,8 @@ function initialiseUserData() {
 	const { elo, full_name } = user.user_metadata;
 	window.userElo = elo || DEFAULT_ELO;
 	window.accountName = full_name;
+	$.id('account-elo').innerText = window.userElo;
+	$.id('account-username').innerText = window.accountName;
 }
 
 async function saveUserData() {
@@ -15,6 +17,8 @@ async function saveUserData() {
 		}
 	}
 	const user = await netlifyIdentity.gotrue.currentUser().update(user_metadata);
+	$.id('account-elo').innerText = window.userElo;
+	$.id('account-username').innerText = window.accountName;
 }
 
 document.addEventListener('DOMContentLoaded', initialiseUserData);
