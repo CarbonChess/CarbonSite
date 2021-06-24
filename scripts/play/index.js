@@ -66,7 +66,7 @@ function run() {
 	if (gameOptions.puzzles) {
 		addGameData('Puzzles Mode', 'Yes');
 		addGameData('Difficulty', gameOptions.difficulty);
-		if (gameOptions.startingPuzzle) addGameData('Current Puzzle', '', 'current-puzzle-name');
+		addGameData('Puzzle ID', '', 'current-puzzle-name');
 		$.id('winner').innerText = 'Find the best move';
 		$.id('puzzles-hint').classList.remove('hide');
 		$.id('puzzle-attempts').classList.remove('hide');
