@@ -28,3 +28,4 @@ function updateDisplayedInfo() {
 
 document.addEventListener('DOMContentLoaded', initialiseUserData);
 netlifyIdentity.on('login', initialiseUserData);
+netlifyIdentity.on('logout', updateDisplayedInfo);

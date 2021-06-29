@@ -35,10 +35,9 @@ summary {
 	top: 0;
 	right: 0;
 	margin: 1em;
-	padding: 1em;
-	width: 350px;
-	background: #0004;
 	padding: 0.5em;
+	background: #0004;
+	text-align: center;
 
 	&-elo {
 		margin-left: 4px;
