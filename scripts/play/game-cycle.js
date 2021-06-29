@@ -88,7 +88,7 @@ function hasClicked(cell) {
 				else {
 					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
-					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, window.difficulty, window.puzzleHintUsed ? 0 : 1);
+					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, window.puzzleHintUsed ? 0 : 1);
 					saveUserData();
 				}
 			}
@@ -96,7 +96,7 @@ function hasClicked(cell) {
 				undoLastMove();
 				$.id('winner').innerHTML = 'Wrong, try again';
 				if (window.failedPuzzleAttempts === 0) {
-					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, window.difficulty, 0);
+					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, 0);
 					saveUserData();
 				}
 				window.failedPuzzleAttempts++;
