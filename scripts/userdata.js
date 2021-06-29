@@ -17,7 +17,7 @@ async function saveUserData() {
 			puzzles_elo: window.userPuzzlesElo || DEFAULT_PUZZLE_ELO,
 		}
 	}
-	const user = await netlifyIdentity.gotrue.currentUser().update(user_metadata);
+	await netlifyIdentity.gotrue.currentUser()?.update(user_metadata);
 	updateDisplayedInfo();
 }
 
