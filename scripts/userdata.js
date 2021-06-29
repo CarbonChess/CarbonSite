@@ -3,12 +3,7 @@ const DEFAULT_PUZZLE_ELO = 1500;
 
 function initialiseUserData() {
 	const user = netlifyIdentity.gotrue.currentUser();
-	if (!user) {
-		window.userElo = DEFAULT_ELO;
-		window.userPuzzlesElo = DEFAULT_PUZZLE_ELO;
-		return;
-	}
-	const { elo, puzzles_elo, full_name } = user.user_metadata;
+	const { elo, puzzles_elo, full_name } = user?.user_metadata || {};
 	window.userElo = elo || DEFAULT_ELO;
 	window.userPuzzlesElo = puzzles_elo || DEFAULT_PUZZLE_ELO;
 	window.accountName = full_name;
@@ -28,7 +23,7 @@ async function saveUserData() {
 
 function updateDisplayedInfo() {
 	$.id('account-elo').innerText = window.userElo + '/' + window.userPuzzlesElo;
-	$.id('account-username').innerText = window.accountName || 'Not Signed In';
+	$.id('account-username').innerText = window.accountName?.replace(/</g, '&lt;') || 'Not Signed In';
 }
 
 document.addEventListener('DOMContentLoaded', initialiseUserData);
