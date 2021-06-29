@@ -53,6 +53,7 @@ summary {
 			margin: 0;
 			padding: 0.5em 1em;
 			list-style-type: none;
+			font-size: 90%;
 		}
 
 		a {
