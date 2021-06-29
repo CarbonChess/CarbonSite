@@ -256,15 +256,16 @@ input[type="text"] {
 
 	@ $(BR).. {
 		position: absolute;
-		top: 0;
 	}
 }
 
 #logo @ $(BR).. {
+	top: 0;
 	left: 0;
 }
 
 #donate @ $(BR).. {
+	bottom: 0;
 	right: 0;
 }
 

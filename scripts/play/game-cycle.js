@@ -88,7 +88,7 @@ function hasClicked(cell) {
 				else {
 					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
-					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, window.difficulty, 1);
+					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, window.difficulty, window.puzzleHintUsed ? 0 : 1);
 					saveUserData();
 				}
 			}
