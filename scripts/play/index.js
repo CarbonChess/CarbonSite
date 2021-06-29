@@ -44,6 +44,8 @@ function run() {
 	window.gameId = gameOptions.gamecode;
 	window.username = gameOptions.username || window.accountName || '[Anon]';
 	window.chat = [];
+	window.userElo;
+	window.opponentElo;
 
 	$('#game-data_content').innerHTML = '';
 	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles ? 'singleplayer' : 'puzzles';

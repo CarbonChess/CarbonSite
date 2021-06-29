@@ -19,7 +19,7 @@ async function getGameData(chat) {
 async function readDB() {
 	if (!gameOptions?.multiplayer) return;
 	readChat();
-	const { fen = createFen(), moves, lastMove, points, ingame = 1, players } = await getGameData();
+	const { fen = createFen(), moves, lastMove, points, ingame = 1, players, white, black } = await getGameData();
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
 	createBoardFromFen(fen);
@@ -40,6 +40,11 @@ async function readDB() {
 	if (!+ingame) {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
+	}
+	if (white || black) {
+		const whiteElo = white.split('[]')[1];
+		const blackElo = black.split('[]')[1];
+		window.opponentElo = window.playerTurn === 'white' ? blackElo : whiteElo;
 	}
 	window.playerCount = ~~players;
 }
