@@ -41,9 +41,9 @@ async function readDB() {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
 	}
-	if (white || black) {
-		const whiteElo = white.split('[]')[1];
-		const blackElo = black.split('[]')[1];
+	if (white && black) {
+		const whiteElo = +white.split('[]')[1];
+		const blackElo = +black.split('[]')[1];
 		window.opponentElo = window.playerTurn === 'white' ? blackElo : whiteElo;
 	}
 	window.playerCount = ~~players;
@@ -127,7 +127,9 @@ async function init() {
 		const whiteName = data.white.split('[]')[0];
 		const blackName = data.black.split('[]')[0];
 		window.playerTurn = { [whiteName]: 'white', [blackName]: 'black' }[window.username];
-		window.opponentElo = +data[invertColour(window.playerTurn)].split('[]')[1];
+		const [opponentName, opponentElo] = data[invertColour(window.playerTurn)].split('[]');
+		window.opponentName = opponentName;
+		window.opponentElo = +opponentElo;
 	}
 	else {
 		window.playerCount = ~~data.players + 1;
@@ -145,6 +147,10 @@ async function init() {
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
+	$(`#${playerTurn}-username`) = window.username;
+	$(`#${playerTurn}-elo`) = window.userElo;
+	$(`#${invertColour(playerTurn)}-username`) = window.opponentName;
+	$(`#${invertColour(playerTurn)}-elo`) = window.opponentElo;
 	sendDB('soft:true');
 	sendChatMessage('force:true');
 }
