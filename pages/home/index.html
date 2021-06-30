@@ -5,29 +5,27 @@ layout: menu.njk
 
 <h2>Select opponent</h2>
 
-<div class="cards">
-
-	<a href="/menu/bot/" class="card big">
+<div class="cards showcase">
+	<a href="/menu/bot/" class="card big" style="grid-area: computer;">
 		<img src="/images/icons/computer.svg" height="100px" alt="Computer" class="card-image">
 		<span class="card-heading">Computer</span>
 		<span class="card-description">Play against the computer</span>
 	</a>
-
-	<a href="/menu/offline/" class="card big">
+	<a href="/menu/offline/" class="card big" style="grid-area: offline;">
 		<img src="/images/icons/offline.svg" height="100px" alt="Offline" class="card-image">
 		<span class="card-heading">Offline</span>
 		<span class="card-description">Play against someone on the same device</span>
 	</a>
-
-	<a href="/menu/online/" class="card big">
+	<a href="/menu/online/" class="card big showcase-tall" style="grid-area: online;">
 		<img src="/images/icons/online.svg" height="100px" alt="Online" class="card-image">
 		<span class="card-heading">Online</span>
 		<span class="card-description">Play against someone anywhere in the world</span>
 	</a>
-
-	<a href="/menu/puzzles/" class="card big">
-		<img src="/images/icons/puzzle.svg" height="100px" alt="Online" class="card-image">
-		<span class="card-heading">Puzzles</span>
-		<span class="card-description">Find the best move in various levels</span>
+	<a href="/menu/puzzles/" class="card big showcase-wide" style="grid-area: puzzle;">
+		<img src="/images/icons/puzzle.svg" height="100px" alt="Puzzle" class="card-image">
+		<div>
+			<span class="card-heading">Puzzles</span>
+			<span class="card-description">Find the best moves to make across various levels</span>
+		</div>
 	</a>
 </div>

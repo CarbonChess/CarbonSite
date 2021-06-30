@@ -46,7 +46,7 @@ function run() {
 	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
-	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : gameOptions.puzzles ? 'singleplayer' : 'puzzles';
+	$('body').dataset.mode = gameOptions.multiplayer ? 'multiplayer' : 'singleplayer';
 	addGameData('Opponent', (gameOptions.bot || gameOptions.puzzles) ? 'Bot' : (gameOptions.multiplayer && !gameOptions.static) ? 'Online' : 'Local');
 	if (gameOptions.multiplayer) {
 		addGameData('Game ID', window.gameId);
@@ -68,8 +68,7 @@ function run() {
 		addGameData('Difficulty', gameOptions.difficulty);
 		addGameData('Puzzle ID', '', 'current-puzzle-name');
 		$.id('winner').innerText = 'Find the best move';
-		$.id('puzzles-hint').classList.remove('hide');
-		$.id('puzzle-attempts').classList.remove('hide');
+		['puzzles-hint', 'puzzle-attempts'].forEach(id => $.id(id).classList.remove('hide'));
 	}
 	if (!gameOptions.autoFlip) {
 		$('body').dataset.noflip = true;

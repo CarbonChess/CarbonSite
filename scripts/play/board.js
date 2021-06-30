@@ -56,8 +56,6 @@ function newBoard(size) {
 
 function createBoardFromFen(fenString) {
 	createBoard(fenString);
-	// fenString = decodeURIComponent(fenString);
-	// history.pushState({}, '', location.href.replace(/\?.*$/, ''));
 
 	const pieces = { 'p': 'pawn', 'b': 'bishop', 'n': 'knight', 'r': 'rook', 'q': 'queen', 'k': 'king' };
 	let currentRow = 8;
@@ -95,12 +93,15 @@ function createBoardFromFen(fenString) {
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
 	const takenPieces = getTakenPiecesFromFen();
-	for (let i = 0; i < takenPieces.w.length; i++) {
-		const c = takenPieces.w[i];
-		logTakenPiece('white', pieces[c.toLowerCase()]);
+	window.points = { w: 0, b: 0 };
+	for (const i in takenPieces.w.split('')) {
+		const c = takenPieces.w[i].toLowerCase();
+		points.w += getPointsEquivalent(pieces[c]);
+		logTakenPiece('white', pieces[c]);
 	}
 	for (let i = 0; i < takenPieces.b.length; i++) {
 		const c = takenPieces.b[i];
+		points.b += getPointsEquivalent(pieces[c]);
 		logTakenPiece('black', pieces[c]);
 	}
 

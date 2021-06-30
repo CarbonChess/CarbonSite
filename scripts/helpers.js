@@ -7,10 +7,10 @@ const debug = (...args) => console.log('DEBUG', ...args);
 const indexToLetter = n => String.fromCharCode(n + 64);
 const getClasses = elem => Array.from(elem?.classList || []);
 const invertColour = colour => colour === 'white' ? 'black' : 'white';
-const random = (min = 0, max = 1) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomID = (len = 5) => random(0, +'9'.repeat(len)).toString().padStart(len, '0');
+const random = (min = 0, max = 1e9) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomID = (len = 5) => random(0, 10 ** len - 1).toString().padStart(len, '0');
 const copy = text => navigator.clipboard.writeText(text);
-const addGameData = (title, content, id) => $('#game-data_content').innerHTML += `<dt>${title}</dt><dd id="${id}">${content}</dd>`;
+const addGameData = (title, content, id = '') => $('#game-data_content').innerHTML += `<dt>${title}</dt><dd id="${id}">${content}</dd>`;
 
 const SEP = { MSG: '\x1e', INFO: '\x1f' };
 
