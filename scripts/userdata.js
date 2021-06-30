@@ -1,11 +1,20 @@
 const DEFAULT_ELO = 1000;
 const DEFAULT_PUZZLE_ELO = 1500;
 
+function resetUserData() {
+	window.userElo = DEFAULT_ELO;
+	window.userPuzzlesElo = DEFAULT_PUZZLE_ELO;
+	window.accountName = 'Not Signed In';
+	updateDisplayedInfo();
+}
+
 function initialiseUserData() {
+	resetUserData();
 	const user = netlifyIdentity.gotrue.currentUser();
-	const { elo, puzzles_elo, full_name } = user?.user_metadata || {};
-	window.userElo = elo || DEFAULT_ELO;
-	window.userPuzzlesElo = puzzles_elo || DEFAULT_PUZZLE_ELO;
+	if (!user) return;
+	const { elo, puzzles_elo, full_name } = user.user_metadata;
+	window.userElo = elo;
+	window.userPuzzlesElo = puzzles_elo;
 	window.accountName = full_name;
 	updateDisplayedInfo();
 }
@@ -28,4 +37,4 @@ function updateDisplayedInfo() {
 
 document.addEventListener('DOMContentLoaded', initialiseUserData);
 netlifyIdentity.on('login', initialiseUserData);
-netlifyIdentity.on('logout', updateDisplayedInfo);
+netlifyIdentity.on('logout', resetUserData);
