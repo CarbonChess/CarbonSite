@@ -62,7 +62,7 @@ input[type="text"] {
 	flex-wrap: wrap;
 	place-content: center;
 
-	&.showcase {
+	&.showcase @ 1000px.. {
 		display: grid;
 		grid-template-areas: "online offline computer" "online puzzle puzzle";
 		gap: 1em;
@@ -112,7 +112,7 @@ input[type="text"] {
 		width: 250px;
 		border-radius: 0;
 
-		&.showcase-wide {
+		&.showcase-wide @ 1000px.. {
 			display: flex;
 			width: 100%;
 			grid-area: auto / span 2;
@@ -121,7 +121,7 @@ input[type="text"] {
 			font-size: 130%;
 		}
 
-		&.showcase-tall {
+		&.showcase-tall @ 1000px.. {
 			height: 100%;
 			grid-area: span 2 / auto;
 			font-size: 130%;
