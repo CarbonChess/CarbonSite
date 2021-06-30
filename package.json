@@ -18,7 +18,7 @@
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^0.12.1",
-		"webpack": "^5.38.1",
-		"webpack-cli": "^4.7.0"
+		"webpack": "^5.41.1",
+		"webpack-cli": "^4.7.2"
 	}
 }
