@@ -7,14 +7,14 @@
 	<title>Home &ndash; CarbonChess</title>
 	<link rel="stylesheet" href="/styles/common.css">
 	<link rel="stylesheet" href="/styles/home.css">
+	<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	<script src="/scripts/helpers.js"></script>
+	<script src="/scripts/userdata.js"></script>
 	<script src="/scripts/home.js"></script>
 </head>
 
 <body>
-	<a href="/" title="Return to men">
-		<img src="/images/logo.svg" height="65px" id="logo" alt="CarbonChess">
-	</a>
+	{% include "header.njk" %}
 
     <main id="main">
         {{ content | safe }}

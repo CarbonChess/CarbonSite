@@ -19,7 +19,7 @@ async function getGameData(chat) {
 async function readDB() {
 	if (!gameOptions?.multiplayer) return;
 	readChat();
-	const { fen = createFen(), moves, lastMove, points, ingame = 1, players } = await getGameData();
+	const { fen = createFen(), moves, lastMove, points, ingame = 1, players, white, black } = await getGameData();
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
 	createBoardFromFen(fen);
@@ -41,6 +41,11 @@ async function readDB() {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
 	}
+	if (white && black) {
+		const whiteElo = +white.split('[]')[1];
+		const blackElo = +black.split('[]')[1];
+		window.opponentElo = window.playerTurn === 'white' ? blackElo : whiteElo;
+	}
 	window.playerCount = ~~players;
 }
 
@@ -55,7 +60,7 @@ async function sendDB(soft) {
 		!soft && `moves=${global.logList.join(',')}`,
 		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
 		!soft && `points=${window.points.w},${window.points.b}`,
-		window.playerTurn && `${window.playerTurn}=${window.username}`,
+		window.playerTurn && `${window.playerTurn}=${window.username}[]${window.userElo}`,
 		`players=${window.playerCount}`,
 		`ingame=${+!window.sessionLost}`,
 	];
@@ -119,7 +124,12 @@ async function init() {
 	const data = await getGameData();
 	if ([data.white, data.black].includes(window.username)) {
 		window.playerCount = +data.players;
-		window.playerTurn = { [data.white]: 'white', [data.black]: 'black' }[window.username];
+		const whiteName = data.white.split('[]')[0];
+		const blackName = data.black.split('[]')[0];
+		window.playerTurn = { [whiteName]: 'white', [blackName]: 'black' }[window.username];
+		const [opponentName, opponentElo] = data[invertColour(window.playerTurn)].split('[]');
+		window.opponentName = opponentName;
+		window.opponentElo = +opponentElo;
 	}
 	else {
 		window.playerCount = ~~data.players + 1;
@@ -137,6 +147,10 @@ async function init() {
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
+	$(`#${playerTurn}-username`).innerText = window.username;
+	$(`#${playerTurn}-elo`).innerText = window.userElo;
+	$(`#${invertColour(playerTurn)}-username`).innerText = window.opponentName;
+	$(`#${invertColour(playerTurn)}-elo`).innerText = window.opponentElo;
 	sendDB('soft:true');
 	sendChatMessage('force:true');
 }

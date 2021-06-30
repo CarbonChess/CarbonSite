@@ -73,10 +73,11 @@ function setBoard(item) {
 
 function nextPuzzle() {
 	window.ingame = true;
+	window.points = { w: 0, b: 0 };
 	window.failedPuzzleAttempts = 0;
 	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 	$$('td').forEach(elem => elem.setAttribute('class', ''));
-	if (puzzlePosition === puzzleCache - 1) {
+	if (puzzlePosition >= puzzleCache - 1) {
 		puzzlePosition = 0;
 		getPuzzles().then(setBoard(puzzlePosition));
 	} else {
@@ -89,5 +90,6 @@ function nextPuzzle() {
 }
 
 function showPuzzleHint() {
+	window.puzzleHintUsed = true;
 	$.id(movesToMake[0].slice(0, 2).toUpperCase())?.classList.add('valid');
 }

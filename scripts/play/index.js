@@ -42,7 +42,7 @@ function run() {
 	window.autoPing = gameOptions.multiplayer;
 	window.hasRules = gameOptions.rules;
 	window.gameId = gameOptions.gamecode;
-	window.username = gameOptions.username || '[Anon]';
+	window.username = gameOptions.username || window.accountName || '[Anon]';
 	window.chat = [];
 
 	$('#game-data_content').innerHTML = '';
@@ -91,3 +91,5 @@ function reset() {
 	run();
 	if (gameOptions.multiplayer) sendDB(window.gameId, defaultFen);
 }
+
+document.addEventListener('DOMContentLoaded', run);

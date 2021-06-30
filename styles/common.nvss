@@ -26,6 +26,41 @@ body {
 	}
 }
 
+summary {
+	cursor: pointer;
+}
+
+#account {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 1em;
+	padding: 0.5em;
+	background: #0004;
+	text-align: center;
+
+	&-elo {
+		margin-left: 4px;
+		padding: 1px 3px;
+		background: #444;
+		font-family: monospace;
+		font-size: 90%;
+	}
+
+	[data-netlify-identity-menu] {
+		ul {
+			margin: 0;
+			padding: 0.5em 1em;
+			list-style-type: none;
+			font-size: 90%;
+		}
+
+		a {
+			color: white;
+		}
+	}
+}
+
 footer {
 	padding: 1em;
 	text-align: center;

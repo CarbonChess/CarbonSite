@@ -88,11 +88,17 @@ function hasClicked(cell) {
 				else {
 					$.id('winner').innerHTML = 'Well done';
 					$.id('next-puzzle').classList.remove('hide');
+					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, window.puzzleHintUsed ? 0 : 1);
+					saveUserData();
 				}
 			}
 			else {
 				undoLastMove();
 				$.id('winner').innerHTML = 'Wrong, try again';
+				if (window.failedPuzzleAttempts === 0) {
+					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, 0);
+					saveUserData();
+				}
 				window.failedPuzzleAttempts++;
 			}
 			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
@@ -143,8 +149,9 @@ function checkHighlight() {
 function checkGameEnding() {
 	const endingStatus = gameEndingStatus(global.currentTurn);
 	if (!endingStatus) return;
-	let winText = (global.currentTurn !== 'w' ? 'White' : 'Black') + ' Wins';
-	let statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
+	const winner = global.currentTurn !== 'w' ? 'white' : 'black';
+	const winText = winner + ' wins';
+	const statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
 	$('#winner').innerText = statusMsg;
 	window.ingame = false;
 }

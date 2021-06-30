@@ -3,6 +3,8 @@ permalink: /menu/puzzles/
 layout: menu.njk
 ---
 
+<script>document.addEventListener('DOMContentLoaded', () => $('#puzzles-level').value = window.userPuzzlesElo);</script>
+
 <form action="/play" method="GET">
 
 	<h2>Puzzles</h2>

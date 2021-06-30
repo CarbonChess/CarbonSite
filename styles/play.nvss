@@ -263,15 +263,15 @@ button.disabled {
 	font-size: large;
 }
 
-#taken-black-pieces,
-#taken-white-pieces {
+#black-data,
+#white-data {
 	padding: 5px 0;
 	min-height: 32px;
 	height: max-content;
 }
 
-#taken-black-pieces {grid-area: black;}
-#taken-white-pieces {grid-area: white;}
+#black-data {grid-area: black;}
+#white-data {grid-area: white;}
 
 [data-mode="multiplayer"] :is(#undo, #reset) {
 	display: none;
