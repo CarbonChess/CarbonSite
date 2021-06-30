@@ -22,8 +22,8 @@ function initialiseUserData() {
 async function saveUserData() {
 	const user_metadata = {
 		data: {
-			elo: window.userElo || DEFAULT_ELO,
-			puzzles_elo: window.userPuzzlesElo || DEFAULT_PUZZLE_ELO,
+			elo: window.userElo,
+			puzzles_elo: window.userPuzzlesElo,
 		}
 	}
 	await netlifyIdentity.gotrue.currentUser()?.update(user_metadata);
@@ -32,7 +32,7 @@ async function saveUserData() {
 
 function updateDisplayedInfo() {
 	$.id('account-elo').innerText = window.userElo + '/' + window.userPuzzlesElo;
-	$.id('account-username').innerText = window.accountName?.replace(/</g, '&lt;') || 'Not Signed In';
+	$.id('account-username').innerText = window.accountName.replace(/</g, '&lt;');
 }
 
 document.addEventListener('DOMContentLoaded', initialiseUserData);
