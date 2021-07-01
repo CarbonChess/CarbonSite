@@ -1,9 +1,9 @@
 const puzzleCache = 10;
-let savedPuzzles;
-let movesToMake;
-let puzzleColour;
-let puzzlePosition = 0;
-let hasLoadedCustom = false;
+window.savedPuzzles;
+window.movesToMake = [];
+window.puzzleColour;
+window.puzzlePosition = 0;
+window.hasLoadedCustom = false;
 
 function processData(allText) {
 	const allTextLines = allText.split(/\r\n|\n/);
@@ -75,6 +75,7 @@ function nextPuzzle() {
 	window.ingame = true;
 	window.points = { w: 0, b: 0 };
 	window.failedPuzzleAttempts = 0;
+	window.puzzleHintUsed = false;
 	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 	$$('td').forEach(elem => elem.setAttribute('class', ''));
 	if (puzzlePosition >= puzzleCache - 1) {
@@ -87,6 +88,32 @@ function nextPuzzle() {
 	}
 	$.id('next-puzzle').classList.add('hide');
 	$.id('winner').innerHTML = 'Find the best move';
+}
+
+function puzzleMoveOutput(startCell, endCell) {
+	if (startCell === window.movesToMake[0].slice(0, 2).toUpperCase() && endCell === window.movesToMake[0].slice(2, 4).toUpperCase()) {
+		window.movesToMake.shift();
+		if (window.movesToMake.length > 0) {
+			$.id('winner').innerHTML = 'Correct, now find the next move'
+			setTimeout(puzzleMove, 500);
+		}
+		else {
+			$.id('winner').innerHTML = 'Well done';
+			$.id('next-puzzle').classList.remove('hide');
+			window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, window.puzzleHintUsed ? 0 : 1);
+			saveUserData();
+		}
+	}
+	else {
+		undoLastMove();
+		$.id('winner').innerHTML = 'Wrong, try again';
+		if (window.failedPuzzleAttempts === 0) {
+			window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, 0);
+			saveUserData();
+		}
+		window.failedPuzzleAttempts++;
+	}
+	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
 }
 
 function showPuzzleHint() {

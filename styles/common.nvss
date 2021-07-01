@@ -37,7 +37,7 @@ summary {
 	margin: 1em;
 	padding: 0.5em;
 	background: #0004;
-	text-align: center;
+	text-align: right;
 
 	&-elo {
 		margin-left: 4px;

@@ -78,30 +78,8 @@ function hasClicked(cell) {
 		checkGameEnding();
 
 		// check if correct puzzle move has been made
-		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn && movesToMake) {
-			if (startCell === movesToMake[0].slice(0, 2).toUpperCase() && endCell === movesToMake[0].slice(2, 4).toUpperCase()) {
-				movesToMake.shift();
-				if (movesToMake.length > 0) {
-					$.id('winner').innerHTML = 'Correct, now find the next move'
-					setTimeout(puzzleMove, 500);
-				}
-				else {
-					$.id('winner').innerHTML = 'Well done';
-					$.id('next-puzzle').classList.remove('hide');
-					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, window.puzzleHintUsed ? 0 : 1);
-					saveUserData();
-				}
-			}
-			else {
-				undoLastMove();
-				$.id('winner').innerHTML = 'Wrong, try again';
-				if (window.failedPuzzleAttempts === 0) {
-					window.userPuzzlesElo = calculateElo(window.userPuzzlesElo, gameOptions.difficulty, 0);
-					saveUserData();
-				}
-				window.failedPuzzleAttempts++;
-			}
-			$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;
+		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn && window.movesToMake) {
+			puzzleMoveOutput(startCell, endCell);
 		}
 
 		// send to server
