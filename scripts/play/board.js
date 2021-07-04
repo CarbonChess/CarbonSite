@@ -123,7 +123,7 @@ function flipBoard() {
 
 function alignBoard() {
 	const classes = document.body.classList;
-	if (global.currentTurn === 'b') {
+	if (gameData.currentTurn === 'b') {
 		classes.add('rotate');
 		classes.remove('norotate');
 	} else {

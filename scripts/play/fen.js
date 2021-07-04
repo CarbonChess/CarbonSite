@@ -1,14 +1,13 @@
 const defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
 
 function createFen() {
-	return global.moveList.slice(-1)[0];
+	return gameData.moveList[gameData.moveList.length - 1];
 }
 
 function getTakenPiecesFromFen() {
-	const fenString = global.moveList.slice(-1)[0];
+	const fenString = createFen();
 	let pieces = { b: 'pppppppprnbqkbnr', w: 'PPPPPPPPRNBQKBNR' };
-	for (let i in fenString.split(' ')[0]) {
-		const c = fenString[i];
+	for (const c of fenString.split(' ')[0]) {
 		const col = c.toLowerCase() === c ? 'b' : 'w';
 		pieces[col] = pieces[col].replace(c, '');
 	}

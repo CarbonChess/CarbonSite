@@ -55,7 +55,7 @@ async function getPuzzles(start) {
 
 function puzzleMove() {
 	const [, start, end, promotion] = movesToMake[0].toUpperCase().match(/^(..)(..)(.?)/);
-	if (promotion) global.promotionPiece = promotion;
+	if (promotion) gameData.promotionPiece = promotion;
 	hasClicked(start);
 	hasClicked(end);
 	movesToMake.shift();
@@ -67,7 +67,7 @@ function setBoard(item) {
 	movesToMake = savedPuzzles[item].Moves.split(' ');
 	alignBoard();
 	flipBoard();
-	puzzleColour = global.currentTurn;
+	puzzleColour = gameData.currentTurn;
 	setTimeout(puzzleMove, 1000);
 }
 

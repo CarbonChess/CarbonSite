@@ -29,7 +29,7 @@ async function readDB() {
 		checkHighlight();
 	}
 	if (moves) {
-		global.logList = moves.split(',');
+		gameData.logList = moves.split(',');
 		updateMoves();
 	}
 	if (points) {
@@ -57,7 +57,7 @@ async function sendDB(soft) {
 		'type=send',
 		`gameId=${encodeURIComponent(window.gameId)}`,
 		!soft && `fen=${encodeURIComponent(fen)}`,
-		!soft && `moves=${global.logList.join(',')}`,
+		!soft && `moves=${gameData.logList.join(',')}`,
 		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
 		!soft && `points=${window.points.w},${window.points.b}`,
 		window.playerTurn && `${window.playerTurn}=${window.username}[]${window.userElo}`,

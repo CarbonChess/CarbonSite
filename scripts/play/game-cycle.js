@@ -2,12 +2,12 @@ function hasClicked(cell) {
 	if (
 		!window.ingame
 		|| gameOptions.spectating
-		|| gameOptions.multiplayer && global.currentTurn !== window.playerTurn[0]
+		|| gameOptions.multiplayer && gameData.currentTurn !== window.playerTurn[0]
 	) return;
 
 	cell = cell.toUpperCase();
 	const $cell = $.id('piece' + cell);
-	const cellClasses = $cell ? Array.from($cell.classList) : [];
+	const cellClasses = Array.from($cell?.classList ?? []);
 
 	// Cancel a move //
 	if (cell === selectedCell) {
@@ -39,17 +39,17 @@ function hasClicked(cell) {
 
 		// promotion
 		const canPromote = piece === 'pawn' && ['1', '8'].includes(endCell[1]);
-		if (canPromote && !global.promotionPiece) {
-			global.promotionPiece = getPieceID(window.promotionPiece) || 'q';
+		if (canPromote && !gameData.promotionPiece) {
+			gameData.promotionPiece = getPieceID(window.promotionPiece) || 'q';
 		}
 
 		// move the piece
-		const moveOutput = validation.makeMove(startCell, endCell);
+		const moveOutput = makeMove(startCell, endCell);
 		if (window.hasRules) {
 			if (!moveOutput) {
 				console.log('I', startCell, '->', endCell);
-				if (getPieceClasses(endCell)[0] === colour) selectPiece(endCell);
-				else selectPiece(startCell);
+				const pieceToSelect = getPieceClasses(endCell)[0] === colour ? endCell : startCell;
+				selectPiece(pieceToSelect);
 				return;
 			}
 			createBoardFromFen(moveOutput);
@@ -78,7 +78,7 @@ function hasClicked(cell) {
 		checkGameEnding();
 
 		// check if correct puzzle move has been made
-		if (window.gameOptions.puzzles && puzzleColour === global.currentTurn && window.movesToMake) {
+		if (window.gameOptions.puzzles && puzzleColour === gameData.currentTurn && window.movesToMake) {
 			puzzleMoveOutput(startCell, endCell);
 		}
 
@@ -88,13 +88,13 @@ function hasClicked(cell) {
 	}
 
 	// Select piece //
-	else if ($cell && (!window.hasRules || cellClasses.includes(global.currentTurn === 'w' ? 'white' : 'black'))) {
+	else if ($cell && (!window.hasRules || cellClasses.includes(gameData.currentTurn === 'w' ? 'white' : 'black'))) {
 		// the piece is selectable
 		// mark this piece as being in process of moving
 
 		const isPawn = cellClasses.includes('pawn');
-		const whiteRow2 = cellClasses.includes('white') && +cell[1] === 7;
-		const blackRow2 = cellClasses.includes('black') && +cell[1] === 2;
+		const whiteRow2 = cellClasses.includes('white') && cell[1] === '7';
+		const blackRow2 = cellClasses.includes('black') && cell[1] === '2';
 		if (isPawn && (!window.hasRules || whiteRow2 || blackRow2)) {
 			$.id('promotion').classList.remove('hide');
 		}
@@ -125,9 +125,9 @@ function checkHighlight() {
 }
 
 function checkGameEnding() {
-	const endingStatus = gameEndingStatus(global.currentTurn);
+	const endingStatus = gameEndingStatus(gameData.currentTurn);
 	if (!endingStatus) return;
-	const winner = global.currentTurn !== 'w' ? 'white' : 'black';
+	const winner = gameData.currentTurn !== 'w' ? 'white' : 'black';
 	const winText = winner + ' wins';
 	const statusMsg = endingStatus === 'stalemate' ? 'Stalemate' : winText;
 	$('#winner').innerText = statusMsg;
@@ -135,7 +135,7 @@ function checkGameEnding() {
 }
 
 function undoLastMove() {
-	if (window.totalMoves === 0 || global.moveList.length === 0) return;
+	if (window.totalMoves === 0 || gameData.moveList.length === 0) return;
 	createBoardFromFen(undoMove());
 	window.ingame = true;
 	window.totalMoves--;
@@ -146,7 +146,7 @@ function undoLastMove() {
 	$('#log').removeChild($('#log').lastChild);
 	$('#winner').innerText = '';
 	if (window.autoPing) sendDB();
-	if (gameOptions.bot && global.currentTurn === gameOptions.botColour[0]) undoLastMove();
+	if (gameOptions.bot && gameData.currentTurn === gameOptions.botColour[0]) undoLastMove();
 }
 
 function threefoldRepetition() {

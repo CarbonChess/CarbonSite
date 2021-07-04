@@ -8,7 +8,7 @@ function log({ startCell, endCell, startClasses, endClasses, taken, promoted }) 
 
 function updateMoves() {
 	let moveHtml = '';
-	for (let [n, move] of Object.entries(global.logList)) {
+	for (let [n, move] of Object.entries(gameData.logList)) {
 		moveHtml += ' <span class="move">';
 		let isWhite = n % 2 === 0;
 		if (isWhite) moveHtml += `<br class="desktoponly">` + (n / 2 + 1) + '. ';

@@ -15,7 +15,7 @@ function botMove(botColour) {
 	// Generate list of good moves for later use
 	validSquares.forEach(obj => obj.moves.forEach(cell => {
 		const start = obj.cell, end = cell;
-		const march = botIntelligence === 1 && (global.currentTurn === 'w' ? start[1] < end[1] : start[1] > end[1]);
+		const march = botIntelligence === 1 && (gameData.currentTurn === 'w' ? start[1] < end[1] : start[1] > end[1]);
 		const charge = botIntelligence === 2 && pieceInCell(cell);
 		const attack = botIntelligence === 3 && pieceInCell(cell) && getPointsEquivalent(getPieceClasses(start)[1]) <= getPointsEquivalent(getPieceClasses(end)[1]);
 		validMoves.push({ start, end });
@@ -59,14 +59,14 @@ function forceBotMove() {
 	let curFen = createFen();
 	failedMoveCount = 0;
 	do {
-		botMove(global.currentTurn === 'w' ? 'white' : 'black');
+		botMove(gameData.currentTurn === 'w' ? 'white' : 'black');
 		if (createFen() === curFen) failedMoveCount++;
 	}
 	while (createFen() === curFen && ingame);
 }
 
 setInterval(function () {
-	if (window.gameOptions && window.gameOptions.bot && window.ingame && global.currentTurn === window.gameOptions.botColour[0]) {
+	if (window.gameOptions && window.gameOptions.bot && window.ingame && gameData.currentTurn === window.gameOptions.botColour[0]) {
 		forceBotMove();
 	}
 }, 650);
