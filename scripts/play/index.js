@@ -30,7 +30,6 @@ function run() {
 	window.selectedCell = null;
 	window.playerTurn = 'white';
 	window.promotionPiece = 'queen';
-	window.points = { w: 0, b: 0 };
 	window.currentBoard = [];
 	window.enpassantCell = null
 	window.enpassantTaken = false;
