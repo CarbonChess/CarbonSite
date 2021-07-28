@@ -13,8 +13,8 @@
 	},
 	"dependencies": {
 		"faunadb": "^4.3.0",
-		"fenfurnace": "^0.4.0",
-		"novasheets": "^1.0.1"
+		"fenfurnace": "^0.4.4",
+		"novasheets": "^1.0.6"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^0.12.1",
