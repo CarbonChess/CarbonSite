@@ -61,10 +61,10 @@ function hasClicked(cell) {
 		checkHighlight();
 
 		// log the move
+		const taken = endClasses.length && (moveOutput || !window.hasRules);
 		window.totalMoves++;
 		console.log('M', startCell, '->', endCell);
-		updateMoveLog();
-		logPoints();
+		log({ startCell, endCell, startClasses, endClasses, taken, promoted: canPromote });
 
 		// hide promotion box
 		window.promotionPiece = 'queen';

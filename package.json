@@ -13,12 +13,12 @@
 	},
 	"dependencies": {
 		"faunadb": "^4.3.0",
-		"fenfurnace": "^0.4.0",
-		"novasheets": "^1.0.1"
+		"fenfurnace": "~0.3.1",
+		"novasheets": "^1.0.6"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^0.12.1",
-		"webpack": "^5.43.0",
+		"webpack": "^5.47.0",
 		"webpack-cli": "^4.7.2"
 	}
 }

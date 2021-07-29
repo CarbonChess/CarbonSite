@@ -93,12 +93,15 @@ function createBoardFromFen(fenString) {
 	// Update taken pieces
 	$$('#white-pieces, #black-pieces').forEach(elem => elem.innerHTML = '');
 	const takenPieces = getTakenPiecesFromFen();
+	window.points = { w: 0, b: 0 };
 	for (const i in takenPieces.w.split('')) {
 		const c = takenPieces.w[i].toLowerCase();
+		points.w += getPointsEquivalent(pieces[c]);
 		logTakenPiece('white', pieces[c]);
 	}
 	for (let i = 0; i < takenPieces.b.length; i++) {
 		const c = takenPieces.b[i];
+		points.b += getPointsEquivalent(pieces[c]);
 		logTakenPiece('black', pieces[c]);
 	}
 

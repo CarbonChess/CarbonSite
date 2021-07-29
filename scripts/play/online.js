@@ -19,7 +19,7 @@ async function getGameData(chat) {
 async function readDB() {
 	if (!gameOptions?.multiplayer) return;
 	readChat();
-	const { fen = createFen(), moves, lastMove, ingame = 1, players, white, black } = await getGameData();
+	const { fen = createFen(), moves, lastMove, points, ingame = 1, players, white, black } = await getGameData();
 	if (fen === lastReceivedFen) return;
 	lastReceivedFen = fen;
 	createBoardFromFen(fen);
@@ -32,6 +32,11 @@ async function readDB() {
 		gameData.logList = moves.split(',');
 		updateMoves();
 	}
+	if (points) {
+		let [w, b] = points.split(',');
+		window.points = { w: +w, b: +b };
+		logPoints();
+	}
 	if (!+ingame) {
 		$('#winner').innerText = 'Timed out';
 		window.ingame = false;
@@ -42,7 +47,6 @@ async function readDB() {
 		window.opponentElo = window.playerTurn === 'white' ? blackElo : whiteElo;
 	}
 	window.playerCount = ~~players;
-	logPoints();
 }
 
 async function sendDB(soft) {
@@ -55,6 +59,7 @@ async function sendDB(soft) {
 		!soft && `fen=${encodeURIComponent(fen)}`,
 		!soft && `moves=${gameData.logList.join(',')}`,
 		!soft && `lastMove=${window.lastMove.start},${window.lastMove.end}`,
+		!soft && `points=${window.points.w},${window.points.b}`,
 		window.playerTurn && `${window.playerTurn}=${window.username}[]${window.userElo}`,
 		`players=${window.playerCount}`,
 		`ingame=${+!window.sessionLost}`,

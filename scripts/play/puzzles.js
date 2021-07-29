@@ -73,6 +73,7 @@ function setBoard(item) {
 
 function nextPuzzle() {
 	window.ingame = true;
+	window.points = { w: 0, b: 0 };
 	window.failedPuzzleAttempts = 0;
 	window.puzzleHintUsed = false;
 	$.id('puzzle-attempts-value').innerText = window.failedPuzzleAttempts;

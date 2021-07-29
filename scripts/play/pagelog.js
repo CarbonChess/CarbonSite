@@ -1,4 +1,12 @@
-function updateMoveLog() {
+function log({ startCell, endCell, startClasses, endClasses, taken, promoted }) {
+	const colour = startClasses[0];
+	if (taken) points[colour[0]] += getPointsEquivalent(endClasses[1]);
+	if (promoted) points[colour[0]] += getPointsEquivalent(getPieceClasses(endCell)[1]);
+	logPoints();
+	updateMoves();
+}
+
+function updateMoves() {
 	let moveHtml = '';
 	for (let [n, move] of Object.entries(gameData.logList)) {
 		moveHtml += ' <span class="move">';
@@ -15,10 +23,10 @@ function updateMoveLog() {
 }
 
 function logPoints() {
-	const { w, b } = window.points();
-	const wDiff = b - w, bDiff = w - b;
-	$.id('white-points').innerText = wDiff > 0 ? '+' + wDiff : '';
-	$.id('black-points').innerText = bDiff > 0 ? '+' + bDiff : '';
+	const { w, b } = window.points;
+	const pointsDiff = { w: b - w, b: w - b };
+	$.id('white-points').innerText = pointsDiff.w > 0 ? '+' + pointsDiff.w : '';
+	$.id('black-points').innerText = pointsDiff.b > 0 ? '+' + pointsDiff.b : '';
 }
 
 function logTakenPiece(colour, piece) {
