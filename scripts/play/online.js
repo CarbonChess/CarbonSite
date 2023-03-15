@@ -147,10 +147,10 @@ async function init() {
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
-	$(`#${playerTurn}-username`).innerText = window.username;
-	$(`#${playerTurn}-elo`).innerText = window.userElo;
-	$(`#${invertColour(playerTurn)}-username`).innerText = window.opponentName;
-	$(`#${invertColour(playerTurn)}-elo`).innerText = window.opponentElo;
+	$(`#${playerTurn}-username`).innerText = window.opponentName;
+	$(`#${playerTurn}-elo`).innerText = window.opponentElo;
+	$(`#${invertColour(playerTurn)}-username`).innerText = window.username;
+	$(`#${invertColour(playerTurn)}-elo`).innerText = window.userElo;
 	sendDB('soft:true');
 	sendChatMessage('force:true');
 }
