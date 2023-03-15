@@ -1,7 +1,6 @@
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
-//tryna fix usernames
 let cipher;
 let idleTime = 0;
 let lastReceivedFen;
@@ -147,6 +146,9 @@ async function init() {
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
+	//debug
+	console.log(window.opponentName);
+	console.log(window.opponentElo);
 	$(`#${playerTurn}-username`).innerText = window.opponentName;
 	$(`#${playerTurn}-elo`).innerText = window.opponentElo;
 	$(`#${invertColour(playerTurn)}-username`).innerText = window.username;
