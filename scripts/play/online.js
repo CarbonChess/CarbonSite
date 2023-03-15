@@ -1,7 +1,7 @@
 const apiUrl = '/.netlify/functions/database';
 const TIMEOUT_AGE = 3 * 60 * 1000;
 const READ_INTERVAL = 3 * 1000;
-
+//tryna fix usernames
 let cipher;
 let idleTime = 0;
 let lastReceivedFen;
