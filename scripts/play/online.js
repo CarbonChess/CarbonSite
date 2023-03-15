@@ -129,6 +129,11 @@ async function init() {
 		const [opponentName, opponentElo] = data[invertColour(window.playerTurn)].split('[]');
 		window.opponentName = opponentName;
 		window.opponentElo = +opponentElo;
+
+		//debug
+		console.log(whiteName);
+		console.log(blackName);
+		console.log(window.opponentName);
 	}
 	else {
 		window.playerCount = ~~data.players + 1;
@@ -146,9 +151,7 @@ async function init() {
 	window.chat = [[+new Date(), '[System]', `${username} joined`].join(SEP.INFO)];
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
-	//debug
-	console.log(whiteName);
-	console.log(blackName);
+	
 	$(`#${playerTurn}-username`).innerText = window.opponentName;
 	$(`#${playerTurn}-elo`).innerText = window.opponentElo;
 	$(`#${invertColour(playerTurn)}-username`).innerText = window.username;
