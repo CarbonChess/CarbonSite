@@ -147,8 +147,8 @@ async function init() {
 	$('#chat').innerHTML = window.chat.map(msg => formatChatMessage(msg.split(SEP.INFO)));
 	$('#winner').innerText = '';
 	//debug
-	console.log(window.opponentName);
-	console.log(window.opponentElo);
+	console.log(whiteName);
+	console.log(blackName);
 	$(`#${playerTurn}-username`).innerText = window.opponentName;
 	$(`#${playerTurn}-elo`).innerText = window.opponentElo;
 	$(`#${invertColour(playerTurn)}-username`).innerText = window.username;
